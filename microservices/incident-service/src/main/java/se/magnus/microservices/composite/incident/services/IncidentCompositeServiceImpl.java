@@ -10,49 +10,49 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-import se.magnus.api.composite.product.*;
-import se.magnus.api.core.product.Product;
-import se.magnus.api.core.recommendation.Recommendation;
-import se.magnus.api.core.review.Review;
+import se.magnus.api.composite.incident.*;
+import se.magnus.api.core.alert.Alert;
+import se.magnus.api.core.device.Device;
+import se.magnus.api.core.incident.Incident;
 import se.magnus.util.http.ServiceUtil;
 
 @RestController
-public class ProductCompositeServiceImpl implements ProductCompositeService {
+public class IncidentCompositeServiceImpl implements IncidentCompositeService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ProductCompositeServiceImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(se.magnus.microservices.composite.product.services.IncidentCompositeServiceImpl.class);
 
   private final ServiceUtil serviceUtil;
   private final ProductCompositeIntegration integration;
 
   @Autowired
-  public ProductCompositeServiceImpl(ServiceUtil serviceUtil, ProductCompositeIntegration integration) {
+  public IncidentCompositeServiceImpl(ServiceUtil serviceUtil, ProductCompositeIntegration integration) {
     this.serviceUtil = serviceUtil;
     this.integration = integration;
   }
 
   @Override
-  public Mono<Void> createProduct(ProductAggregate body) {
+  public Mono<Void> createProduct(IncidentAggregate body) {
 
     try {
 
       List<Mono> monoList = new ArrayList<>();
 
-      LOG.info("Will create a new composite entity for product.id: {}", body.getProductId());
+      LOG.info("Will create a new composite entity for incident.id: {}", body.getProductId());
 
-      Product product = new Product(body.getProductId(), body.getName(), body.getWeight(), null);
-      monoList.add(integration.createProduct(product));
+      Incident incident = new Incident(body.getProductId(), body.getName(), body.getWeight(), null);
+      monoList.add(integration.createProduct(incident));
 
       if (body.getRecommendations() != null) {
         body.getRecommendations().forEach(r -> {
-          Recommendation recommendation = new Recommendation(body.getProductId(), r.getRecommendationId(), r.getAuthor(), r.getRate(), r.getContent(), null);
-          monoList.add(integration.createRecommendation(recommendation));
+          Device device = new Device(body.getProductId(), r.getRecommendationId(), r.getAuthor(), r.getRate(), r.getContent(), null);
+          monoList.add(integration.createRecommendation(device));
         });
       }
 
       if (body.getReviews() != null) {
         body.getReviews().forEach(r -> {
-          Review review = new Review(body.getProductId(), r.getReviewId(), r.getAuthor(), r.getSubject(), r.getContent(), null);
-          monoList.add(integration.createReview(review));
+          Alert alert = new Alert(body.getProductId(), r.getReviewId(), r.getAuthor(), r.getSubject(), r.getContent(), null);
+          monoList.add(integration.createReview(alert));
         });
       }
 
@@ -69,11 +69,11 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
   }
 
   @Override
-  public Mono<ProductAggregate> getProduct(int productId) {
+  public Mono<IncidentAggregate> getProduct(int productId) {
 
-    LOG.info("Will get composite product info for product.id={}", productId);
+    LOG.info("Will get composite incident info for incident.id={}", productId);
     return Mono.zip(
-      values -> createProductAggregate((Product) values[0], (List<Recommendation>) values[1], (List<Review>) values[2], serviceUtil.getServiceAddress()),
+      values -> createProductAggregate((Incident) values[0], (List<Device>) values[1], (List<Alert>) values[2], serviceUtil.getServiceAddress()),
       integration.getProduct(productId),
       integration.getRecommendations(productId).collectList(),
       integration.getReviews(productId).collectList())
@@ -86,7 +86,7 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
 
     try {
 
-      LOG.info("Will delete a product aggregate for product.id: {}", productId);
+      LOG.info("Will delete a incident aggregate for incident.id: {}", productId);
 
       return Mono.zip(
         r -> "",
@@ -102,31 +102,31 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
     }
   }
 
-  private ProductAggregate createProductAggregate(Product product, List<Recommendation> recommendations, List<Review> reviews, String serviceAddress) {
+  private IncidentAggregate createProductAggregate(Incident incident, List<Device> recommendations, List<Alert> reviews, String serviceAddress) {
 
-    // 1. Setup product info
-    int productId = product.getProductId();
-    String name = product.getName();
-    int weight = product.getWeight();
+    // 1. Setup incident info
+    int productId = incident.getProductId();
+    String name = incident.getName();
+    int weight = incident.getWeight();
 
-    // 2. Copy summary recommendation info, if available
-    List<RecommendationSummary> recommendationSummaries = (recommendations == null) ? null :
+    // 2. Copy summary device info, if available
+    List<DeviceSummary> recommendationSummaries = (recommendations == null) ? null :
        recommendations.stream()
-        .map(r -> new RecommendationSummary(r.getRecommendationId(), r.getAuthor(), r.getRate(), r.getContent()))
+        .map(r -> new DeviceSummary(r.getRecommendationId(), r.getAuthor(), r.getRate(), r.getContent()))
         .collect(Collectors.toList());
 
-    // 3. Copy summary review info, if available
-    List<ReviewSummary> reviewSummaries = (reviews == null)  ? null :
+    // 3. Copy summary alert info, if available
+    List<AlertSummary> reviewSummaries = (reviews == null)  ? null :
       reviews.stream()
-        .map(r -> new ReviewSummary(r.getReviewId(), r.getAuthor(), r.getSubject(), r.getContent()))
+        .map(r -> new AlertSummary(r.getReviewId(), r.getAuthor(), r.getSubject(), r.getContent()))
         .collect(Collectors.toList());
 
     // 4. Create info regarding the involved microservices addresses
-    String productAddress = product.getServiceAddress();
+    String productAddress = incident.getServiceAddress();
     String reviewAddress = (reviews != null && reviews.size() > 0) ? reviews.get(0).getServiceAddress() : "";
     String recommendationAddress = (recommendations != null && recommendations.size() > 0) ? recommendations.get(0).getServiceAddress() : "";
     ServiceAddresses serviceAddresses = new ServiceAddresses(serviceAddress, productAddress, reviewAddress, recommendationAddress);
 
-    return new ProductAggregate(productId, name, weight, recommendationSummaries, reviewSummaries, serviceAddresses);
+    return new IncidentAggregate(productId, name, weight, recommendationSummaries, reviewSummaries, serviceAddresses);
   }
 }

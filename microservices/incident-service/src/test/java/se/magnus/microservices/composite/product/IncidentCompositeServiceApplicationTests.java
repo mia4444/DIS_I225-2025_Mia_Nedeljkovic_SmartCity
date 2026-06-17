@@ -15,15 +15,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import se.magnus.api.core.product.Product;
-import se.magnus.api.core.recommendation.Recommendation;
-import se.magnus.api.core.review.Review;
+import se.magnus.api.core.alert.Alert;
+import se.magnus.api.core.incident.Incident;
+import se.magnus.api.core.device.Device;
 import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.api.exceptions.NotFoundException;
-import se.magnus.microservices.composite.product.services.ProductCompositeIntegration;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, properties = {"eureka.client.enabled=false"})
-class ProductCompositeServiceApplicationTests {
+class IncidentCompositeServiceApplicationTests {
 
   private static final int PRODUCT_ID_OK = 1;
   private static final int PRODUCT_ID_NOT_FOUND = 2;
@@ -33,19 +32,19 @@ class ProductCompositeServiceApplicationTests {
   private WebTestClient client;
 
   @MockBean
-  private ProductCompositeIntegration compositeIntegration;
+  private se.magnus.microservices.composite.product.services.IncidentCompositeIntegration compositeIntegration;
 
   @BeforeEach
   void setUp() {
 
     when(compositeIntegration.getProduct(PRODUCT_ID_OK))
-      .thenReturn(Mono.just(new Product(PRODUCT_ID_OK, "name", 1, "mock-address")));
+      .thenReturn(Mono.just(new Incident(PRODUCT_ID_OK, "name", 1, "mock-address")));
 
     when(compositeIntegration.getRecommendations(PRODUCT_ID_OK))
-      .thenReturn(Flux.fromIterable(singletonList(new Recommendation(PRODUCT_ID_OK, 1, "author", 1, "content", "mock address"))));
+      .thenReturn(Flux.fromIterable(singletonList(new Device(PRODUCT_ID_OK, 1, "author", 1, "content", "mock address"))));
 
     when(compositeIntegration.getReviews(PRODUCT_ID_OK))
-      .thenReturn(Flux.fromIterable(singletonList(new Review(PRODUCT_ID_OK, 1, "author", "subject", "content", "mock address"))));
+      .thenReturn(Flux.fromIterable(singletonList(new Alert(PRODUCT_ID_OK, 1, "author", "subject", "content", "mock address"))));
 
     when(compositeIntegration.getProduct(PRODUCT_ID_NOT_FOUND)).thenThrow(new NotFoundException("NOT FOUND: " + PRODUCT_ID_NOT_FOUND));
 
@@ -69,7 +68,7 @@ class ProductCompositeServiceApplicationTests {
   void getProductNotFound() {
 
     getAndVerifyProduct(PRODUCT_ID_NOT_FOUND, NOT_FOUND)
-      .jsonPath("$.path").isEqualTo("/product-composite/" + PRODUCT_ID_NOT_FOUND)
+      .jsonPath("$.path").isEqualTo("/incident-composite/" + PRODUCT_ID_NOT_FOUND)
       .jsonPath("$.message").isEqualTo("NOT FOUND: " + PRODUCT_ID_NOT_FOUND);
   }
 
@@ -77,13 +76,13 @@ class ProductCompositeServiceApplicationTests {
   void getProductInvalidInput() {
 
     getAndVerifyProduct(PRODUCT_ID_INVALID, UNPROCESSABLE_ENTITY)
-      .jsonPath("$.path").isEqualTo("/product-composite/" + PRODUCT_ID_INVALID)
+      .jsonPath("$.path").isEqualTo("/incident-composite/" + PRODUCT_ID_INVALID)
       .jsonPath("$.message").isEqualTo("INVALID: " + PRODUCT_ID_INVALID);
   }
 
   private WebTestClient.BodyContentSpec getAndVerifyProduct(int productId, HttpStatus expectedStatus) {
     return client.get()
-      .uri("/product-composite/" + productId)
+      .uri("/incident-composite/" + productId)
       .accept(APPLICATION_JSON)
       .exchange()
       .expectStatus().isEqualTo(expectedStatus)

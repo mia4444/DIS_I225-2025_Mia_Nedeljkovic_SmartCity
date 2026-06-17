@@ -1,7 +1,7 @@
 server.port: 7001
 server.error.include-message: always
 
-spring.application.name: product
+spring.application.name: incident
 
 app.eureka-server: localhost
 
@@ -18,7 +18,7 @@ eureka:
 spring.data.mongodb:
   host: localhost
   port: 27017
-  database: product-db
+  database: incident-db
 
 spring.cloud.function.definition: messageProcessor
 

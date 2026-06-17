@@ -10,7 +10,7 @@ import static se.magnus.microservices.composite.product.IsSameEvent.sameEventExc
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import se.magnus.api.core.product.Product;
+import se.magnus.api.core.incident.Incident;
 import se.magnus.api.event.Event;
 
 class IsSameEventTests {
@@ -22,10 +22,10 @@ class IsSameEventTests {
 
     // Event #1 and #2 are the same event, but occurs as different times
     // Event #3 and #4 are different events
-    Event<Integer, Product> event1 = new Event<>(CREATE, 1, new Product(1, "name", 1, null));
-    Event<Integer, Product> event2 = new Event<>(CREATE, 1, new Product(1, "name", 1, null));
-    Event<Integer, Product> event3 = new Event<>(DELETE, 1, null);
-    Event<Integer, Product> event4 = new Event<>(CREATE, 1, new Product(2, "name", 1, null));
+    Event<Integer, Incident> event1 = new Event<>(CREATE, 1, new Incident(1, "name", 1, null));
+    Event<Integer, Incident> event2 = new Event<>(CREATE, 1, new Incident(1, "name", 1, null));
+    Event<Integer, Incident> event3 = new Event<>(DELETE, 1, null);
+    Event<Integer, Incident> event4 = new Event<>(CREATE, 1, new Incident(2, "name", 1, null));
 
     String event1Json = mapper.writeValueAsString(event1);
 

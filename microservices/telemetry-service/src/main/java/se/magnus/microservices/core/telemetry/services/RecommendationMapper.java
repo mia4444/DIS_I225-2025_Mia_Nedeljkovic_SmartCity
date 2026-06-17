@@ -4,7 +4,7 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
-import se.magnus.api.core.recommendation.Recommendation;
+import se.magnus.api.core.device.Device;
 import se.magnus.microservices.core.recommendation.persistence.RecommendationEntity;
 
 @Mapper(componentModel = "spring")
@@ -14,16 +14,16 @@ public interface RecommendationMapper {
     @Mapping(target = "rate", source = "entity.rating"),
     @Mapping(target = "serviceAddress", ignore = true)
   })
-  Recommendation entityToApi(RecommendationEntity entity);
+  Device entityToApi(RecommendationEntity entity);
 
   @Mappings({
     @Mapping(target = "rating", source = "api.rate"),
     @Mapping(target = "id", ignore = true),
     @Mapping(target = "version", ignore = true)
   })
-  RecommendationEntity apiToEntity(Recommendation api);
+  RecommendationEntity apiToEntity(Device api);
 
-  List<Recommendation> entityListToApiList(List<RecommendationEntity> entity);
+  List<Device> entityListToApiList(List<RecommendationEntity> entity);
 
-  List<RecommendationEntity> apiListToEntityList(List<Recommendation> api);
+  List<RecommendationEntity> apiListToEntityList(List<Device> api);
 }

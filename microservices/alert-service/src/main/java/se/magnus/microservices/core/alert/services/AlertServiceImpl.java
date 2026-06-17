@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
-import se.magnus.api.core.review.Review;
-import se.magnus.api.core.review.ReviewService;
+import se.magnus.api.core.alert.Alert;
+import se.magnus.api.core.alert.AlertService;
 import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.microservices.core.review.persistence.ReviewEntity;
 import se.magnus.microservices.core.review.persistence.ReviewRepository;
 import se.magnus.util.http.ServiceUtil;
 
 @RestController
-public class ReviewServiceImpl implements ReviewService {
+public class AlertServiceImpl implements AlertService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ReviewServiceImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(AlertServiceImpl.class);
 
   private final ReviewRepository repository;
 
@@ -33,7 +33,7 @@ public class ReviewServiceImpl implements ReviewService {
   private final Scheduler jdbcScheduler;
 
   @Autowired
-  public ReviewServiceImpl(@Qualifier("jdbcScheduler") Scheduler jdbcScheduler, ReviewRepository repository, ReviewMapper mapper, ServiceUtil serviceUtil) {
+  public AlertServiceImpl(@Qualifier("jdbcScheduler") Scheduler jdbcScheduler, ReviewRepository repository, ReviewMapper mapper, ServiceUtil serviceUtil) {
     this.jdbcScheduler = jdbcScheduler;
     this.repository = repository;
     this.mapper = mapper;
@@ -41,7 +41,7 @@ public class ReviewServiceImpl implements ReviewService {
   }
 
   @Override
-  public Mono<Review> createReview(Review body) {
+  public Mono<Alert> createReview(Alert body) {
 
     if (body.getProductId() < 1) {
       throw new InvalidInputException("Invalid productId: " + body.getProductId());
@@ -50,12 +50,12 @@ public class ReviewServiceImpl implements ReviewService {
       .subscribeOn(jdbcScheduler);
   }
 
-  private Review internalCreateReview(Review body) {
+  private Alert internalCreateReview(Alert body) {
     try {
       ReviewEntity entity = mapper.apiToEntity(body);
       ReviewEntity newEntity = repository.save(entity);
 
-      LOG.debug("createReview: created a review entity: {}/{}", body.getProductId(), body.getReviewId());
+      LOG.debug("createReview: created a alert entity: {}/{}", body.getProductId(), body.getReviewId());
       return mapper.entityToApi(newEntity);
 
     } catch (DataIntegrityViolationException dive) {
@@ -64,13 +64,13 @@ public class ReviewServiceImpl implements ReviewService {
   }
 
   @Override
-  public Flux<Review> getReviews(int productId) {
+  public Flux<Alert> getReviews(int productId) {
 
     if (productId < 1) {
       throw new InvalidInputException("Invalid productId: " + productId);
     }
 
-    LOG.info("Will get reviews for product with id={}", productId);
+    LOG.info("Will get reviews for incident with id={}", productId);
 
     return Mono.fromCallable(() -> internalGetReviews(productId))
       .flatMapMany(Flux::fromIterable)
@@ -78,10 +78,10 @@ public class ReviewServiceImpl implements ReviewService {
       .subscribeOn(jdbcScheduler);
   }
 
-  private List<Review> internalGetReviews(int productId) {
+  private List<Alert> internalGetReviews(int productId) {
 
     List<ReviewEntity> entityList = repository.findByProductId(productId);
-    List<Review> list = mapper.entityListToApiList(entityList);
+    List<Alert> list = mapper.entityListToApiList(entityList);
     list.forEach(e -> e.setServiceAddress(serviceUtil.getServiceAddress()));
 
     LOG.debug("Response size: {}", list.size());
@@ -101,7 +101,7 @@ public class ReviewServiceImpl implements ReviewService {
 
   private void internalDeleteReviews(int productId) {
 
-    LOG.debug("deleteReviews: tries to delete reviews for the product with productId: {}", productId);
+    LOG.debug("deleteReviews: tries to delete reviews for the incident with productId: {}", productId);
 
     repository.deleteAll(repository.findByProductId(productId));
   }

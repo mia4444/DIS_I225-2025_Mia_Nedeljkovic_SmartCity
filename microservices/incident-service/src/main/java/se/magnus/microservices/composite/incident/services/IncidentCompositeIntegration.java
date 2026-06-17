@@ -21,21 +21,21 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
-import se.magnus.api.core.product.Product;
-import se.magnus.api.core.product.ProductService;
-import se.magnus.api.core.recommendation.Recommendation;
-import se.magnus.api.core.recommendation.RecommendationService;
-import se.magnus.api.core.review.Review;
-import se.magnus.api.core.review.ReviewService;
+import se.magnus.api.core.device.Device;
+import se.magnus.api.core.incident.Incident;
+import se.magnus.api.core.incident.IncidentService;
+import se.magnus.api.core.device.DeviceService;
+import se.magnus.api.core.alert.Alert;
+import se.magnus.api.core.alert.AlertService;
 import se.magnus.api.event.Event;
 import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.api.exceptions.NotFoundException;
 import se.magnus.util.http.HttpErrorInfo;
 
 @Component
-public class ProductCompositeIntegration implements ProductService, RecommendationService, ReviewService {
+public class IncidentCompositeIntegration implements IncidentService, DeviceService, AlertService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ProductCompositeIntegration.class);
+  private static final Logger LOG = LoggerFactory.getLogger(se.magnus.microservices.composite.product.services.IncidentCompositeIntegration.class);
 
   private static final String PRODUCT_SERVICE_URL = "http://product";
   private static final String RECOMMENDATION_SERVICE_URL = "http://recommendation";
@@ -47,7 +47,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
   private final StreamBridge streamBridge;
 
   @Autowired
-  public ProductCompositeIntegration(
+  public IncidentCompositeIntegration(
     @Qualifier("publishEventScheduler") Scheduler publishEventScheduler,
     WebClient.Builder webClientBuilder,
     ObjectMapper mapper,
@@ -61,7 +61,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
   }
 
   @Override
-  public Mono<Product> createProduct(Product body) {
+  public Mono<Incident> createProduct(Incident body) {
 
     return Mono.fromCallable(() -> {
       sendMessage("products-out-0", new Event(CREATE, body.getProductId(), body));
@@ -70,11 +70,11 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
   }
 
   @Override
-  public Mono<Product> getProduct(int productId) {
-    String url = PRODUCT_SERVICE_URL + "/product/" + productId;
+  public Mono<Incident> getProduct(int productId) {
+    String url = PRODUCT_SERVICE_URL + "/incident/" + productId;
     LOG.debug("Will call the getProduct API on URL: {}", url);
 
-    return webClient.get().uri(url).retrieve().bodyToMono(Product.class).log(LOG.getName(), FINE).onErrorMap(WebClientResponseException.class, ex -> handleException(ex));
+    return webClient.get().uri(url).retrieve().bodyToMono(Incident.class).log(LOG.getName(), FINE).onErrorMap(WebClientResponseException.class, ex -> handleException(ex));
   }
 
   @Override
@@ -85,7 +85,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
   }
 
   @Override
-  public Mono<Recommendation> createRecommendation(Recommendation body) {
+  public Mono<Device> createRecommendation(Device body) {
 
     return Mono.fromCallable(() -> {
       sendMessage("recommendations-out-0", new Event(CREATE, body.getProductId(), body));
@@ -94,14 +94,14 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
   }
 
   @Override
-  public Flux<Recommendation> getRecommendations(int productId) {
+  public Flux<Device> getRecommendations(int productId) {
 
-    String url = RECOMMENDATION_SERVICE_URL + "/recommendation?productId=" + productId;
+    String url = RECOMMENDATION_SERVICE_URL + "/device?productId=" + productId;
 
     LOG.debug("Will call the getRecommendations API on URL: {}", url);
 
     // Return an empty result if something goes wrong to make it possible for the composite service to return partial responses
-    return webClient.get().uri(url).retrieve().bodyToFlux(Recommendation.class).log(LOG.getName(), FINE).onErrorResume(error -> empty());
+    return webClient.get().uri(url).retrieve().bodyToFlux(Device.class).log(LOG.getName(), FINE).onErrorResume(error -> empty());
   }
 
   @Override
@@ -112,7 +112,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
   }
 
   @Override
-  public Mono<Review> createReview(Review body) {
+  public Mono<Alert> createReview(Alert body) {
 
     return Mono.fromCallable(() -> {
       sendMessage("reviews-out-0", new Event(CREATE, body.getProductId(), body));
@@ -121,14 +121,14 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
   }
 
   @Override
-  public Flux<Review> getReviews(int productId) {
+  public Flux<Alert> getReviews(int productId) {
 
-    String url = REVIEW_SERVICE_URL + "/review?productId=" + productId;
+    String url = REVIEW_SERVICE_URL + "/alert?productId=" + productId;
 
     LOG.debug("Will call the getReviews API on URL: {}", url);
 
     // Return an empty result if something goes wrong to make it possible for the composite service to return partial responses
-    return webClient.get().uri(url).retrieve().bodyToFlux(Review.class).log(LOG.getName(), FINE).onErrorResume(error -> empty());
+    return webClient.get().uri(url).retrieve().bodyToFlux(Alert.class).log(LOG.getName(), FINE).onErrorResume(error -> empty());
   }
 
   @Override

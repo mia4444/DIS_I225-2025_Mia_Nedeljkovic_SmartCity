@@ -1,6 +1,6 @@
-package se.magnus.api.core.recommendation;
+package se.magnus.api.core.device;
 
-public class Recommendation {
+public class Device {
   private int productId;
   private int recommendationId;
   private String author;
@@ -8,7 +8,7 @@ public class Recommendation {
   private String content;
   private String serviceAddress;
 
-  public Recommendation() {
+  public Device() {
     productId = 0;
     recommendationId = 0;
     author = null;
@@ -17,7 +17,7 @@ public class Recommendation {
     serviceAddress = null;
   }
 
-  public Recommendation(
+  public Device(
     int productId,
     int recommendationId,
     String author,

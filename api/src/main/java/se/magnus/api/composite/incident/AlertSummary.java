@@ -1,20 +1,20 @@
-package se.magnus.api.composite.product;
+package se.magnus.api.composite.incident;
 
-public class ReviewSummary {
+public class AlertSummary {
 
   private final int reviewId;
   private final String author;
   private final String subject;
   private final String content;
 
-  public ReviewSummary() {
+  public AlertSummary() {
     this.reviewId = 0;
     this.author = null;
     this.subject = null;
     this.content = null;
   }
 
-  public ReviewSummary(int reviewId, String author, String subject, String content) {
+  public AlertSummary(int reviewId, String author, String subject, String content) {
     this.reviewId = reviewId;
     this.author = author;
     this.subject = subject;

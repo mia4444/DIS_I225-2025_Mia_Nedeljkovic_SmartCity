@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import se.magnus.api.core.review.Review;
+import se.magnus.api.core.alert.Alert;
 import se.magnus.api.event.Event;
 import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.microservices.core.review.persistence.ReviewRepository;
@@ -24,7 +24,7 @@ import se.magnus.microservices.core.review.persistence.ReviewRepository;
   "spring.cloud.stream.defaultBinder=rabbit",
   "logging.level.se.magnus=DEBUG",
   "eureka.client.enabled=false"})
-class ReviewServiceApplicationTests extends MySqlTestBase {
+class AlertServiceApplicationTests extends MySqlTestBase {
 
   @Autowired
   private WebTestClient client;
@@ -34,7 +34,7 @@ class ReviewServiceApplicationTests extends MySqlTestBase {
 
   @Autowired
   @Qualifier("messageProcessor")
-  private Consumer<Event<Integer, Review>> messageProcessor;
+  private Consumer<Event<Integer, Alert>> messageProcessor;
 
   @BeforeEach
   void setupDb() {
@@ -100,7 +100,7 @@ class ReviewServiceApplicationTests extends MySqlTestBase {
   void getReviewsMissingParameter() {
 
     getAndVerifyReviewsByProductId("", BAD_REQUEST)
-      .jsonPath("$.path").isEqualTo("/review")
+      .jsonPath("$.path").isEqualTo("/alert")
       .jsonPath("$.message").isEqualTo("Required query parameter 'productId' is not present.");
   }
 
@@ -108,7 +108,7 @@ class ReviewServiceApplicationTests extends MySqlTestBase {
   void getReviewsInvalidParameter() {
 
     getAndVerifyReviewsByProductId("?productId=no-integer", BAD_REQUEST)
-      .jsonPath("$.path").isEqualTo("/review")
+      .jsonPath("$.path").isEqualTo("/alert")
       .jsonPath("$.message").isEqualTo("Type mismatch.");
   }
 
@@ -125,7 +125,7 @@ class ReviewServiceApplicationTests extends MySqlTestBase {
     int productIdInvalid = -1;
 
     getAndVerifyReviewsByProductId("?productId=" + productIdInvalid, UNPROCESSABLE_ENTITY)
-      .jsonPath("$.path").isEqualTo("/review")
+      .jsonPath("$.path").isEqualTo("/alert")
       .jsonPath("$.message").isEqualTo("Invalid productId: " + productIdInvalid);
   }
 
@@ -135,7 +135,7 @@ class ReviewServiceApplicationTests extends MySqlTestBase {
 
   private WebTestClient.BodyContentSpec getAndVerifyReviewsByProductId(String productIdQuery, HttpStatus expectedStatus) {
     return client.get()
-      .uri("/review" + productIdQuery)
+      .uri("/alert" + productIdQuery)
       .accept(APPLICATION_JSON)
       .exchange()
       .expectStatus().isEqualTo(expectedStatus)
@@ -144,13 +144,13 @@ class ReviewServiceApplicationTests extends MySqlTestBase {
   }
 
   private void sendCreateReviewEvent(int productId, int reviewId) {
-    Review review = new Review(productId, reviewId, "Author " + reviewId, "Subject " + reviewId, "Content " + reviewId, "SA");
-    Event<Integer, Review> event = new Event(CREATE, productId, review);
+    Alert alert = new Alert(productId, reviewId, "Author " + reviewId, "Subject " + reviewId, "Content " + reviewId, "SA");
+    Event<Integer, Alert> event = new Event(CREATE, productId, alert);
     messageProcessor.accept(event);
   }
 
   private void sendDeleteReviewEvent(int productId) {
-    Event<Integer, Review> event = new Event(DELETE, productId, null);
+    Event<Integer, Alert> event = new Event(DELETE, productId, null);
     messageProcessor.accept(event);
   }
 }

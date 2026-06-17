@@ -1,16 +1,16 @@
-package se.magnus.api.composite.product;
+package se.magnus.api.composite.incident;
 
 import java.util.List;
 
-public class ProductAggregate {
+public class IncidentAggregate {
   private final int productId;
   private final String name;
   private final int weight;
-  private final List<RecommendationSummary> recommendations;
-  private final List<ReviewSummary> reviews;
+  private final List<DeviceSummary> recommendations;
+  private final List<AlertSummary> reviews;
   private final ServiceAddresses serviceAddresses;
 
-  public ProductAggregate() {
+  public IncidentAggregate() {
     productId = 0;
     name = null;
     weight = 0;
@@ -19,12 +19,12 @@ public class ProductAggregate {
     serviceAddresses = null;
   }
 
-  public ProductAggregate(
+  public IncidentAggregate(
     int productId,
     String name,
     int weight,
-    List<RecommendationSummary> recommendations,
-    List<ReviewSummary> reviews,
+    List<DeviceSummary> recommendations,
+    List<AlertSummary> reviews,
     ServiceAddresses serviceAddresses) {
 
     this.productId = productId;
@@ -47,11 +47,11 @@ public class ProductAggregate {
     return weight;
   }
 
-  public List<RecommendationSummary> getRecommendations() {
+  public List<DeviceSummary> getRecommendations() {
     return recommendations;
   }
 
-  public List<ReviewSummary> getReviews() {
+  public List<AlertSummary> getReviews() {
     return reviews;
   }
 

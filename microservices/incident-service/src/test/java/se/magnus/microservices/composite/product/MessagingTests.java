@@ -25,12 +25,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.Message;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import se.magnus.api.composite.product.ProductAggregate;
-import se.magnus.api.composite.product.RecommendationSummary;
-import se.magnus.api.composite.product.ReviewSummary;
-import se.magnus.api.core.product.Product;
-import se.magnus.api.core.recommendation.Recommendation;
-import se.magnus.api.core.review.Review;
+import se.magnus.api.composite.incident.IncidentAggregate;
+import se.magnus.api.composite.incident.DeviceSummary;
+import se.magnus.api.composite.incident.AlertSummary;
+import se.magnus.api.core.incident.Incident;
+import se.magnus.api.core.device.Device;
+import se.magnus.api.core.alert.Alert;
 import se.magnus.api.event.Event;
 
 @SpringBootTest(
@@ -59,21 +59,21 @@ class MessagingTests {
   @Test
   void createCompositeProduct1() {
 
-    ProductAggregate composite = new ProductAggregate(1, "name", 1, null, null, null);
+    IncidentAggregate composite = new IncidentAggregate(1, "name", 1, null, null, null);
     postAndVerifyProduct(composite, ACCEPTED);
 
     final List<String> productMessages = getMessages("products");
     final List<String> recommendationMessages = getMessages("recommendations");
     final List<String> reviewMessages = getMessages("reviews");
 
-    // Assert one expected new product event queued up
+    // Assert one expected new incident event queued up
     assertEquals(1, productMessages.size());
 
-    Event<Integer, Product> expectedEvent =
-      new Event(CREATE, composite.getProductId(), new Product(composite.getProductId(), composite.getName(), composite.getWeight(), null));
+    Event<Integer, Incident> expectedEvent =
+      new Event(CREATE, composite.getProductId(), new Incident(composite.getProductId(), composite.getName(), composite.getWeight(), null));
     assertThat(productMessages.get(0), is(sameEventExceptCreatedAt(expectedEvent)));
 
-    // Assert no recommendation and review events
+    // Assert no device and alert events
     assertEquals(0, recommendationMessages.size());
     assertEquals(0, reviewMessages.size());
   }
@@ -81,37 +81,37 @@ class MessagingTests {
   @Test
   void createCompositeProduct2() {
 
-    ProductAggregate composite = new ProductAggregate(1, "name", 1,
-      singletonList(new RecommendationSummary(1, "a", 1, "c")),
-      singletonList(new ReviewSummary(1, "a", "s", "c")), null);
+    IncidentAggregate composite = new IncidentAggregate(1, "name", 1,
+      singletonList(new DeviceSummary(1, "a", 1, "c")),
+      singletonList(new AlertSummary(1, "a", "s", "c")), null);
     postAndVerifyProduct(composite, ACCEPTED);
 
     final List<String> productMessages = getMessages("products");
     final List<String> recommendationMessages = getMessages("recommendations");
     final List<String> reviewMessages = getMessages("reviews");
 
-    // Assert one create product event queued up
+    // Assert one create incident event queued up
     assertEquals(1, productMessages.size());
 
-    Event<Integer, Product> expectedProductEvent =
-      new Event(CREATE, composite.getProductId(), new Product(composite.getProductId(), composite.getName(), composite.getWeight(), null));
+    Event<Integer, Incident> expectedProductEvent =
+      new Event(CREATE, composite.getProductId(), new Incident(composite.getProductId(), composite.getName(), composite.getWeight(), null));
     assertThat(productMessages.get(0), is(sameEventExceptCreatedAt(expectedProductEvent)));
 
-    // Assert one create recommendation event queued up
+    // Assert one create device event queued up
     assertEquals(1, recommendationMessages.size());
 
-    RecommendationSummary rec = composite.getRecommendations().get(0);
-    Event<Integer, Product> expectedRecommendationEvent =
+    DeviceSummary rec = composite.getRecommendations().get(0);
+    Event<Integer, Incident> expectedRecommendationEvent =
       new Event(CREATE, composite.getProductId(),
-        new Recommendation(composite.getProductId(), rec.getRecommendationId(), rec.getAuthor(), rec.getRate(), rec.getContent(), null));
+        new Device(composite.getProductId(), rec.getRecommendationId(), rec.getAuthor(), rec.getRate(), rec.getContent(), null));
     assertThat(recommendationMessages.get(0), is(sameEventExceptCreatedAt(expectedRecommendationEvent)));
 
-    // Assert one create review event queued up
+    // Assert one create alert event queued up
     assertEquals(1, reviewMessages.size());
 
-    ReviewSummary rev = composite.getReviews().get(0);
-    Event<Integer, Product> expectedReviewEvent =
-      new Event(CREATE, composite.getProductId(), new Review(composite.getProductId(), rev.getReviewId(), rev.getAuthor(), rev.getSubject(), rev.getContent(), null));
+    AlertSummary rev = composite.getReviews().get(0);
+    Event<Integer, Incident> expectedReviewEvent =
+      new Event(CREATE, composite.getProductId(), new Alert(composite.getProductId(), rev.getReviewId(), rev.getAuthor(), rev.getSubject(), rev.getContent(), null));
     assertThat(reviewMessages.get(0), is(sameEventExceptCreatedAt(expectedReviewEvent)));
   }
 
@@ -123,22 +123,22 @@ class MessagingTests {
     final List<String> recommendationMessages = getMessages("recommendations");
     final List<String> reviewMessages = getMessages("reviews");
 
-    // Assert one delete product event queued up
+    // Assert one delete incident event queued up
     assertEquals(1, productMessages.size());
 
-    Event<Integer, Product> expectedProductEvent = new Event(DELETE, 1, null);
+    Event<Integer, Incident> expectedProductEvent = new Event(DELETE, 1, null);
     assertThat(productMessages.get(0), is(sameEventExceptCreatedAt(expectedProductEvent)));
 
-    // Assert one delete recommendation event queued up
+    // Assert one delete device event queued up
     assertEquals(1, recommendationMessages.size());
 
-    Event<Integer, Product> expectedRecommendationEvent = new Event(DELETE, 1, null);
+    Event<Integer, Incident> expectedRecommendationEvent = new Event(DELETE, 1, null);
     assertThat(recommendationMessages.get(0), is(sameEventExceptCreatedAt(expectedRecommendationEvent)));
 
-    // Assert one delete review event queued up
+    // Assert one delete alert event queued up
     assertEquals(1, reviewMessages.size());
 
-    Event<Integer, Product> expectedReviewEvent = new Event(DELETE, 1, null);
+    Event<Integer, Incident> expectedReviewEvent = new Event(DELETE, 1, null);
     assertThat(reviewMessages.get(0), is(sameEventExceptCreatedAt(expectedReviewEvent)));
   }
 
@@ -174,17 +174,17 @@ class MessagingTests {
     }
   }
 
-  private void postAndVerifyProduct(ProductAggregate compositeProduct, HttpStatus expectedStatus) {
+  private void postAndVerifyProduct(IncidentAggregate compositeProduct, HttpStatus expectedStatus) {
     client.post()
-      .uri("/product-composite")
-      .body(just(compositeProduct), ProductAggregate.class)
+      .uri("/incident-composite")
+      .body(just(compositeProduct), IncidentAggregate.class)
       .exchange()
       .expectStatus().isEqualTo(expectedStatus);
   }
 
   private void deleteAndVerifyProduct(int productId, HttpStatus expectedStatus) {
     client.delete()
-      .uri("/product-composite/" + productId)
+      .uri("/incident-composite/" + productId)
       .exchange()
       .expectStatus().isEqualTo(expectedStatus);
   }

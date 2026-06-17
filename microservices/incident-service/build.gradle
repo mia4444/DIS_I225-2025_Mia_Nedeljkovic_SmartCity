@@ -4,7 +4,7 @@ plugins {
     id 'java'
 }
 
-group = 'se.magnus.microservices.composite.product'
+group = 'se.magnus.microservices.composite.incident'
 version = '1.0.0-SNAPSHOT'
 sourceCompatibility = '17'
 ext {

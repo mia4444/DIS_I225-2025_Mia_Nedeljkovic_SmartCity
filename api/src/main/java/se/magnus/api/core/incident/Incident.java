@@ -1,19 +1,19 @@
-package se.magnus.api.core.product;
+package se.magnus.api.core.incident;
 
-public class Product {
+public class Incident {
   private int productId;
   private String name;
   private int weight;
   private String serviceAddress;
 
-  public Product() {
+  public Incident() {
     productId = 0;
     name = null;
     weight = 0;
     serviceAddress = null;
   }
 
-  public Product(int productId, String name, int weight, String serviceAddress) {
+  public Incident(int productId, String name, int weight, String serviceAddress) {
     this.productId = productId;
     this.name = name;
     this.weight = weight;

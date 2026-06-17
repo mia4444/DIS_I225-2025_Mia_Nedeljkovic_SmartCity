@@ -1,7 +1,7 @@
 server.port: 7003
 server.error.include-message: always
 
-spring.application.name: review
+spring.application.name: alert
 
 app.eureka-server: localhost
 
@@ -19,7 +19,7 @@ eureka:
 spring.jpa.hibernate.ddl-auto: update
 
 spring.datasource:
-  url: jdbc:mysql://localhost/review-db
+  url: jdbc:mysql://localhost/alert-db
   username: user
   password: pwd
 
@@ -73,7 +73,7 @@ server.port: 8080
 
 app.eureka-server: eureka
 
-spring.datasource.url: jdbc:mysql://mysql/review-db
+spring.datasource.url: jdbc:mysql://mysql/alert-db
 
 spring.rabbitmq.host: rabbitmq
 

@@ -1,7 +1,7 @@
 springdoc:
   swagger-ui.path: /openapi/swagger-ui.html
   api-docs.path: /openapi/v3/api-docs
-  packagesToScan: se.magnus.microservices.composite.product
+  packagesToScan: se.magnus.microservices.composite.incident
   pathsToMatch: /**
   cache.disabled: true
 
@@ -33,7 +33,7 @@ api:
   product-composite:
 
     get-composite-product:
-      description: Returns a composite view of the specified product id
+      description: Returns a composite view of the specified incident id
       notes: |
         # Normal response
         If the requested product id is found the method will return information regarding:
@@ -47,7 +47,7 @@ api:
         1. In no recommendations or reviews are found for a product, a partial response will be returned
 
     create-composite-product:
-      description: Creates a composite product
+      description: Creates a composite incident
       notes: |
         # Normal response
         The composite product information posted to the API will be split up and stored as separate product-info, recommendation and review entities.
@@ -57,7 +57,7 @@ api:
            an **422 - Unprocessable Entity** error with a "duplicate key" error message will be returned
 
     delete-composite-product:
-      description: Deletes a product composite
+      description: Deletes a incident composite
       notes: |
         # Normal response
         Entities for product information, recommendations and reviews related to the specified productId will be deleted.
@@ -68,7 +68,7 @@ api:
 server.port: 7000
 server.error.include-message: always
 
-spring.application.name: product-composite
+spring.application.name: incident-composite
 
 app.eureka-server: localhost
 

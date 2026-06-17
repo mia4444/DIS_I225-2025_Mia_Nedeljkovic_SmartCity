@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-import se.magnus.api.core.product.Product;
+import se.magnus.api.core.incident.Incident;
 import se.magnus.microservices.core.product.persistence.ProductEntity;
 import se.magnus.microservices.core.product.services.ProductMapper;
 
@@ -17,7 +17,7 @@ class MapperTests {
 
     assertNotNull(mapper);
 
-    Product api = new Product(1, "n", 1, "sa");
+    Incident api = new Incident(1, "n", 1, "sa");
 
     ProductEntity entity = mapper.apiToEntity(api);
 
@@ -26,7 +26,7 @@ class MapperTests {
     assertEquals(api.getName(), entity.getName());
     assertEquals(api.getWeight(), entity.getWeight());
 
-    Product api2 = mapper.entityToApi(entity);
+    Incident api2 = mapper.entityToApi(entity);
 
     assertEquals(api.getProductId(), api2.getProductId());
     assertEquals(api.getProductId(), api2.getProductId());

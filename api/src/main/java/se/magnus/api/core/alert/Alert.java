@@ -1,6 +1,6 @@
-package se.magnus.api.core.review;
+package se.magnus.api.core.alert;
 
-public class Review {
+public class Alert {
   private int productId;
   private int reviewId;
   private String author;
@@ -8,7 +8,7 @@ public class Review {
   private String content;
   private String serviceAddress;
 
-  public Review() {
+  public Alert() {
     productId = 0;
     reviewId = 0;
     author = null;
@@ -17,7 +17,7 @@ public class Review {
     serviceAddress = null;
   }
 
-  public Review(
+  public Alert(
     int productId,
     int reviewId,
     String author,

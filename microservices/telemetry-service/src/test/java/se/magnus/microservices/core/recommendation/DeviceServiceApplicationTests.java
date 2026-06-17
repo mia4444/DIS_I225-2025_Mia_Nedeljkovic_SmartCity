@@ -15,13 +15,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import se.magnus.api.core.recommendation.Recommendation;
+import se.magnus.api.core.device.Device;
 import se.magnus.api.event.Event;
 import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.microservices.core.recommendation.persistence.RecommendationRepository;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, properties = {"eureka.client.enabled=false"})
-class RecommendationServiceApplicationTests extends MongoDbTestBase {
+class DeviceServiceApplicationTests extends MongoDbTestBase {
 
   @Autowired
   private WebTestClient client;
@@ -31,7 +31,7 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
 
   @Autowired
   @Qualifier("messageProcessor")
-  private Consumer<Event<Integer, Recommendation>> messageProcessor;
+  private Consumer<Event<Integer, Device>> messageProcessor;
 
   @BeforeEach
   void setupDb() {
@@ -93,7 +93,7 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
   void getRecommendationsMissingParameter() {
 
     getAndVerifyRecommendationsByProductId("", BAD_REQUEST)
-      .jsonPath("$.path").isEqualTo("/recommendation")
+      .jsonPath("$.path").isEqualTo("/device")
       .jsonPath("$.message").isEqualTo("Required query parameter 'productId' is not present.");
   }
 
@@ -101,7 +101,7 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
   void getRecommendationsInvalidParameter() {
 
     getAndVerifyRecommendationsByProductId("?productId=no-integer", BAD_REQUEST)
-      .jsonPath("$.path").isEqualTo("/recommendation")
+      .jsonPath("$.path").isEqualTo("/device")
       .jsonPath("$.message").isEqualTo("Type mismatch.");
   }
 
@@ -118,7 +118,7 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
     int productIdInvalid = -1;
 
     getAndVerifyRecommendationsByProductId("?productId=" + productIdInvalid, UNPROCESSABLE_ENTITY)
-      .jsonPath("$.path").isEqualTo("/recommendation")
+      .jsonPath("$.path").isEqualTo("/device")
       .jsonPath("$.message").isEqualTo("Invalid productId: " + productIdInvalid);
   }
 
@@ -128,7 +128,7 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
 
   private WebTestClient.BodyContentSpec getAndVerifyRecommendationsByProductId(String productIdQuery, HttpStatus expectedStatus) {
     return client.get()
-      .uri("/recommendation" + productIdQuery)
+      .uri("/device" + productIdQuery)
       .accept(APPLICATION_JSON)
       .exchange()
       .expectStatus().isEqualTo(expectedStatus)
@@ -137,13 +137,13 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
   }
 
   private void sendCreateRecommendationEvent(int productId, int recommendationId) {
-    Recommendation recommendation = new Recommendation(productId, recommendationId, "Author " + recommendationId, recommendationId, "Content " + recommendationId, "SA");
-    Event<Integer, Recommendation> event = new Event(CREATE, productId, recommendation);
+    Device device = new Device(productId, recommendationId, "Author " + recommendationId, recommendationId, "Content " + recommendationId, "SA");
+    Event<Integer, Device> event = new Event(CREATE, productId, device);
     messageProcessor.accept(event);
   }
 
   private void sendDeleteRecommendationEvent(int productId) {
-    Event<Integer, Recommendation> event = new Event(DELETE, productId, null);
+    Event<Integer, Device> event = new Event(DELETE, productId, null);
     messageProcessor.accept(event);
   }
 }
