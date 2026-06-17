@@ -1,4 +1,4 @@
-package se.magnus.microservices.core.recommendation;
+package se.magnus.microservices.core.telemetry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,16 +16,16 @@ import org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexRes
 import org.springframework.data.mongodb.core.index.ReactiveIndexOperations;
 import org.springframework.data.mongodb.core.mapping.MongoPersistentEntity;
 import org.springframework.data.mongodb.core.mapping.MongoPersistentProperty;
-import se.magnus.microservices.core.recommendation.persistence.RecommendationEntity;
+import se.magnus.microservices.core.telemetry.persistence.TelemetryEntity;
 
 @SpringBootApplication
 @ComponentScan("se.magnus")
-public class RecommendationServiceApplication {
+public class TelemetryServiceApplication {
 
-  private static final Logger LOG = LoggerFactory.getLogger(RecommendationServiceApplication.class);
+  private static final Logger LOG = LoggerFactory.getLogger(TelemetryServiceApplication.class);
 
   public static void main(String[] args) {
-    ConfigurableApplicationContext ctx = SpringApplication.run(RecommendationServiceApplication.class, args);
+    ConfigurableApplicationContext ctx = SpringApplication.run(TelemetryServiceApplication.class, args);
 
     String mongodDbHost = ctx.getEnvironment().getProperty("spring.data.mongodb.host");
     String mongodDbPort = ctx.getEnvironment().getProperty("spring.data.mongodb.port");
@@ -41,7 +41,7 @@ public class RecommendationServiceApplication {
     MappingContext<? extends MongoPersistentEntity<?>, MongoPersistentProperty> mappingContext = mongoTemplate.getConverter().getMappingContext();
     IndexResolver resolver = new MongoPersistentEntityIndexResolver(mappingContext);
 
-    ReactiveIndexOperations indexOps = mongoTemplate.indexOps(RecommendationEntity.class);
-    resolver.resolveIndexFor(RecommendationEntity.class).forEach(e -> indexOps.ensureIndex(e).block());
+    ReactiveIndexOperations indexOps = mongoTemplate.indexOps(TelemetryEntity.class);
+    resolver.resolveIndexFor(TelemetryEntity.class).forEach(e -> indexOps.ensureIndex(e).block());
   }
 }

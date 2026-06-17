@@ -7,12 +7,11 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import se.magnus.api.core.device.Device;
-import se.magnus.microservices.core.recommendation.persistence.RecommendationEntity;
-import se.magnus.microservices.core.recommendation.services.RecommendationMapper;
+import se.magnus.microservices.core.recommendation.services.TelemetryMapper;
 
 class MapperTests {
 
-  private RecommendationMapper mapper = Mappers.getMapper(RecommendationMapper.class);
+  private TelemetryMapper mapper = Mappers.getMapper(TelemetryMapper.class);
 
   @Test
   void mapperTests() {
@@ -21,7 +20,7 @@ class MapperTests {
 
     Device api = new Device(1, 2, "a", 4, "C", "adr");
 
-    RecommendationEntity entity = mapper.apiToEntity(api);
+    se.magnus.microservices.core.recommendation.persistence.TelemetryEntity entity = mapper.apiToEntity(api);
 
     assertEquals(api.getProductId(), entity.getProductId());
     assertEquals(api.getRecommendationId(), entity.getRecommendationId());
@@ -47,10 +46,10 @@ class MapperTests {
     Device api = new Device(1, 2, "a", 4, "C", "adr");
     List<Device> apiList = Collections.singletonList(api);
 
-    List<RecommendationEntity> entityList = mapper.apiListToEntityList(apiList);
+    List<se.magnus.microservices.core.recommendation.persistence.TelemetryEntity> entityList = mapper.apiListToEntityList(apiList);
     assertEquals(apiList.size(), entityList.size());
 
-    RecommendationEntity entity = entityList.get(0);
+    se.magnus.microservices.core.recommendation.persistence.TelemetryEntity entity = entityList.get(0);
 
     assertEquals(api.getProductId(), entity.getProductId());
     assertEquals(api.getRecommendationId(), entity.getRecommendationId());

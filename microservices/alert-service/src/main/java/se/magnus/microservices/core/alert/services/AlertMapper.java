@@ -1,27 +1,27 @@
-package se.magnus.microservices.core.review.services;
+package se.magnus.microservices.core.alert.services;
 
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import se.magnus.api.core.alert.Alert;
-import se.magnus.microservices.core.review.persistence.ReviewEntity;
+import se.magnus.microservices.core.alert.persistence.AlertEntity;
 
 @Mapper(componentModel = "spring")
-public interface ReviewMapper {
+public interface AlertMapper {
 
   @Mappings({
     @Mapping(target = "serviceAddress", ignore = true)
   })
-  Alert entityToApi(ReviewEntity entity);
+  Alert entityToApi(AlertEntity entity);
 
   @Mappings({
     @Mapping(target = "id", ignore = true),
     @Mapping(target = "version", ignore = true)
   })
-  ReviewEntity apiToEntity(Alert api);
+  AlertEntity apiToEntity(Alert api);
 
-  List<Alert> entityListToApiList(List<ReviewEntity> entity);
+  List<Alert> entityListToApiList(List<AlertEntity> entity);
 
-  List<ReviewEntity> apiListToEntityList(List<Alert> api);
+  List<AlertEntity> apiListToEntityList(List<Alert> api);
 }

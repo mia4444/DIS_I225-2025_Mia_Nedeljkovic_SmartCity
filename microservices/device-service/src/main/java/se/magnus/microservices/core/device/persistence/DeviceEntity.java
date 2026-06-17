@@ -1,5 +1,4 @@
-package se.magnus.microservices.core.product.persistence;
-
+package se.magnus.microservices.core.device.persistence;
 import static java.lang.String.format;
 
 import org.springframework.data.annotation.Id;
@@ -8,7 +7,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "products")
-public class ProductEntity {
+public class DeviceEntity {
 
   @Id private String id;
 
@@ -20,9 +19,9 @@ public class ProductEntity {
   private String name;
   private int weight;
 
-  public ProductEntity() {}
+  public DeviceEntity() {}
 
-  public ProductEntity(int productId, String name, int weight) {
+  public DeviceEntity(int productId, String name, int weight) {
     this.productId = productId;
     this.name = name;
     this.weight = weight;

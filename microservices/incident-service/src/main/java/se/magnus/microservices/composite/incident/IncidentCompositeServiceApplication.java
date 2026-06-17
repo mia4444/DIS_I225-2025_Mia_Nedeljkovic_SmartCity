@@ -20,9 +20,9 @@ import reactor.core.scheduler.Schedulers;
 
 @SpringBootApplication
 @ComponentScan("se.magnus")
-public class ProductCompositeServiceApplication {
+public class IncidentCompositeServiceApplication {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ProductCompositeServiceApplication.class);
+  private static final Logger LOG = LoggerFactory.getLogger(IncidentCompositeServiceApplication.class);
 
   @Value("${api.common.version}")         String apiVersion;
   @Value("${api.common.title}")           String apiTitle;
@@ -64,7 +64,7 @@ public class ProductCompositeServiceApplication {
   private final Integer taskQueueSize;
 
   @Autowired
-  public ProductCompositeServiceApplication(
+  public IncidentCompositeServiceApplication(
     @Value("${app.threadPoolSize:10}") Integer threadPoolSize,
     @Value("${app.taskQueueSize:100}") Integer taskQueueSize
   ) {
@@ -85,7 +85,7 @@ public class ProductCompositeServiceApplication {
   }
 
   public static void main(String[] args) {
-    SpringApplication.run(ProductCompositeServiceApplication.class, args);
+    SpringApplication.run(IncidentCompositeServiceApplication.class, args);
   }
 
 }

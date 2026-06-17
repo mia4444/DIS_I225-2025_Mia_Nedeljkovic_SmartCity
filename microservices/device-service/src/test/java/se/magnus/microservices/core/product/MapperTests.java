@@ -5,12 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import se.magnus.api.core.incident.Incident;
-import se.magnus.microservices.core.product.persistence.ProductEntity;
-import se.magnus.microservices.core.product.services.ProductMapper;
+import se.magnus.microservices.core.product.services.DeviceMapper;
 
 class MapperTests {
 
-  private ProductMapper mapper = Mappers.getMapper(ProductMapper.class);
+  private DeviceMapper mapper = Mappers.getMapper(DeviceMapper.class);
 
   @Test
   void mapperTests() {
@@ -19,7 +18,7 @@ class MapperTests {
 
     Incident api = new Incident(1, "n", 1, "sa");
 
-    ProductEntity entity = mapper.apiToEntity(api);
+    se.magnus.microservices.core.product.persistence.DeviceEntity entity = mapper.apiToEntity(api);
 
     assertEquals(api.getProductId(), entity.getProductId());
     assertEquals(api.getProductId(), entity.getProductId());

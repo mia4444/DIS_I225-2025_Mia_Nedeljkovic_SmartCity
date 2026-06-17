@@ -7,13 +7,12 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import se.magnus.api.core.alert.Alert;
-import se.magnus.microservices.core.review.persistence.ReviewEntity;
-import se.magnus.microservices.core.review.services.ReviewMapper;
+import se.magnus.microservices.core.review.services.AlertMapper;
 
 
 class MapperTests {
 
-  private ReviewMapper mapper = Mappers.getMapper(ReviewMapper.class);
+  private AlertMapper mapper = Mappers.getMapper(AlertMapper.class);
 
   @Test
   void mapperTests() {
@@ -22,7 +21,7 @@ class MapperTests {
 
     Alert api = new Alert(1, 2, "a", "s", "C", "adr");
 
-    ReviewEntity entity = mapper.apiToEntity(api);
+    se.magnus.microservices.core.review.persistence.AlertEntity entity = mapper.apiToEntity(api);
 
     assertEquals(api.getProductId(), entity.getProductId());
     assertEquals(api.getReviewId(), entity.getReviewId());
@@ -48,10 +47,10 @@ class MapperTests {
     Alert api = new Alert(1, 2, "a", "s", "C", "adr");
     List<Alert> apiList = Collections.singletonList(api);
 
-    List<ReviewEntity> entityList = mapper.apiListToEntityList(apiList);
+    List<se.magnus.microservices.core.review.persistence.AlertEntity> entityList = mapper.apiListToEntityList(apiList);
     assertEquals(apiList.size(), entityList.size());
 
-    ReviewEntity entity = entityList.get(0);
+    se.magnus.microservices.core.review.persistence.AlertEntity entity = entityList.get(0);
 
     assertEquals(api.getProductId(), entity.getProductId());
     assertEquals(api.getReviewId(), entity.getReviewId());

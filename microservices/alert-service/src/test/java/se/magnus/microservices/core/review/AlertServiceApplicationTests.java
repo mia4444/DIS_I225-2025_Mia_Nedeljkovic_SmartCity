@@ -18,7 +18,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import se.magnus.api.core.alert.Alert;
 import se.magnus.api.event.Event;
 import se.magnus.api.exceptions.InvalidInputException;
-import se.magnus.microservices.core.review.persistence.ReviewRepository;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, properties = {
   "spring.cloud.stream.defaultBinder=rabbit",
@@ -30,7 +29,7 @@ class AlertServiceApplicationTests extends MySqlTestBase {
   private WebTestClient client;
 
   @Autowired
-  private ReviewRepository repository;
+  private se.magnus.microservices.core.review.persistence.AlertRepository repository;
 
   @Autowired
   @Qualifier("messageProcessor")

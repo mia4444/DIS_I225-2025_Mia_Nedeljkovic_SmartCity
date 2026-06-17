@@ -14,15 +14,15 @@ import reactor.core.scheduler.Schedulers;
 
 @SpringBootApplication
 @ComponentScan("se.magnus")
-public class ReviewServiceApplication {
+public class AlertServiceApplication {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ReviewServiceApplication.class);
+  private static final Logger LOG = LoggerFactory.getLogger(AlertServiceApplication.class);
 
   private final Integer threadPoolSize;
   private final Integer taskQueueSize;
 
   @Autowired
-  public ReviewServiceApplication(
+  public AlertServiceApplication(
     @Value("${app.threadPoolSize:10}") Integer threadPoolSize,
     @Value("${app.taskQueueSize:100}") Integer taskQueueSize
   ) {
@@ -37,7 +37,7 @@ public class ReviewServiceApplication {
   }
 
   public static void main(String[] args) {
-    ConfigurableApplicationContext ctx = SpringApplication.run(ReviewServiceApplication.class, args);
+    ConfigurableApplicationContext ctx = SpringApplication.run(AlertServiceApplication.class, args);
 
     String mysqlUri = ctx.getEnvironment().getProperty("spring.datasource.url");
     LOG.info("Connected to MySQL: " + mysqlUri);

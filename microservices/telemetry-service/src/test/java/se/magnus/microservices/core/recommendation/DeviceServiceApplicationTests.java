@@ -18,7 +18,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import se.magnus.api.core.device.Device;
 import se.magnus.api.event.Event;
 import se.magnus.api.exceptions.InvalidInputException;
-import se.magnus.microservices.core.recommendation.persistence.RecommendationRepository;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, properties = {"eureka.client.enabled=false"})
 class DeviceServiceApplicationTests extends MongoDbTestBase {
@@ -27,7 +26,7 @@ class DeviceServiceApplicationTests extends MongoDbTestBase {
   private WebTestClient client;
 
   @Autowired
-  private RecommendationRepository repository;
+  private se.magnus.microservices.core.recommendation.persistence.TelemetryRepository repository;
 
   @Autowired
   @Qualifier("messageProcessor")

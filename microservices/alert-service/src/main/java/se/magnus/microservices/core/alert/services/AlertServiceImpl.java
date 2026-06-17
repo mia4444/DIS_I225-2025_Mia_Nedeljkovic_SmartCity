@@ -1,4 +1,4 @@
-package se.magnus.microservices.core.review.services;
+package se.magnus.microservices.core.alert.services;
 
 import static java.util.logging.Level.FINE;
 
@@ -15,25 +15,25 @@ import reactor.core.scheduler.Scheduler;
 import se.magnus.api.core.alert.Alert;
 import se.magnus.api.core.alert.AlertService;
 import se.magnus.api.exceptions.InvalidInputException;
-import se.magnus.microservices.core.review.persistence.ReviewEntity;
-import se.magnus.microservices.core.review.persistence.ReviewRepository;
 import se.magnus.util.http.ServiceUtil;
+import se.magnus.microservices.core.alert.persistence.AlertRepository;
+import se.magnus.microservices.core.alert.persistence.AlertEntity;
 
 @RestController
 public class AlertServiceImpl implements AlertService {
 
   private static final Logger LOG = LoggerFactory.getLogger(AlertServiceImpl.class);
 
-  private final ReviewRepository repository;
+  private final AlertRepository repository;
 
-  private final ReviewMapper mapper;
+  private final AlertMapper mapper;
 
   private final ServiceUtil serviceUtil;
 
   private final Scheduler jdbcScheduler;
 
   @Autowired
-  public AlertServiceImpl(@Qualifier("jdbcScheduler") Scheduler jdbcScheduler, ReviewRepository repository, ReviewMapper mapper, ServiceUtil serviceUtil) {
+  public AlertServiceImpl(@Qualifier("jdbcScheduler") Scheduler jdbcScheduler, AlertRepository repository, AlertMapper mapper, ServiceUtil serviceUtil) {
     this.jdbcScheduler = jdbcScheduler;
     this.repository = repository;
     this.mapper = mapper;
@@ -52,8 +52,8 @@ public class AlertServiceImpl implements AlertService {
 
   private Alert internalCreateReview(Alert body) {
     try {
-      ReviewEntity entity = mapper.apiToEntity(body);
-      ReviewEntity newEntity = repository.save(entity);
+      AlertEntity entity = mapper.apiToEntity(body);
+      AlertEntity newEntity = repository.save(entity);
 
       LOG.debug("createReview: created a alert entity: {}/{}", body.getProductId(), body.getReviewId());
       return mapper.entityToApi(newEntity);
@@ -80,7 +80,7 @@ public class AlertServiceImpl implements AlertService {
 
   private List<Alert> internalGetReviews(int productId) {
 
-    List<ReviewEntity> entityList = repository.findByProductId(productId);
+    List<AlertEntity> entityList = repository.findByProductId(productId);
     List<Alert> list = mapper.entityListToApiList(entityList);
     list.forEach(e -> e.setServiceAddress(serviceUtil.getServiceAddress()));
 

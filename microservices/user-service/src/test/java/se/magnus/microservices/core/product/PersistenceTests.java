@@ -7,22 +7,20 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import reactor.test.StepVerifier;
-import se.magnus.microservices.core.product.persistence.ProductEntity;
-import se.magnus.microservices.core.product.persistence.ProductRepository;
 
 @DataMongoTest
 class PersistenceTests extends MongoDbTestBase {
 
   @Autowired
-  private ProductRepository repository;
+  private se.magnus.microservices.core.product.persistence.UserRepository repository;
 
-  private ProductEntity savedEntity;
+  private se.magnus.microservices.core.product.persistence.UserEntity savedEntity;
 
   @BeforeEach
   void setupDb() {
     StepVerifier.create(repository.deleteAll()).verifyComplete();
 
-    ProductEntity entity = new ProductEntity(1, "n", 1);
+    se.magnus.microservices.core.product.persistence.UserEntity entity = new se.magnus.microservices.core.product.persistence.UserEntity(1, "n", 1);
     StepVerifier.create(repository.save(entity))
       .expectNextMatches(createdEntity -> {
         savedEntity = createdEntity;
@@ -34,7 +32,7 @@ class PersistenceTests extends MongoDbTestBase {
 
   @Test
   void create() {
-    ProductEntity newEntity = new ProductEntity(2, "n", 2);
+    se.magnus.microservices.core.product.persistence.UserEntity newEntity = new se.magnus.microservices.core.product.persistence.UserEntity(2, "n", 2);
 
     StepVerifier.create(repository.save(newEntity))
       .expectNextMatches(createdEntity -> newEntity.getProductId() == createdEntity.getProductId())
@@ -77,7 +75,7 @@ class PersistenceTests extends MongoDbTestBase {
 
   @Test
   void duplicateError() {
-    ProductEntity entity = new ProductEntity(savedEntity.getProductId(), "n", 1);
+    se.magnus.microservices.core.product.persistence.UserEntity entity = new se.magnus.microservices.core.product.persistence.UserEntity(savedEntity.getProductId(), "n", 1);
     StepVerifier.create(repository.save(entity)).expectError(DuplicateKeyException.class).verify();
   }
 
@@ -85,8 +83,8 @@ class PersistenceTests extends MongoDbTestBase {
   void optimisticLockError() {
 
     // Store the saved entity in two separate entity objects
-    ProductEntity entity1 = repository.findById(savedEntity.getId()).block();
-    ProductEntity entity2 = repository.findById(savedEntity.getId()).block();
+    se.magnus.microservices.core.product.persistence.UserEntity entity1 = repository.findById(savedEntity.getId()).block();
+    se.magnus.microservices.core.product.persistence.UserEntity entity2 = repository.findById(savedEntity.getId()).block();
 
     // Update the entity using the first entity object
     entity1.setName("n1");
@@ -104,7 +102,7 @@ class PersistenceTests extends MongoDbTestBase {
       .verifyComplete();
   }
 
-  private boolean areProductEqual(ProductEntity expectedEntity, ProductEntity actualEntity) {
+  private boolean areProductEqual(se.magnus.microservices.core.product.persistence.UserEntity expectedEntity, se.magnus.microservices.core.product.persistence.UserEntity actualEntity) {
     return
       (expectedEntity.getId().equals(actualEntity.getId()))
       && (expectedEntity.getVersion() == actualEntity.getVersion())

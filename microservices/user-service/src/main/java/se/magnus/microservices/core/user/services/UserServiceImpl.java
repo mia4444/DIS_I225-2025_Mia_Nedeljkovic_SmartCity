@@ -1,4 +1,4 @@
-package se.magnus.microservices.core.product.services;
+package se.magnus.microservices.core.user.services;
 
 import static java.util.logging.Level.FINE;
 
@@ -12,23 +12,23 @@ import se.magnus.api.core.incident.Incident;
 import se.magnus.api.core.incident.IncidentService;
 import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.api.exceptions.NotFoundException;
-import se.magnus.microservices.core.product.persistence.ProductEntity;
-import se.magnus.microservices.core.product.persistence.ProductRepository;
 import se.magnus.util.http.ServiceUtil;
+import se.magnus.microservices.core.user.persistence.UserEntity;
+import se.magnus.microservices.core.user.persistence.UserRepository;
 
 @RestController
-public class IncidentServiceImpl implements IncidentService {
+public class UserServiceImpl implements IncidentService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(IncidentServiceImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
   private final ServiceUtil serviceUtil;
 
-  private final ProductRepository repository;
+  private final UserRepository repository;
 
-  private final ProductMapper mapper;
+  private final UserMapper mapper;
 
   @Autowired
-  public IncidentServiceImpl(ProductRepository repository, ProductMapper mapper, ServiceUtil serviceUtil) {
+  public UserServiceImpl(UserRepository repository, UserMapper mapper, ServiceUtil serviceUtil) {
     this.repository = repository;
     this.mapper = mapper;
     this.serviceUtil = serviceUtil;
@@ -41,7 +41,7 @@ public class IncidentServiceImpl implements IncidentService {
       throw new InvalidInputException("Invalid productId: " + body.getProductId());
     }
 
-    ProductEntity entity = mapper.apiToEntity(body);
+    UserEntity entity = mapper.apiToEntity(body);
     Mono<Incident> newEntity = repository.save(entity)
       .log(LOG.getName(), FINE)
       .onErrorMap(

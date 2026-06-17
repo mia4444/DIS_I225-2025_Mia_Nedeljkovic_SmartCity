@@ -11,22 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.OptimisticLockingFailureException;
-import se.magnus.microservices.core.recommendation.persistence.RecommendationEntity;
-import se.magnus.microservices.core.recommendation.persistence.RecommendationRepository;
 
 @DataMongoTest
 class PersistenceTests extends MongoDbTestBase {
 
   @Autowired
-  private RecommendationRepository repository;
+  private se.magnus.microservices.core.recommendation.persistence.TelemetryRepository repository;
 
-  private RecommendationEntity savedEntity;
+  private se.magnus.microservices.core.recommendation.persistence.TelemetryEntity savedEntity;
 
   @BeforeEach
   void setupDb() {
     repository.deleteAll().block();
 
-    RecommendationEntity entity = new RecommendationEntity(1, 2, "a", 3, "c");
+    se.magnus.microservices.core.recommendation.persistence.TelemetryEntity entity = new se.magnus.microservices.core.recommendation.persistence.TelemetryEntity(1, 2, "a", 3, "c");
     savedEntity = repository.save(entity).block();
 
     assertEqualsRecommendation(entity, savedEntity);
@@ -36,10 +34,10 @@ class PersistenceTests extends MongoDbTestBase {
   @Test
   void create() {
 
-    RecommendationEntity newEntity = new RecommendationEntity(1, 3, "a", 3, "c");
+    se.magnus.microservices.core.recommendation.persistence.TelemetryEntity newEntity = new se.magnus.microservices.core.recommendation.persistence.TelemetryEntity(1, 3, "a", 3, "c");
     repository.save(newEntity).block();
 
-    RecommendationEntity foundEntity = repository.findById(newEntity.getId()).block();
+    se.magnus.microservices.core.recommendation.persistence.TelemetryEntity foundEntity = repository.findById(newEntity.getId()).block();
     assertEqualsRecommendation(newEntity, foundEntity);
 
     assertEquals(2, (long)repository.count().block());
@@ -50,7 +48,7 @@ class PersistenceTests extends MongoDbTestBase {
     savedEntity.setAuthor("a2");
     repository.save(savedEntity).block();
 
-    RecommendationEntity foundEntity = repository.findById(savedEntity.getId()).block();
+    se.magnus.microservices.core.recommendation.persistence.TelemetryEntity foundEntity = repository.findById(savedEntity.getId()).block();
     assertEquals(1, (long)foundEntity.getVersion());
     assertEquals("a2", foundEntity.getAuthor());
   }
@@ -63,7 +61,7 @@ class PersistenceTests extends MongoDbTestBase {
 
   @Test
   void getByProductId() {
-    List<RecommendationEntity> entityList = repository.findByProductId(savedEntity.getProductId()).collectList().block();
+    List<se.magnus.microservices.core.recommendation.persistence.TelemetryEntity> entityList = repository.findByProductId(savedEntity.getProductId()).collectList().block();
 
     assertThat(entityList, hasSize(1));
     assertEqualsRecommendation(savedEntity, entityList.get(0));
@@ -72,7 +70,7 @@ class PersistenceTests extends MongoDbTestBase {
   @Test
   void duplicateError() {
     assertThrows(DuplicateKeyException.class, () -> {
-      RecommendationEntity entity = new RecommendationEntity(1, 2, "a", 3, "c");
+      se.magnus.microservices.core.recommendation.persistence.TelemetryEntity entity = new se.magnus.microservices.core.recommendation.persistence.TelemetryEntity(1, 2, "a", 3, "c");
       repository.save(entity).block();
     });
   }
@@ -81,8 +79,8 @@ class PersistenceTests extends MongoDbTestBase {
   void optimisticLockError() {
 
     // Store the saved entity in two separate entity objects
-    RecommendationEntity entity1 = repository.findById(savedEntity.getId()).block();
-    RecommendationEntity entity2 = repository.findById(savedEntity.getId()).block();
+    se.magnus.microservices.core.recommendation.persistence.TelemetryEntity entity1 = repository.findById(savedEntity.getId()).block();
+    se.magnus.microservices.core.recommendation.persistence.TelemetryEntity entity2 = repository.findById(savedEntity.getId()).block();
 
     // Update the entity using the first entity object
     entity1.setAuthor("a1");
@@ -96,12 +94,12 @@ class PersistenceTests extends MongoDbTestBase {
     });
 
     // Get the updated entity from the database and verify its new sate
-    RecommendationEntity updatedEntity = repository.findById(savedEntity.getId()).block();
+    se.magnus.microservices.core.recommendation.persistence.TelemetryEntity updatedEntity = repository.findById(savedEntity.getId()).block();
     assertEquals(1, (int)updatedEntity.getVersion());
     assertEquals("a1", updatedEntity.getAuthor());
   }
 
-  private void assertEqualsRecommendation(RecommendationEntity expectedEntity, RecommendationEntity actualEntity) {
+  private void assertEqualsRecommendation(se.magnus.microservices.core.recommendation.persistence.TelemetryEntity expectedEntity, se.magnus.microservices.core.recommendation.persistence.TelemetryEntity actualEntity) {
     assertEquals(expectedEntity.getId(),               actualEntity.getId());
     assertEquals(expectedEntity.getVersion(),          actualEntity.getVersion());
     assertEquals(expectedEntity.getProductId(),        actualEntity.getProductId());

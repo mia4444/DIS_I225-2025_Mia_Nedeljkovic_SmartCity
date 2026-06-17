@@ -14,8 +14,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.transaction.annotation.Transactional;
-import se.magnus.microservices.core.review.persistence.ReviewEntity;
-import se.magnus.microservices.core.review.persistence.ReviewRepository;
 
 @DataJpaTest
 @Transactional(propagation = NOT_SUPPORTED)
@@ -23,15 +21,15 @@ import se.magnus.microservices.core.review.persistence.ReviewRepository;
 class PersistenceTests extends MySqlTestBase {
 
   @Autowired
-  private ReviewRepository repository;
+  private se.magnus.microservices.core.review.persistence.AlertRepository repository;
 
-  private ReviewEntity savedEntity;
+  private se.magnus.microservices.core.review.persistence.AlertEntity savedEntity;
 
   @BeforeEach
   void setupDb() {
     repository.deleteAll();
 
-    ReviewEntity entity = new ReviewEntity(1, 2, "a", "s", "c");
+    se.magnus.microservices.core.review.persistence.AlertEntity entity = new se.magnus.microservices.core.review.persistence.AlertEntity(1, 2, "a", "s", "c");
     savedEntity = repository.save(entity);
 
     assertEqualsReview(entity, savedEntity);
@@ -41,10 +39,10 @@ class PersistenceTests extends MySqlTestBase {
   @Test
   void create() {
 
-    ReviewEntity newEntity = new ReviewEntity(1, 3, "a", "s", "c");
+    se.magnus.microservices.core.review.persistence.AlertEntity newEntity = new se.magnus.microservices.core.review.persistence.AlertEntity(1, 3, "a", "s", "c");
     repository.save(newEntity);
 
-    ReviewEntity foundEntity = repository.findById(newEntity.getId()).get();
+    se.magnus.microservices.core.review.persistence.AlertEntity foundEntity = repository.findById(newEntity.getId()).get();
     assertEqualsReview(newEntity, foundEntity);
 
     assertEquals(2, repository.count());
@@ -55,7 +53,7 @@ class PersistenceTests extends MySqlTestBase {
     savedEntity.setAuthor("a2");
     repository.save(savedEntity);
 
-    ReviewEntity foundEntity = repository.findById(savedEntity.getId()).get();
+    se.magnus.microservices.core.review.persistence.AlertEntity foundEntity = repository.findById(savedEntity.getId()).get();
     assertEquals(1, (long)foundEntity.getVersion());
     assertEquals("a2", foundEntity.getAuthor());
   }
@@ -68,7 +66,7 @@ class PersistenceTests extends MySqlTestBase {
 
   @Test
   void getByProductId() {
-    List<ReviewEntity> entityList = repository.findByProductId(savedEntity.getProductId());
+    List<se.magnus.microservices.core.review.persistence.AlertEntity> entityList = repository.findByProductId(savedEntity.getProductId());
 
     assertThat(entityList, hasSize(1));
     assertEqualsReview(savedEntity, entityList.get(0));
@@ -77,7 +75,7 @@ class PersistenceTests extends MySqlTestBase {
   @Test
   void duplicateError() {
     assertThrows(DataIntegrityViolationException.class, () -> {
-      ReviewEntity entity = new ReviewEntity(1, 2, "a", "s", "c");
+      se.magnus.microservices.core.review.persistence.AlertEntity entity = new se.magnus.microservices.core.review.persistence.AlertEntity(1, 2, "a", "s", "c");
       repository.save(entity);
     });
 
@@ -87,8 +85,8 @@ class PersistenceTests extends MySqlTestBase {
   void optimisticLockError() {
 
     // Store the saved entity in two separate entity objects
-    ReviewEntity entity1 = repository.findById(savedEntity.getId()).get();
-    ReviewEntity entity2 = repository.findById(savedEntity.getId()).get();
+    se.magnus.microservices.core.review.persistence.AlertEntity entity1 = repository.findById(savedEntity.getId()).get();
+    se.magnus.microservices.core.review.persistence.AlertEntity entity2 = repository.findById(savedEntity.getId()).get();
 
     // Update the entity using the first entity object
     entity1.setAuthor("a1");
@@ -102,12 +100,12 @@ class PersistenceTests extends MySqlTestBase {
     });
 
     // Get the updated entity from the database and verify its new sate
-    ReviewEntity updatedEntity = repository.findById(savedEntity.getId()).get();
+    se.magnus.microservices.core.review.persistence.AlertEntity updatedEntity = repository.findById(savedEntity.getId()).get();
     assertEquals(1, (int)updatedEntity.getVersion());
     assertEquals("a1", updatedEntity.getAuthor());
   }
 
-  private void assertEqualsReview(ReviewEntity expectedEntity, ReviewEntity actualEntity) {
+  private void assertEqualsReview(se.magnus.microservices.core.review.persistence.AlertEntity expectedEntity, se.magnus.microservices.core.review.persistence.AlertEntity actualEntity) {
     assertEquals(expectedEntity.getId(),        actualEntity.getId());
     assertEquals(expectedEntity.getVersion(),   actualEntity.getVersion());
     assertEquals(expectedEntity.getProductId(), actualEntity.getProductId());

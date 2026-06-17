@@ -18,7 +18,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import se.magnus.api.core.incident.Incident;
 import se.magnus.api.event.Event;
 import se.magnus.api.exceptions.InvalidInputException;
-import se.magnus.microservices.core.product.persistence.ProductRepository;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, properties = {"eureka.client.enabled=false"})
 class IncidentServiceApplicationTests extends MongoDbTestBase {
@@ -27,7 +26,7 @@ class IncidentServiceApplicationTests extends MongoDbTestBase {
   private WebTestClient client;
 
   @Autowired
-  private ProductRepository repository;
+  private se.magnus.microservices.core.product.persistence.UserRepository repository;
 
   @Autowired
   @Qualifier("messageProcessor")

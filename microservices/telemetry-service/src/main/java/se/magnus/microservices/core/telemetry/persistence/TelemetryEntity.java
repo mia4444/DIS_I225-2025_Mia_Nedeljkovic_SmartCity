@@ -1,4 +1,4 @@
-package se.magnus.microservices.core.recommendation.persistence;
+package se.magnus.microservices.core.telemetry.persistence;
 
 import static java.lang.String.format;
 
@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "recommendations")
 @CompoundIndex(name = "prod-rec-id", unique = true, def = "{'productId': 1, 'recommendationId' : 1}")
-public class RecommendationEntity {
+public class TelemetryEntity {
 
   @Id
   private String id;
@@ -23,10 +23,10 @@ public class RecommendationEntity {
   private int rating;
   private String content;
 
-  public RecommendationEntity() {
+  public TelemetryEntity() {
   }
 
-  public RecommendationEntity(int productId, int recommendationId, String author, int rating, String content) {
+  public TelemetryEntity(int productId, int recommendationId, String author, int rating, String content) {
     this.productId = productId;
     this.recommendationId = recommendationId;
     this.author = author;

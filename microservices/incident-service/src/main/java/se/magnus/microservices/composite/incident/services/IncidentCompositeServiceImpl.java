@@ -1,4 +1,4 @@
-package se.magnus.microservices.composite.product.services;
+package se.magnus.microservices.composite.incident.services;
 
 import static java.util.logging.Level.FINE;
 
@@ -19,13 +19,12 @@ import se.magnus.util.http.ServiceUtil;
 @RestController
 public class IncidentCompositeServiceImpl implements IncidentCompositeService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(se.magnus.microservices.composite.product.services.IncidentCompositeServiceImpl.class);
-
+  private static final Logger LOG = LoggerFactory.getLogger(IncidentCompositeServiceImpl.class);
   private final ServiceUtil serviceUtil;
-  private final ProductCompositeIntegration integration;
+  private final IncidentCompositeIntegration integration;
 
   @Autowired
-  public IncidentCompositeServiceImpl(ServiceUtil serviceUtil, ProductCompositeIntegration integration) {
+  public IncidentCompositeServiceImpl(ServiceUtil serviceUtil, IncidentCompositeIntegration integration) {
     this.serviceUtil = serviceUtil;
     this.integration = integration;
   }

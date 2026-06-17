@@ -1,0 +1,361 @@
+Initialized native services in: C:\Users\Korisnik\.gradle\native
+Initialized jansi services in: C:\Users\Korisnik\.gradle\native
+Received JVM installation metadata from 'C:\Users\Korisnik\AppData\Local\Programs\Eclipse Adoptium\jdk-17.0.19.10-hotspot': {JAVA_HOME=C:\Users\Korisnik\AppData\Local\Programs\Eclipse Adoptium\jdk-17.0.19.10-hotspot, JAVA_VERSION=17.0.19, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=17.0.19+10, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=17.0.19+10, VM_VENDOR=Eclipse Adoptium, OS_ARCH=amd64}
+The client will now receive all logging from the daemon (pid: 18696). The daemon log file: C:\Users\Korisnik\.gradle\daemon\7.6\daemon-18696.out.log
+Starting 2nd build in daemon [uptime: 1 mins 24.947 secs, performance: 99%, non-heap usage: 25% of 256 MiB]
+Using 4 worker leases.
+Now considering [C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity] as hierarchies to watch
+Watching the file system is configured to be enabled if available
+File system watching is active
+Starting Build
+Settings evaluated using settings file 'C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\settings.gradle'.
+Projects loaded. Root project using build file 'C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\build.gradle'.
+Included projects: [root project 'DIS_I225-2025_Mia_Nedeljkovic_SmartCity', project ':api', project ':microservices', project ':spring-cloud', project ':util', project ':microservices:alert-service', project ':microservices:device-service', project ':microservices:incident-service', project ':microservices:telemetry-service', project ':microservices:user-service', project ':spring-cloud:eureka-server', project ':spring-cloud:gateway']
+
+> Configure project :
+Evaluating root project 'DIS_I225-2025_Mia_Nedeljkovic_SmartCity' using build file 'C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\build.gradle'.
+
+> Configure project :api
+Evaluating project ':api' using build file 'C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\api\build.gradle'.
+Applying dependency management to configuration 'archives' in project 'api'
+Applying dependency management to configuration 'default' in project 'api'
+Applying dependency management to configuration 'implementation' in project 'api'
+Applying dependency management to configuration 'compileOnly' in project 'api'
+Applying dependency management to configuration 'compileClasspath' in project 'api'
+Applying dependency management to configuration 'annotationProcessor' in project 'api'
+Applying dependency management to configuration 'runtimeOnly' in project 'api'
+Applying dependency management to configuration 'runtimeClasspath' in project 'api'
+Applying dependency management to configuration 'testImplementation' in project 'api'
+Applying dependency management to configuration 'testCompileOnly' in project 'api'
+Applying dependency management to configuration 'testCompileClasspath' in project 'api'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'api'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'api'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'api'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'api'
+Applying dependency management to configuration 'runtimeElements' in project 'api'
+Applying dependency management to configuration 'apiElements' in project 'api'
+Applying dependency management to configuration 'mainSourceElements' in project 'api'
+
+> Configure project :microservices
+Evaluating project ':microservices' using build file 'C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\microservices\build.gradle'.
+
+> Configure project :spring-cloud
+Evaluating project ':spring-cloud' using build file 'C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\spring-cloud\build.gradle'.
+
+> Configure project :util
+Evaluating project ':util' using build file 'C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\util\build.gradle'.
+Applying dependency management to configuration 'archives' in project 'util'
+Applying dependency management to configuration 'default' in project 'util'
+Applying dependency management to configuration 'implementation' in project 'util'
+Applying dependency management to configuration 'compileOnly' in project 'util'
+Applying dependency management to configuration 'compileClasspath' in project 'util'
+Applying dependency management to configuration 'annotationProcessor' in project 'util'
+Applying dependency management to configuration 'runtimeOnly' in project 'util'
+Applying dependency management to configuration 'runtimeClasspath' in project 'util'
+Applying dependency management to configuration 'testImplementation' in project 'util'
+Applying dependency management to configuration 'testCompileOnly' in project 'util'
+Applying dependency management to configuration 'testCompileClasspath' in project 'util'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'util'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'util'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'util'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'util'
+Applying dependency management to configuration 'runtimeElements' in project 'util'
+Applying dependency management to configuration 'apiElements' in project 'util'
+Applying dependency management to configuration 'mainSourceElements' in project 'util'
+
+> Configure project :microservices:alert-service
+Evaluating project ':microservices:alert-service' using build file 'C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\microservices\alert-service\build.gradle'.
+Applying dependency management to configuration 'bootArchives' in project 'alert-service'
+Applying dependency management to configuration 'archives' in project 'alert-service'
+Applying dependency management to configuration 'default' in project 'alert-service'
+Applying dependency management to configuration 'implementation' in project 'alert-service'
+Applying dependency management to configuration 'compileOnly' in project 'alert-service'
+Applying dependency management to configuration 'compileClasspath' in project 'alert-service'
+Applying dependency management to configuration 'annotationProcessor' in project 'alert-service'
+Applying dependency management to configuration 'runtimeOnly' in project 'alert-service'
+Applying dependency management to configuration 'runtimeClasspath' in project 'alert-service'
+Applying dependency management to configuration 'testImplementation' in project 'alert-service'
+Applying dependency management to configuration 'testCompileOnly' in project 'alert-service'
+Applying dependency management to configuration 'testCompileClasspath' in project 'alert-service'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'alert-service'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'alert-service'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'alert-service'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'alert-service'
+Applying dependency management to configuration 'runtimeElements' in project 'alert-service'
+Applying dependency management to configuration 'apiElements' in project 'alert-service'
+Applying dependency management to configuration 'mainSourceElements' in project 'alert-service'
+Applying dependency management to configuration 'developmentOnly' in project 'alert-service'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'alert-service'
+
+> Configure project :microservices:device-service
+Evaluating project ':microservices:device-service' using build file 'C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\microservices\device-service\build.gradle'.
+Applying dependency management to configuration 'bootArchives' in project 'device-service'
+Applying dependency management to configuration 'archives' in project 'device-service'
+Applying dependency management to configuration 'default' in project 'device-service'
+Applying dependency management to configuration 'implementation' in project 'device-service'
+Applying dependency management to configuration 'compileOnly' in project 'device-service'
+Applying dependency management to configuration 'compileClasspath' in project 'device-service'
+Applying dependency management to configuration 'annotationProcessor' in project 'device-service'
+Applying dependency management to configuration 'runtimeOnly' in project 'device-service'
+Applying dependency management to configuration 'runtimeClasspath' in project 'device-service'
+Applying dependency management to configuration 'testImplementation' in project 'device-service'
+Applying dependency management to configuration 'testCompileOnly' in project 'device-service'
+Applying dependency management to configuration 'testCompileClasspath' in project 'device-service'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'device-service'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'device-service'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'device-service'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'device-service'
+Applying dependency management to configuration 'runtimeElements' in project 'device-service'
+Applying dependency management to configuration 'apiElements' in project 'device-service'
+Applying dependency management to configuration 'mainSourceElements' in project 'device-service'
+Applying dependency management to configuration 'developmentOnly' in project 'device-service'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'device-service'
+
+> Configure project :microservices:incident-service
+Evaluating project ':microservices:incident-service' using build file 'C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\microservices\incident-service\build.gradle'.
+Applying dependency management to configuration 'bootArchives' in project 'incident-service'
+Applying dependency management to configuration 'archives' in project 'incident-service'
+Applying dependency management to configuration 'default' in project 'incident-service'
+Applying dependency management to configuration 'implementation' in project 'incident-service'
+Applying dependency management to configuration 'compileOnly' in project 'incident-service'
+Applying dependency management to configuration 'compileClasspath' in project 'incident-service'
+Applying dependency management to configuration 'annotationProcessor' in project 'incident-service'
+Applying dependency management to configuration 'runtimeOnly' in project 'incident-service'
+Applying dependency management to configuration 'runtimeClasspath' in project 'incident-service'
+Applying dependency management to configuration 'testImplementation' in project 'incident-service'
+Applying dependency management to configuration 'testCompileOnly' in project 'incident-service'
+Applying dependency management to configuration 'testCompileClasspath' in project 'incident-service'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'incident-service'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'incident-service'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'incident-service'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'incident-service'
+Applying dependency management to configuration 'runtimeElements' in project 'incident-service'
+Applying dependency management to configuration 'apiElements' in project 'incident-service'
+Applying dependency management to configuration 'mainSourceElements' in project 'incident-service'
+Applying dependency management to configuration 'developmentOnly' in project 'incident-service'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'incident-service'
+
+> Configure project :microservices:telemetry-service
+Evaluating project ':microservices:telemetry-service' using build file 'C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\microservices\telemetry-service\build.gradle'.
+Applying dependency management to configuration 'bootArchives' in project 'telemetry-service'
+Applying dependency management to configuration 'archives' in project 'telemetry-service'
+Applying dependency management to configuration 'default' in project 'telemetry-service'
+Applying dependency management to configuration 'implementation' in project 'telemetry-service'
+Applying dependency management to configuration 'compileOnly' in project 'telemetry-service'
+Applying dependency management to configuration 'compileClasspath' in project 'telemetry-service'
+Applying dependency management to configuration 'annotationProcessor' in project 'telemetry-service'
+Applying dependency management to configuration 'runtimeOnly' in project 'telemetry-service'
+Applying dependency management to configuration 'runtimeClasspath' in project 'telemetry-service'
+Applying dependency management to configuration 'testImplementation' in project 'telemetry-service'
+Applying dependency management to configuration 'testCompileOnly' in project 'telemetry-service'
+Applying dependency management to configuration 'testCompileClasspath' in project 'telemetry-service'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'telemetry-service'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'telemetry-service'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'telemetry-service'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'telemetry-service'
+Applying dependency management to configuration 'runtimeElements' in project 'telemetry-service'
+Applying dependency management to configuration 'apiElements' in project 'telemetry-service'
+Applying dependency management to configuration 'mainSourceElements' in project 'telemetry-service'
+Applying dependency management to configuration 'developmentOnly' in project 'telemetry-service'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'telemetry-service'
+
+> Configure project :microservices:user-service
+Evaluating project ':microservices:user-service' using build file 'C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\microservices\user-service\build.gradle'.
+Applying dependency management to configuration 'bootArchives' in project 'user-service'
+Applying dependency management to configuration 'archives' in project 'user-service'
+Applying dependency management to configuration 'default' in project 'user-service'
+Applying dependency management to configuration 'implementation' in project 'user-service'
+Applying dependency management to configuration 'compileOnly' in project 'user-service'
+Applying dependency management to configuration 'compileClasspath' in project 'user-service'
+Applying dependency management to configuration 'annotationProcessor' in project 'user-service'
+Applying dependency management to configuration 'runtimeOnly' in project 'user-service'
+Applying dependency management to configuration 'runtimeClasspath' in project 'user-service'
+Applying dependency management to configuration 'testImplementation' in project 'user-service'
+Applying dependency management to configuration 'testCompileOnly' in project 'user-service'
+Applying dependency management to configuration 'testCompileClasspath' in project 'user-service'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'user-service'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'user-service'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'user-service'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'user-service'
+Applying dependency management to configuration 'runtimeElements' in project 'user-service'
+Applying dependency management to configuration 'apiElements' in project 'user-service'
+Applying dependency management to configuration 'mainSourceElements' in project 'user-service'
+Applying dependency management to configuration 'developmentOnly' in project 'user-service'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'user-service'
+
+> Configure project :spring-cloud:eureka-server
+Evaluating project ':spring-cloud:eureka-server' using build file 'C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\spring-cloud\eureka-server\build.gradle'.
+Applying dependency management to configuration 'bootArchives' in project 'eureka-server'
+Applying dependency management to configuration 'archives' in project 'eureka-server'
+Applying dependency management to configuration 'default' in project 'eureka-server'
+Applying dependency management to configuration 'implementation' in project 'eureka-server'
+Applying dependency management to configuration 'compileOnly' in project 'eureka-server'
+Applying dependency management to configuration 'compileClasspath' in project 'eureka-server'
+Applying dependency management to configuration 'annotationProcessor' in project 'eureka-server'
+Applying dependency management to configuration 'runtimeOnly' in project 'eureka-server'
+Applying dependency management to configuration 'runtimeClasspath' in project 'eureka-server'
+Applying dependency management to configuration 'testImplementation' in project 'eureka-server'
+Applying dependency management to configuration 'testCompileOnly' in project 'eureka-server'
+Applying dependency management to configuration 'testCompileClasspath' in project 'eureka-server'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'eureka-server'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'eureka-server'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'eureka-server'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'eureka-server'
+Applying dependency management to configuration 'runtimeElements' in project 'eureka-server'
+Applying dependency management to configuration 'apiElements' in project 'eureka-server'
+Applying dependency management to configuration 'mainSourceElements' in project 'eureka-server'
+Applying dependency management to configuration 'developmentOnly' in project 'eureka-server'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'eureka-server'
+
+> Configure project :spring-cloud:gateway
+Evaluating project ':spring-cloud:gateway' using build file 'C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\spring-cloud\gateway\build.gradle'.
+Applying dependency management to configuration 'bootArchives' in project 'gateway'
+Applying dependency management to configuration 'archives' in project 'gateway'
+Applying dependency management to configuration 'default' in project 'gateway'
+Applying dependency management to configuration 'implementation' in project 'gateway'
+Applying dependency management to configuration 'compileOnly' in project 'gateway'
+Applying dependency management to configuration 'compileClasspath' in project 'gateway'
+Applying dependency management to configuration 'annotationProcessor' in project 'gateway'
+Applying dependency management to configuration 'runtimeOnly' in project 'gateway'
+Applying dependency management to configuration 'runtimeClasspath' in project 'gateway'
+Applying dependency management to configuration 'testImplementation' in project 'gateway'
+Applying dependency management to configuration 'testCompileOnly' in project 'gateway'
+Applying dependency management to configuration 'testCompileClasspath' in project 'gateway'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'gateway'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'gateway'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'gateway'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'gateway'
+Applying dependency management to configuration 'runtimeElements' in project 'gateway'
+Applying dependency management to configuration 'apiElements' in project 'gateway'
+Applying dependency management to configuration 'mainSourceElements' in project 'gateway'
+Applying dependency management to configuration 'developmentOnly' in project 'gateway'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'gateway'
+All projects evaluated.
+Task path ':microservices:alert-service:compileJava' matched project ':microservices:alert-service'
+Task name matched 'compileJava'
+Selected primary task 'compileJava' from project :microservices:alert-service
+Tasks to be executed: [task ':api:compileJava', task ':api:processResources', task ':api:classes', task ':api:jar', task ':util:compileJava', task ':util:processResources', task ':util:classes', task ':util:jar', task ':microservices:alert-service:compileJava']
+Tasks that were excluded: []
+Resolve mutations for :api:compileJava (Thread[Execution worker,5,main]) started.
+:api:compileJava (Thread[Execution worker,5,main]) started.
+
+> Task :api:compileJava UP-TO-DATE
+Excluding []
+Excluding []
+Caching disabled for task ':api:compileJava' because:
+  Build cache is disabled
+Skipping task ':api:compileJava' as it is up-to-date.
+Resolve mutations for :api:processResources (Thread[Execution worker,5,main]) started.
+:api:processResources (Thread[included builds,5,main]) started.
+
+> Task :api:processResources NO-SOURCE
+Skipping task ':api:processResources' as it has no source files and no previous output files.
+Resolve mutations for :api:classes (Thread[included builds,5,main]) started.
+:api:classes (Thread[included builds,5,main]) started.
+
+> Task :api:classes UP-TO-DATE
+Skipping task ':api:classes' as it has no actions.
+Resolve mutations for :api:jar (Thread[included builds,5,main]) started.
+:api:jar (Thread[included builds,5,main]) started.
+
+> Task :api:jar UP-TO-DATE
+Caching disabled for task ':api:jar' because:
+  Build cache is disabled
+Skipping task ':api:jar' as it is up-to-date.
+work action resolve api.jar (project :api) (Thread[included builds,5,main]) started.
+Resolve mutations for :util:compileJava (Thread[included builds,5,main]) started.
+:util:compileJava (Thread[included builds,5,main]) started.
+
+> Task :util:compileJava UP-TO-DATE
+Excluding []
+Excluding []
+Caching disabled for task ':util:compileJava' because:
+  Build cache is disabled
+Skipping task ':util:compileJava' as it is up-to-date.
+Resolve mutations for :util:processResources (Thread[included builds,5,main]) started.
+:util:processResources (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :util:processResources NO-SOURCE
+Skipping task ':util:processResources' as it has no source files and no previous output files.
+Resolve mutations for :util:classes (Thread[Execution worker Thread 3,5,main]) started.
+:util:classes (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :util:classes UP-TO-DATE
+Skipping task ':util:classes' as it has no actions.
+Resolve mutations for :util:jar (Thread[Execution worker Thread 3,5,main]) started.
+:util:jar (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :util:jar UP-TO-DATE
+Caching disabled for task ':util:jar' because:
+  Build cache is disabled
+Skipping task ':util:jar' as it is up-to-date.
+work action resolve util.jar (project :util) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :microservices:alert-service:compileJava (Thread[Execution worker Thread 3,5,main]) started.
+producer locations for task group 0 (Thread[Execution worker Thread 3,5,main]) started.
+:microservices:alert-service:compileJava (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :microservices:alert-service:compileJava
+Resolving global dependency management for project 'alert-service'
+Excluding [com.netflix.archaius:archaius-core, commons-logging:commons-logging, javax.servlet:servlet-api, com.github.vlsi.compactmap:compactmap, com.github.andrewoma.dexx:dexx-collections]
+Excluding []
+Caching disabled for task ':microservices:alert-service:compileJava' because:
+  Build cache is disabled
+Task ':microservices:alert-service:compileJava' is not up-to-date because:
+  Task has failed previously.
+The input changes require a full rebuild for incremental task ':microservices:alert-service:compileJava'.
+Full recompilation is required because no incremental change information is available. This is usually caused by clean builds or changing compiler arguments.
+Compiling with toolchain 'C:\Users\Korisnik\AppData\Local\Programs\Eclipse Adoptium\jdk-17.0.19.10-hotspot'.
+Compiling with JDK Java compiler API.
+C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\microservices\alert-service\src\main\java\se\magnus\microservices\core\alert\services\AlertMapper.java:15: error: cannot find symbol
+  Alert entityToApi(AlertEntity entity);
+                    ^
+  symbol:   class AlertEntity
+  location: interface AlertMapper
+C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\microservices\alert-service\src\main\java\se\magnus\microservices\core\alert\services\AlertMapper.java:21: error: cannot find symbol
+  AlertEntity apiToEntity(Alert api);
+  ^
+  symbol:   class AlertEntity
+  location: interface AlertMapper
+C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\microservices\alert-service\src\main\java\se\magnus\microservices\core\alert\services\AlertMapper.java:23: error: cannot find symbol
+  List<Alert> entityListToApiList(List<AlertEntity> entity);
+                                       ^
+  symbol:   class AlertEntity
+  location: interface AlertMapper
+C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\microservices\alert-service\src\main\java\se\magnus\microservices\core\alert\services\AlertMapper.java:25: error: cannot find symbol
+  List<AlertEntity> apiListToEntityList(List<Alert> api);
+       ^
+  symbol:   class AlertEntity
+  location: interface AlertMapper
+C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\microservices\alert-service\src\main\java\se\magnus\microservices\core\alert\services\AlertServiceImpl.java:25: error: cannot find symbol
+  private final AlertRepository repository;
+                ^
+  symbol:   class AlertRepository
+  location: class AlertServiceImpl
+C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\microservices\alert-service\src\main\java\se\magnus\microservices\core\alert\services\AlertServiceImpl.java:34: error: cannot find symbol
+  public AlertServiceImpl(@Qualifier("jdbcScheduler") Scheduler jdbcScheduler, AlertRepository repository, AlertMapper mapper, ServiceUtil serviceUtil) {
+                                                                               ^
+  symbol:   class AlertRepository
+  location: class AlertServiceImpl
+C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity\microservices\alert-service\src\main\java\se\magnus\microservices\core\alert\services\AlertMapper.java:10: error: No implementation was created for AlertMapper due to having a problem in the erroneous element AlertEntity. Hint: this often means that some other annotation processor was supposed to process the erroneous element. You can also enable MapStruct verbose mode by setting -Amapstruct.verbose=true as a compilation argument.
+public interface AlertMapper {
+       ^
+7 errors
+
+> Task :microservices:alert-service:compileJava FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':microservices:alert-service:compileJava'.
+> Compilation failed; see the compiler error output for details.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --debug option to get more log output.
+> Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+
+BUILD FAILED in 5s
+5 actionable tasks: 1 executed, 4 up-to-date
+Watched directory hierarchies: [C:\Users\Korisnik\IdeaProjects\DIS_I225-2025_Mia_Nedeljkovic_SmartCity]

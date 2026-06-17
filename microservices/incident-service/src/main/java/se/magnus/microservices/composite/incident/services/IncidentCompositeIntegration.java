@@ -1,4 +1,4 @@
-package se.magnus.microservices.composite.product.services;
+package se.magnus.microservices.composite.incident.services;
 
 import static java.util.logging.Level.FINE;
 import static reactor.core.publisher.Flux.empty;
@@ -35,7 +35,7 @@ import se.magnus.util.http.HttpErrorInfo;
 @Component
 public class IncidentCompositeIntegration implements IncidentService, DeviceService, AlertService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(se.magnus.microservices.composite.product.services.IncidentCompositeIntegration.class);
+  private static final Logger LOG = LoggerFactory.getLogger(IncidentCompositeIntegration.class);
 
   private static final String PRODUCT_SERVICE_URL = "http://product";
   private static final String RECOMMENDATION_SERVICE_URL = "http://recommendation";

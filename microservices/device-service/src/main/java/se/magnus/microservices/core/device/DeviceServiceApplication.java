@@ -1,4 +1,4 @@
-package se.magnus.microservices.core.product;
+package se.magnus.microservices.core.device;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,16 +16,16 @@ import org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexRes
 import org.springframework.data.mongodb.core.index.ReactiveIndexOperations;
 import org.springframework.data.mongodb.core.mapping.MongoPersistentEntity;
 import org.springframework.data.mongodb.core.mapping.MongoPersistentProperty;
-import se.magnus.microservices.core.product.persistence.ProductEntity;
+import se.magnus.microservices.core.device.persistence.DeviceEntity;
 
 @SpringBootApplication
 @ComponentScan("se.magnus")
-public class ProductServiceApplication {
+public class DeviceServiceApplication {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ProductServiceApplication.class);
+  private static final Logger LOG = LoggerFactory.getLogger(DeviceServiceApplication.class);
 
   public static void main(String[] args) {
-    ConfigurableApplicationContext ctx = SpringApplication.run(ProductServiceApplication.class, args);
+    ConfigurableApplicationContext ctx = SpringApplication.run(DeviceServiceApplication.class, args);
 
     String mongodDbHost = ctx.getEnvironment().getProperty("spring.data.mongodb.host");
     String mongodDbPort = ctx.getEnvironment().getProperty("spring.data.mongodb.port");
@@ -41,7 +41,7 @@ public class ProductServiceApplication {
     MappingContext<? extends MongoPersistentEntity<?>, MongoPersistentProperty> mappingContext = mongoTemplate.getConverter().getMappingContext();
     IndexResolver resolver = new MongoPersistentEntityIndexResolver(mappingContext);
 
-    ReactiveIndexOperations indexOps = mongoTemplate.indexOps(ProductEntity.class);
-    resolver.resolveIndexFor(ProductEntity.class).forEach(e -> indexOps.ensureIndex(e).block());
+    ReactiveIndexOperations indexOps = mongoTemplate.indexOps(DeviceEntity.class);
+    resolver.resolveIndexFor(DeviceEntity.class).forEach(e -> indexOps.ensureIndex(e).block());
   }
 }
