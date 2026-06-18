@@ -37,8 +37,8 @@ public class IncidentCompositeIntegration implements IncidentService, DeviceServ
 
   private static final Logger LOG = LoggerFactory.getLogger(IncidentCompositeIntegration.class);
 
-  private static final String PRODUCT_SERVICE_URL = "http://incident";
-  private static final String RECOMMENDATION_SERVICE_URL = "http://device";
+  private static final String PRODUCT_SERVICE_URL = "http://device";
+  private static final String RECOMMENDATION_SERVICE_URL = "http://telemetry";
   private static final String REVIEW_SERVICE_URL = "http://alert";
 
   private final Scheduler publishEventScheduler;
