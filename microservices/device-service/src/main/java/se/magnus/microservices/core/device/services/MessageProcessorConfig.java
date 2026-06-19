@@ -1,4 +1,4 @@
-package se.magnus.microservices.core.product.services;
+package se.magnus.microservices.core.device.services;
 
 import java.util.function.Consumer;
 import org.slf4j.Logger;
@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import se.magnus.api.core.incident.Incident;
-import se.magnus.api.core.incident.IncidentService;
+import se.magnus.api.core.device.Device;
+import se.magnus.api.core.device.DeviceService;
 import se.magnus.api.event.Event;
 import se.magnus.api.exceptions.EventProcessingException;
 
@@ -16,30 +16,30 @@ public class MessageProcessorConfig {
 
   private static final Logger LOG = LoggerFactory.getLogger(MessageProcessorConfig.class);
 
-  private final IncidentService incidentService;
+  private final DeviceService deviceService;
 
   @Autowired
-  public MessageProcessorConfig(IncidentService incidentService) {
-    this.incidentService = incidentService;
+  public MessageProcessorConfig(DeviceService deviceService) {
+    this.deviceService = deviceService;
   }
 
   @Bean
-  public Consumer<Event<Integer, Incident>> messageProcessor() {
+  public Consumer<Event<Integer, Device>> messageProcessor() {
     return event -> {
       LOG.info("Process message created at {}...", event.getEventCreatedAt());
 
       switch (event.getEventType()) {
 
         case CREATE:
-          Incident incident = event.getData();
-          LOG.info("Create incident with ID: {}", incident.getProductId());
-          incidentService.createProduct(incident).block();
+          Device device = event.getData();
+          LOG.info("Create device with ID: {}", device.getProductId());
+          deviceService.createRecommendation(device).block();
           break;
 
         case DELETE:
           int productId = event.getKey();
-          LOG.info("Delete incident with ProductID: {}", productId);
-          incidentService.deleteProduct(productId).block();
+          LOG.info("Delete devices with ProductID: {}", productId);
+          deviceService.deleteRecommendations(productId).block();
           break;
 
         default:
