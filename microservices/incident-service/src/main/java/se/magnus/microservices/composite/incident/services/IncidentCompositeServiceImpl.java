@@ -43,7 +43,7 @@ public class IncidentCompositeServiceImpl implements IncidentCompositeService {
 
       if (body.getRecommendations() != null) {
         body.getRecommendations().forEach(r -> {
-          Device device = new Device(body.getProductId(), r.getRecommendationId(), r.getAuthor(), r.getRate(), r.getContent(), null);
+          Device device = new Device(body.getProductId(), r.getDeviceId(), r.getAuthor(), r.getRate(), r.getContent(), null);
           monoList.add(integration.createRecommendation(device));
         });
       }
@@ -104,14 +104,14 @@ public class IncidentCompositeServiceImpl implements IncidentCompositeService {
   private IncidentAggregate createProductAggregate(Incident incident, List<Device> recommendations, List<Alert> reviews, String serviceAddress) {
 
     // 1. Setup incident info
-    int productId = incident.getProductId();
+    int incidentId = incident.getIncidentId();
     String name = incident.getName();
     int weight = incident.getWeight();
 
     // 2. Copy summary device info, if available
     List<DeviceSummary> recommendationSummaries = (recommendations == null) ? null :
        recommendations.stream()
-        .map(r -> new DeviceSummary(r.getRecommendationId(), r.getAuthor(), r.getRate(), r.getContent()))
+        .map(r -> new DeviceSummary(r.getDeviceId(), r.getAuthor(), r.getRate(), r.getContent()))
         .collect(Collectors.toList());
 
     // 3. Copy summary alert info, if available
@@ -126,6 +126,6 @@ public class IncidentCompositeServiceImpl implements IncidentCompositeService {
     String recommendationAddress = (recommendations != null && recommendations.size() > 0) ? recommendations.get(0).getServiceAddress() : "";
     ServiceAddresses serviceAddresses = new ServiceAddresses(serviceAddress, productAddress, reviewAddress, recommendationAddress);
 
-    return new IncidentAggregate(productId, name, weight, recommendationSummaries, reviewSummaries, serviceAddresses);
+    return new IncidentAggregate(incidentId, name, weight, recommendationSummaries, reviewSummaries, serviceAddresses);
   }
 }

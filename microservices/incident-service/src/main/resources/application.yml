@@ -86,8 +86,8 @@ spring.cloud.stream:
   defaultBinder: rabbit
   default.contentType: application/json
   bindings:
-    products-out-0:
-      destination: products
+    incidents-out-0:
+      destination: incidents
       producer:
         required-groups: auditGroup
     recommendations-out-0:
@@ -130,7 +130,7 @@ spring.cloud.stream.kafka.binder.brokers: kafka
 ---
 spring.config.activate.on-profile: streaming_partitioned
 
-spring.cloud.stream.bindings.products-out-0.producer:
+spring.cloud.stream.bindings.incidents-out-0.producer:
   partition-key-expression: headers['partitionKey']
   partition-count: 2
 

@@ -14,18 +14,18 @@ public class DeviceEntity {
   @Version private Integer version;
 
   @Indexed
-  private int productId;
+  private int incidentId;
 
-  private int recommendationId;
+  private int deviceId;
   private String author;
   private int rate;
   private String content;
 
   public DeviceEntity() {}
 
-  public DeviceEntity(int productId, int recommendationId, String author, int rate, String content) {
-    this.productId = productId;
-    this.recommendationId = recommendationId;
+  public DeviceEntity(int incidentId, int deviceId, String author, int rate, String content) {
+    this.incidentId = incidentId;
+    this.deviceId = deviceId;
     this.author = author;
     this.rate = rate;
     this.content = content;
@@ -33,7 +33,7 @@ public class DeviceEntity {
 
   @Override
   public String toString() {
-    return format("DeviceEntity: %s", recommendationId);
+    return format("DeviceEntity: %s", deviceId);
   }
 
   public String getId() { return id; }
@@ -42,11 +42,11 @@ public class DeviceEntity {
   public Integer getVersion() { return version; }
   public void setVersion(Integer version) { this.version = version; }
 
-  public int getProductId() { return productId; }
-  public void setProductId(int productId) { this.productId = productId; }
+  public int getIncidentId() { return incidentId; }
+  public void setIncidentId(int incidentId) { this.incidentId = incidentId; }
 
-  public int getRecommendationId() { return recommendationId; }
-  public void setRecommendationId(int recommendationId) { this.recommendationId = recommendationId; }
+  public int getDeviceId() { return deviceId; }
+  public void setDeviceId(int deviceId) { this.deviceId = deviceId; }
 
   public String getAuthor() { return author; }
   public void setAuthor(String author) { this.author = author; }

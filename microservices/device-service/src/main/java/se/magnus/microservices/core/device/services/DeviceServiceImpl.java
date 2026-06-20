@@ -38,8 +38,8 @@ public class DeviceServiceImpl implements DeviceService {
   @Override
   public Mono<Device> createRecommendation(Device body) {
 
-    if (body.getProductId() < 1) {
-      throw new InvalidInputException("Invalid productId: " + body.getProductId());
+    if (body.getIncidentId() < 1) {
+      throw new InvalidInputException("Invalid incidentId: " + body.getIncidentId());
     }
 
     DeviceEntity entity = mapper.apiToEntity(body);
@@ -47,36 +47,36 @@ public class DeviceServiceImpl implements DeviceService {
             .log(LOG.getName(), FINE)
             .onErrorMap(
                     DuplicateKeyException.class,
-                    ex -> new InvalidInputException("Duplicate key, Product Id: " + body.getProductId()))
+                    ex -> new InvalidInputException("Duplicate key, Incident Id: " + body.getIncidentId()))
             .map(e -> mapper.entityToApi(e));
 
     return newEntity;
   }
 
   @Override
-  public Flux<Device> getRecommendations(int productId) {
+  public Flux<Device> getRecommendations(int incidentId) {
 
-    if (productId < 1) {
-      throw new InvalidInputException("Invalid productId: " + productId);
+    if (incidentId < 1) {
+      throw new InvalidInputException("Invalid incidentId: " + incidentId);
     }
 
-    LOG.info("Will get devices for productId={}", productId);
+    LOG.info("Will get devices for incidentId={}", incidentId);
 
-    return repository.findByProductId(productId)
+    return repository.findByIncidentId(incidentId)
             .log(LOG.getName(), FINE)
             .map(e -> mapper.entityToApi(e))
             .map(this::setServiceAddress);
   }
 
   @Override
-  public Mono<Void> deleteRecommendations(int productId) {
+  public Mono<Void> deleteRecommendations(int incidentId) {
 
-    if (productId < 1) {
-      throw new InvalidInputException("Invalid productId: " + productId);
+    if (incidentId < 1) {
+      throw new InvalidInputException("Invalid incidentId: " + incidentId);
     }
 
-    LOG.debug("deleteRecommendations: tries to delete devices for productId: {}", productId);
-    return repository.deleteAll(repository.findByProductId(productId));
+    LOG.debug("deleteRecommendations: tries to delete devices for incidentId: {}", incidentId);
+    return repository.deleteAll(repository.findByIncidentId(incidentId));
   }
 
   private Device setServiceAddress(Device e) {

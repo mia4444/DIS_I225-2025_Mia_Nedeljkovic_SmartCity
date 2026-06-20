@@ -103,7 +103,7 @@ class MessagingTests {
     DeviceSummary rec = composite.getRecommendations().get(0);
     Event<Integer, Incident> expectedRecommendationEvent =
       new Event(CREATE, composite.getProductId(),
-        new Device(composite.getProductId(), rec.getRecommendationId(), rec.getAuthor(), rec.getRate(), rec.getContent(), null));
+        new Device(composite.getProductId(), rec.getDeviceId(), rec.getAuthor(), rec.getRate(), rec.getContent(), null));
     assertThat(recommendationMessages.get(0), is(sameEventExceptCreatedAt(expectedRecommendationEvent)));
 
     // Assert one create alert event queued up

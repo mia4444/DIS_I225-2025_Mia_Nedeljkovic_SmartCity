@@ -1,27 +1,27 @@
 package se.magnus.api.core.incident;
 
 public class Incident {
-  private int productId;
+  private int incidentId; //uradila gradlew build da vidim šta je sve puklo posle ovog rename-a
   private String name;
   private int weight;
   private String serviceAddress;
 
   public Incident() {
-    productId = 0;
+    incidentId = 0;
     name = null;
     weight = 0;
     serviceAddress = null;
   }
 
-  public Incident(int productId, String name, int weight, String serviceAddress) {
-    this.productId = productId;
+  public Incident(int incidentId, String name, int weight, String serviceAddress) {
+    this.incidentId = incidentId;
     this.name = name;
     this.weight = weight;
     this.serviceAddress = serviceAddress;
   }
 
-  public int getProductId() {
-    return productId;
+  public int getIncidentId() {
+    return incidentId;
   }
 
   public String getName() {
@@ -36,8 +36,8 @@ public class Incident {
     return serviceAddress;
   }
 
-  public void setProductId(int productId) {
-    this.productId = productId;
+  public void setIncidentId(int incidentId) {
+    this.incidentId = incidentId;
   }
 
   public void setName(String name) {

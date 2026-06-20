@@ -37,8 +37,8 @@ public class UserServiceImpl implements IncidentService {
   @Override
   public Mono<Incident> createProduct(Incident body) {
 
-    if (body.getProductId() < 1) {
-      throw new InvalidInputException("Invalid productId: " + body.getProductId());
+    if (body.getIncidentId() < 1) {
+      throw new InvalidInputException("Invalid incidentId: " + body.getIncidentId());
     }
 
     UserEntity entity = mapper.apiToEntity(body);
@@ -46,7 +46,7 @@ public class UserServiceImpl implements IncidentService {
       .log(LOG.getName(), FINE)
       .onErrorMap(
         DuplicateKeyException.class,
-        ex -> new InvalidInputException("Duplicate key, Product Id: " + body.getProductId()))
+        ex -> new InvalidInputException("Duplicate key, Incident Id: " + body.getIncidentId()))
       .map(e -> mapper.entityToApi(e));
 
     return newEntity;

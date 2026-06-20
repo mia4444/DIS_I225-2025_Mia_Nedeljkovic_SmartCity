@@ -32,14 +32,14 @@ public class MessageProcessorConfig {
 
         case CREATE:
           Device device = event.getData();
-          LOG.info("Create device with ID: {}", device.getProductId());
+          LOG.info("Create device with ID: {}", device.getIncidentId());
           deviceService.createRecommendation(device).block();
           break;
 
         case DELETE:
-          int productId = event.getKey();
-          LOG.info("Delete devices with ProductID: {}", productId);
-          deviceService.deleteRecommendations(productId).block();
+          int incidentId = event.getKey();
+          LOG.info("Delete devices with IncidentID: {}", incidentId);
+          deviceService.deleteRecommendations(incidentId).block();
           break;
 
         default:

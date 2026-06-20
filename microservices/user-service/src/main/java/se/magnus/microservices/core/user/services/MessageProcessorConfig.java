@@ -32,7 +32,7 @@ public class MessageProcessorConfig {
 
         case CREATE:
           Incident incident = event.getData();
-          LOG.info("Create incident with ID: {}", incident.getProductId());
+          LOG.info("Create incident with ID: {}", incident.getIncidentId());
           incidentService.createProduct(incident).block();
           break;
 

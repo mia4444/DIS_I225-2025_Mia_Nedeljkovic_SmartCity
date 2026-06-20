@@ -1,16 +1,16 @@
 package se.magnus.api.core.device;
 
 public class Device {
-  private int productId;
-  private int recommendationId;
+  private int incidentId;
+  private int deviceId;
   private String author;
   private int rate;
   private String content;
   private String serviceAddress;
 
   public Device() {
-    productId = 0;
-    recommendationId = 0;
+    incidentId = 0;
+    deviceId = 0;
     author = null;
     rate = 0;
     content = null;
@@ -18,27 +18,27 @@ public class Device {
   }
 
   public Device(
-    int productId,
-    int recommendationId,
+    int incidentId,
+    int deviceId,
     String author,
     int rate,
     String content,
     String serviceAddress) {
 
-    this.productId = productId;
-    this.recommendationId = recommendationId;
+    this.incidentId = incidentId;
+    this.deviceId = deviceId;
     this.author = author;
     this.rate = rate;
     this.content = content;
     this.serviceAddress = serviceAddress;
   }
 
-  public int getProductId() {
-    return productId;
+  public int getIncidentId() {
+    return incidentId;
   }
 
-  public int getRecommendationId() {
-    return recommendationId;
+  public int getDeviceId() {
+    return deviceId;
   }
 
   public String getAuthor() {
@@ -57,12 +57,12 @@ public class Device {
     return serviceAddress;
   }
 
-  public void setProductId(int productId) {
-    this.productId = productId;
+  public void setIncidentId(int incidentId) {
+    this.incidentId = incidentId;
   }
 
-  public void setRecommendationId(int recommendationId) {
-    this.recommendationId = recommendationId;
+  public void setDeviceId(int deviceId) {
+    this.deviceId = deviceId;
   }
 
   public void setAuthor(String author) {
