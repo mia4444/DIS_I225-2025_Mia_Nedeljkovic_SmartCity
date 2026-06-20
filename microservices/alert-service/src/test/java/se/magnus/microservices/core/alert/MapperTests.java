@@ -9,7 +9,6 @@ import org.mapstruct.factory.Mappers;
 import se.magnus.api.core.alert.Alert;
 import se.magnus.microservices.core.alert.services.AlertMapper;
 
-
 class MapperTests {
 
   private AlertMapper mapper = Mappers.getMapper(AlertMapper.class);
@@ -23,16 +22,16 @@ class MapperTests {
 
     se.magnus.microservices.core.alert.persistence.AlertEntity entity = mapper.apiToEntity(api);
 
-    assertEquals(api.getProductId(), entity.getProductId());
-    assertEquals(api.getReviewId(), entity.getReviewId());
+    assertEquals(api.getIncidentId(), entity.getIncidentId());
+    assertEquals(api.getAlertId(), entity.getAlertId());
     assertEquals(api.getAuthor(), entity.getAuthor());
     assertEquals(api.getSubject(), entity.getSubject());
     assertEquals(api.getContent(), entity.getContent());
 
     Alert api2 = mapper.entityToApi(entity);
 
-    assertEquals(api.getProductId(), api2.getProductId());
-    assertEquals(api.getReviewId(), api2.getReviewId());
+    assertEquals(api.getIncidentId(), api2.getIncidentId());
+    assertEquals(api.getAlertId(), api2.getAlertId());
     assertEquals(api.getAuthor(), api2.getAuthor());
     assertEquals(api.getSubject(), api2.getSubject());
     assertEquals(api.getContent(), api2.getContent());
@@ -52,8 +51,8 @@ class MapperTests {
 
     se.magnus.microservices.core.alert.persistence.AlertEntity entity = entityList.get(0);
 
-    assertEquals(api.getProductId(), entity.getProductId());
-    assertEquals(api.getReviewId(), entity.getReviewId());
+    assertEquals(api.getIncidentId(), entity.getIncidentId());
+    assertEquals(api.getAlertId(), entity.getAlertId());
     assertEquals(api.getAuthor(), entity.getAuthor());
     assertEquals(api.getSubject(), entity.getSubject());
     assertEquals(api.getContent(), entity.getContent());
@@ -63,8 +62,8 @@ class MapperTests {
 
     Alert api2 = api2List.get(0);
 
-    assertEquals(api.getProductId(), api2.getProductId());
-    assertEquals(api.getReviewId(), api2.getReviewId());
+    assertEquals(api.getIncidentId(), api2.getIncidentId());
+    assertEquals(api.getAlertId(), api2.getAlertId());
     assertEquals(api.getAuthor(), api2.getAuthor());
     assertEquals(api.getSubject(), api2.getSubject());
     assertEquals(api.getContent(), api2.getContent());

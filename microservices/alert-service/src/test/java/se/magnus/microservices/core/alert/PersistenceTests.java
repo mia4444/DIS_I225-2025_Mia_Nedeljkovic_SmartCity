@@ -32,9 +32,8 @@ class PersistenceTests extends MySqlTestBase {
     se.magnus.microservices.core.alert.persistence.AlertEntity entity = new se.magnus.microservices.core.alert.persistence.AlertEntity(1, 2, "a", "s", "c");
     savedEntity = repository.save(entity);
 
-    assertEqualsReview(entity, savedEntity);
+    assertEqualsAlert(entity, savedEntity);
   }
-
 
   @Test
   void create() {
@@ -43,7 +42,7 @@ class PersistenceTests extends MySqlTestBase {
     repository.save(newEntity);
 
     se.magnus.microservices.core.alert.persistence.AlertEntity foundEntity = repository.findById(newEntity.getId()).get();
-    assertEqualsReview(newEntity, foundEntity);
+    assertEqualsAlert(newEntity, foundEntity);
 
     assertEquals(2, repository.count());
   }
@@ -65,11 +64,11 @@ class PersistenceTests extends MySqlTestBase {
   }
 
   @Test
-  void getByProductId() {
-    List<se.magnus.microservices.core.alert.persistence.AlertEntity> entityList = repository.findByProductId(savedEntity.getProductId());
+  void getByIncidentId() {
+    List<se.magnus.microservices.core.alert.persistence.AlertEntity> entityList = repository.findByIncidentId(savedEntity.getIncidentId());
 
     assertThat(entityList, hasSize(1));
-    assertEqualsReview(savedEntity, entityList.get(0));
+    assertEqualsAlert(savedEntity, entityList.get(0));
   }
 
   @Test
@@ -78,38 +77,32 @@ class PersistenceTests extends MySqlTestBase {
       se.magnus.microservices.core.alert.persistence.AlertEntity entity = new se.magnus.microservices.core.alert.persistence.AlertEntity(1, 2, "a", "s", "c");
       repository.save(entity);
     });
-
   }
 
   @Test
   void optimisticLockError() {
 
-    // Store the saved entity in two separate entity objects
     se.magnus.microservices.core.alert.persistence.AlertEntity entity1 = repository.findById(savedEntity.getId()).get();
     se.magnus.microservices.core.alert.persistence.AlertEntity entity2 = repository.findById(savedEntity.getId()).get();
 
-    // Update the entity using the first entity object
     entity1.setAuthor("a1");
     repository.save(entity1);
 
-    // Update the entity using the second entity object.
-    // This should fail since the second entity now holds an old version number, i.e. an Optimistic Lock Error
     assertThrows(OptimisticLockingFailureException.class, () -> {
       entity2.setAuthor("a2");
       repository.save(entity2);
     });
 
-    // Get the updated entity from the database and verify its new sate
     se.magnus.microservices.core.alert.persistence.AlertEntity updatedEntity = repository.findById(savedEntity.getId()).get();
     assertEquals(1, (int)updatedEntity.getVersion());
     assertEquals("a1", updatedEntity.getAuthor());
   }
 
-  private void assertEqualsReview(se.magnus.microservices.core.alert.persistence.AlertEntity expectedEntity, se.magnus.microservices.core.alert.persistence.AlertEntity actualEntity) {
+  private void assertEqualsAlert(se.magnus.microservices.core.alert.persistence.AlertEntity expectedEntity, se.magnus.microservices.core.alert.persistence.AlertEntity actualEntity) {
     assertEquals(expectedEntity.getId(),        actualEntity.getId());
     assertEquals(expectedEntity.getVersion(),   actualEntity.getVersion());
-    assertEquals(expectedEntity.getProductId(), actualEntity.getProductId());
-    assertEquals(expectedEntity.getReviewId(),  actualEntity.getReviewId());
+    assertEquals(expectedEntity.getIncidentId(), actualEntity.getIncidentId());
+    assertEquals(expectedEntity.getAlertId(),  actualEntity.getAlertId());
     assertEquals(expectedEntity.getAuthor(),    actualEntity.getAuthor());
     assertEquals(expectedEntity.getSubject(),   actualEntity.getSubject());
     assertEquals(expectedEntity.getContent(),   actualEntity.getContent());

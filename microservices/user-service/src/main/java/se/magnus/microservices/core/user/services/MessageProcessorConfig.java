@@ -1,4 +1,4 @@
-package se.magnus.microservices.core.product.services;
+package se.magnus.microservices.core.user.services;
 
 import java.util.function.Consumer;
 import org.slf4j.Logger;

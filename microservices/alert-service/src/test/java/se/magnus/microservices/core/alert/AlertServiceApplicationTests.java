@@ -41,41 +41,41 @@ class AlertServiceApplicationTests extends MySqlTestBase {
   }
 
   @Test
-  void getReviewsByProductId() {
+  void getReviewsByIncidentId() {
 
-    int productId = 1;
+    int incidentId = 1;
 
-    assertEquals(0, repository.findByProductId(productId).size());
+    assertEquals(0, repository.findByIncidentId(incidentId).size());
 
-    sendCreateReviewEvent(productId, 1);
-    sendCreateReviewEvent(productId, 2);
-    sendCreateReviewEvent(productId, 3);
+    sendCreateReviewEvent(incidentId, 1);
+    sendCreateReviewEvent(incidentId, 2);
+    sendCreateReviewEvent(incidentId, 3);
 
-    assertEquals(3, repository.findByProductId(productId).size());
+    assertEquals(3, repository.findByIncidentId(incidentId).size());
 
-    getAndVerifyReviewsByProductId(productId, OK)
+    getAndVerifyReviewsByProductId(incidentId, OK)
       .jsonPath("$.length()").isEqualTo(3)
-      .jsonPath("$[2].productId").isEqualTo(productId)
-      .jsonPath("$[2].reviewId").isEqualTo(3);
+      .jsonPath("$[2].incidentId").isEqualTo(incidentId)
+      .jsonPath("$[2].alertId").isEqualTo(3);
   }
 
   @Test
   void duplicateError() {
 
-    int productId = 1;
-    int reviewId = 1;
+    int incidentId = 1;
+    int alertId = 1;
 
     assertEquals(0, repository.count());
 
-    sendCreateReviewEvent(productId, reviewId);
+    sendCreateReviewEvent(incidentId, alertId);
 
     assertEquals(1, repository.count());
 
     InvalidInputException thrown = assertThrows(
       InvalidInputException.class,
-      () -> sendCreateReviewEvent(productId, reviewId),
+      () -> sendCreateReviewEvent(incidentId, alertId),
       "Expected a InvalidInputException here!");
-    assertEquals("Duplicate key, Product Id: 1, Review Id:1", thrown.getMessage());
+    assertEquals("Duplicate key, Incident Id: 1, Alert Id:1", thrown.getMessage());
 
     assertEquals(1, repository.count());
   }
@@ -83,16 +83,16 @@ class AlertServiceApplicationTests extends MySqlTestBase {
   @Test
   void deleteReviews() {
 
-    int productId = 1;
-    int reviewId = 1;
+    int incidentId = 1;
+    int alertId = 1;
 
-    sendCreateReviewEvent(productId, reviewId);
-    assertEquals(1, repository.findByProductId(productId).size());
+    sendCreateReviewEvent(incidentId, alertId);
+    assertEquals(1, repository.findByIncidentId(incidentId).size());
 
-    sendDeleteReviewEvent(productId);
-    assertEquals(0, repository.findByProductId(productId).size());
+    sendDeleteReviewEvent(incidentId);
+    assertEquals(0, repository.findByIncidentId(incidentId).size());
 
-    sendDeleteReviewEvent(productId);
+    sendDeleteReviewEvent(incidentId);
   }
 
   @Test
@@ -121,11 +121,11 @@ class AlertServiceApplicationTests extends MySqlTestBase {
   @Test
   void getReviewsInvalidParameterNegativeValue() {
 
-    int productIdInvalid = -1;
+    int incidentIdInvalid = -1;
 
-    getAndVerifyReviewsByProductId("?productId=" + productIdInvalid, UNPROCESSABLE_ENTITY)
+    getAndVerifyReviewsByProductId("?productId=" + incidentIdInvalid, UNPROCESSABLE_ENTITY)
       .jsonPath("$.path").isEqualTo("/alert")
-      .jsonPath("$.message").isEqualTo("Invalid productId: " + productIdInvalid);
+      .jsonPath("$.message").isEqualTo("Invalid incidentId: " + incidentIdInvalid);
   }
 
   private WebTestClient.BodyContentSpec getAndVerifyReviewsByProductId(int productId, HttpStatus expectedStatus) {
@@ -142,14 +142,14 @@ class AlertServiceApplicationTests extends MySqlTestBase {
       .expectBody();
   }
 
-  private void sendCreateReviewEvent(int productId, int reviewId) {
-    Alert alert = new Alert(productId, reviewId, "Author " + reviewId, "Subject " + reviewId, "Content " + reviewId, "SA");
-    Event<Integer, Alert> event = new Event(CREATE, productId, alert);
+  private void sendCreateReviewEvent(int incidentId, int alertId) {
+    Alert alert = new Alert(incidentId, alertId, "Author " + alertId, "Subject " + alertId, "Content " + alertId, "SA");
+    Event<Integer, Alert> event = new Event(CREATE, incidentId, alert);
     messageProcessor.accept(event);
   }
 
-  private void sendDeleteReviewEvent(int productId) {
-    Event<Integer, Alert> event = new Event(DELETE, productId, null);
+  private void sendDeleteReviewEvent(int incidentId) {
+    Event<Integer, Alert> event = new Event(DELETE, incidentId, null);
     messageProcessor.accept(event);
   }
 }

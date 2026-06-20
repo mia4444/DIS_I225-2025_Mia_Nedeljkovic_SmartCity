@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "products")
+@Document(collection = "incidents")
 public class UserEntity {
 
   @Id private String id;
@@ -15,22 +15,22 @@ public class UserEntity {
   @Version private Integer version;
 
   @Indexed(unique = true)
-  private int productId;
+  private int incidentId;
 
   private String name;
   private int weight;
 
   public UserEntity() {}
 
-  public UserEntity(int productId, String name, int weight) {
-    this.productId = productId;
+  public UserEntity(int incidentId, String name, int weight) {
+    this.incidentId = incidentId;
     this.name = name;
     this.weight = weight;
   }
 
   @Override
   public String toString() {
-    return format("ProductEntity: %s", productId);
+    return format("IncidentCoreEntity: %s", incidentId);
   }
 
   public String getId() {
@@ -49,12 +49,12 @@ public class UserEntity {
     this.version = version;
   }
 
-  public int getProductId() {
-    return productId;
+  public int getIncidentId() {
+    return incidentId;
   }
 
-  public void setProductId(int productId) {
-    this.productId = productId;
+  public void setIncidentId(int incidentId) {
+    this.incidentId = incidentId;
   }
 
   public String getName() {

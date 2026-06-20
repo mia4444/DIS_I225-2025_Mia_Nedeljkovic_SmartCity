@@ -51,7 +51,7 @@ class MessagingTests {
 
   @BeforeEach
   void setUp() {
-    purgeMessages("products");
+    purgeMessages("incidents");
     purgeMessages("recommendations");
     purgeMessages("reviews");
   }
@@ -62,18 +62,16 @@ class MessagingTests {
     IncidentAggregate composite = new IncidentAggregate(1, "name", 1, null, null, null);
     postAndVerifyProduct(composite, ACCEPTED);
 
-    final List<String> productMessages = getMessages("products");
+    final List<String> incidentMessages = getMessages("incidents");
     final List<String> recommendationMessages = getMessages("recommendations");
     final List<String> reviewMessages = getMessages("reviews");
 
-    // Assert one expected new incident event queued up
-    assertEquals(1, productMessages.size());
+    assertEquals(1, incidentMessages.size());
 
     Event<Integer, Incident> expectedEvent =
       new Event(CREATE, composite.getProductId(), new Incident(composite.getProductId(), composite.getName(), composite.getWeight(), null));
-    assertThat(productMessages.get(0), is(sameEventExceptCreatedAt(expectedEvent)));
+    assertThat(incidentMessages.get(0), is(sameEventExceptCreatedAt(expectedEvent)));
 
-    // Assert no device and alert events
     assertEquals(0, recommendationMessages.size());
     assertEquals(0, reviewMessages.size());
   }
@@ -86,60 +84,54 @@ class MessagingTests {
       singletonList(new AlertSummary(1, "a", "s", "c")), null);
     postAndVerifyProduct(composite, ACCEPTED);
 
-    final List<String> productMessages = getMessages("products");
+    final List<String> incidentMessages = getMessages("incidents");
     final List<String> recommendationMessages = getMessages("recommendations");
     final List<String> reviewMessages = getMessages("reviews");
 
-    // Assert one create incident event queued up
-    assertEquals(1, productMessages.size());
+    assertEquals(1, incidentMessages.size());
 
-    Event<Integer, Incident> expectedProductEvent =
+    Event<Integer, Incident> expectedIncidentEvent =
       new Event(CREATE, composite.getProductId(), new Incident(composite.getProductId(), composite.getName(), composite.getWeight(), null));
-    assertThat(productMessages.get(0), is(sameEventExceptCreatedAt(expectedProductEvent)));
+    assertThat(incidentMessages.get(0), is(sameEventExceptCreatedAt(expectedIncidentEvent)));
 
-    // Assert one create device event queued up
     assertEquals(1, recommendationMessages.size());
 
-    DeviceSummary rec = composite.getRecommendations().get(0);
-    Event<Integer, Incident> expectedRecommendationEvent =
+    DeviceSummary deviceSummary = composite.getRecommendations().get(0);
+    Event<Integer, Device> expectedDeviceEvent =
       new Event(CREATE, composite.getProductId(),
-        new Device(composite.getProductId(), rec.getDeviceId(), rec.getAuthor(), rec.getRate(), rec.getContent(), null));
-    assertThat(recommendationMessages.get(0), is(sameEventExceptCreatedAt(expectedRecommendationEvent)));
+        new Device(composite.getProductId(), deviceSummary.getDeviceId(), deviceSummary.getAuthor(), deviceSummary.getRate(), deviceSummary.getContent(), null));
+    assertThat(recommendationMessages.get(0), is(sameEventExceptCreatedAt(expectedDeviceEvent)));
 
-    // Assert one create alert event queued up
     assertEquals(1, reviewMessages.size());
 
-    AlertSummary rev = composite.getReviews().get(0);
-    Event<Integer, Incident> expectedReviewEvent =
-      new Event(CREATE, composite.getProductId(), new Alert(composite.getProductId(), rev.getReviewId(), rev.getAuthor(), rev.getSubject(), rev.getContent(), null));
-    assertThat(reviewMessages.get(0), is(sameEventExceptCreatedAt(expectedReviewEvent)));
+    AlertSummary alertSummary = composite.getReviews().get(0);
+    Event<Integer, Alert> expectedAlertEvent =
+      new Event(CREATE, composite.getProductId(), new Alert(composite.getProductId(), alertSummary.getAlertId(), alertSummary.getAuthor(), alertSummary.getSubject(), alertSummary.getContent(), null));
+    assertThat(reviewMessages.get(0), is(sameEventExceptCreatedAt(expectedAlertEvent));
   }
 
   @Test
   void deleteCompositeProduct() {
     deleteAndVerifyProduct(1, ACCEPTED);
 
-    final List<String> productMessages = getMessages("products");
+    final List<String> incidentMessages = getMessages("incidents");
     final List<String> recommendationMessages = getMessages("recommendations");
     final List<String> reviewMessages = getMessages("reviews");
 
-    // Assert one delete incident event queued up
-    assertEquals(1, productMessages.size());
+    assertEquals(1, incidentMessages.size());
 
-    Event<Integer, Incident> expectedProductEvent = new Event(DELETE, 1, null);
-    assertThat(productMessages.get(0), is(sameEventExceptCreatedAt(expectedProductEvent)));
+    Event<Integer, Incident> expectedIncidentEvent = new Event(DELETE, 1, null);
+    assertThat(incidentMessages.get(0), is(sameEventExceptCreatedAt(expectedIncidentEvent)));
 
-    // Assert one delete device event queued up
     assertEquals(1, recommendationMessages.size());
 
-    Event<Integer, Incident> expectedRecommendationEvent = new Event(DELETE, 1, null);
-    assertThat(recommendationMessages.get(0), is(sameEventExceptCreatedAt(expectedRecommendationEvent)));
+    Event<Integer, Device> expectedDeviceEvent = new Event(DELETE, 1, null);
+    assertThat(recommendationMessages.get(0), is(sameEventExceptCreatedAt(expectedDeviceEvent)));
 
-    // Assert one delete alert event queued up
     assertEquals(1, reviewMessages.size());
 
-    Event<Integer, Incident> expectedReviewEvent = new Event(DELETE, 1, null);
-    assertThat(reviewMessages.get(0), is(sameEventExceptCreatedAt(expectedReviewEvent)));
+    Event<Integer, Alert> expectedAlertEvent = new Event(DELETE, 1, null);
+    assertThat(reviewMessages.get(0), is(sameEventExceptCreatedAt(expectedAlertEvent));
   }
 
   private void purgeMessages(String bindingName) {
@@ -167,8 +159,6 @@ class MessagingTests {
     try {
       return target.receive(0, bindingName);
     } catch (NullPointerException npe) {
-      // If the messageQueues member variable in the target object contains no queues when the receive method is called, it will cause a NPE to be thrown.
-      // So we catch the NPE here and return null to indicate that no messages were found.
       LOG.error("getMessage() received a NPE with binding = {}", bindingName);
       return null;
     }

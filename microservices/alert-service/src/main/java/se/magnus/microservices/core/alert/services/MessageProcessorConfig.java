@@ -32,7 +32,7 @@ public class MessageProcessorConfig {
 
         case CREATE:
           Alert alert = event.getData();
-          LOG.info("Create alert with ID: {}/{}", alert.getProductId(), alert.getReviewId());
+          LOG.info("Create alert with ID: {}/{}", alert.getIncidentId(), alert.getAlertId());
           alertService.createReview(alert).block();
           break;
 

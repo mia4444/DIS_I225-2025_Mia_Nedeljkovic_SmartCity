@@ -50,7 +50,7 @@ public class IncidentCompositeServiceImpl implements IncidentCompositeService {
 
       if (body.getReviews() != null) {
         body.getReviews().forEach(r -> {
-          Alert alert = new Alert(body.getProductId(), r.getReviewId(), r.getAuthor(), r.getSubject(), r.getContent(), null);
+          Alert alert = new Alert(body.getProductId(), r.getAlertId(), r.getAuthor(), r.getSubject(), r.getContent(), null);
           monoList.add(integration.createReview(alert));
         });
       }
@@ -117,7 +117,7 @@ public class IncidentCompositeServiceImpl implements IncidentCompositeService {
     // 3. Copy summary alert info, if available
     List<AlertSummary> reviewSummaries = (reviews == null)  ? null :
       reviews.stream()
-        .map(r -> new AlertSummary(r.getReviewId(), r.getAuthor(), r.getSubject(), r.getContent()))
+        .map(r -> new AlertSummary(r.getAlertId(), r.getAuthor(), r.getSubject(), r.getContent()))
         .collect(Collectors.toList());
 
     // 4. Create info regarding the involved microservices addresses

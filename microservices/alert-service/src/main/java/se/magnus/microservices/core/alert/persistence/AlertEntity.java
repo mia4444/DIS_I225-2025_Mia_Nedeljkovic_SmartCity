@@ -5,7 +5,7 @@ import static java.lang.String.format;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "reviews", indexes = { @Index(name = "reviews_unique_idx", unique = true, columnList = "productId,reviewId") })
+@Table(name = "alerts", indexes = { @Index(name = "alerts_unique_idx", unique = true, columnList = "incidentId,alertId") })
 public class AlertEntity {
 
   @Id @GeneratedValue
@@ -14,8 +14,8 @@ public class AlertEntity {
   @Version
   private int version;
 
-  private int productId;
-  private int reviewId;
+  private int incidentId;
+  private int alertId;
   private String author;
   private String subject;
   private String content;
@@ -23,9 +23,9 @@ public class AlertEntity {
   public AlertEntity() {
   }
 
-  public AlertEntity(int productId, int reviewId, String author, String subject, String content) {
-    this.productId = productId;
-    this.reviewId = reviewId;
+  public AlertEntity(int incidentId, int alertId, String author, String subject, String content) {
+    this.incidentId = incidentId;
+    this.alertId = alertId;
     this.author = author;
     this.subject = subject;
     this.content = content;
@@ -33,7 +33,7 @@ public class AlertEntity {
 
   @Override
   public String toString() {
-    return format("ReviewEntity: %s/%d", productId, reviewId);
+    return format("AlertEntity: %s/%d", incidentId, alertId);
   }
 
   public int getId() {
@@ -52,20 +52,20 @@ public class AlertEntity {
     this.version = version;
   }
 
-  public int getProductId() {
-    return productId;
+  public int getIncidentId() {
+    return incidentId;
   }
 
-  public void setProductId(int productId) {
-    this.productId = productId;
+  public void setIncidentId(int incidentId) {
+    this.incidentId = incidentId;
   }
 
-  public int getReviewId() {
-    return reviewId;
+  public int getAlertId() {
+    return alertId;
   }
 
-  public void setReviewId(int reviewId) {
-    this.reviewId = reviewId;
+  public void setAlertId(int alertId) {
+    this.alertId = alertId;
   }
 
   public String getAuthor() {

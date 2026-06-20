@@ -32,7 +32,7 @@ class IncidentCompositeServiceApplicationTests {
   private WebTestClient client;
 
   @MockBean
-  private se.magnus.microservices.composite.product.services.IncidentCompositeIntegration compositeIntegration;
+  private se.magnus.microservices.composite.incident.services.IncidentCompositeIntegration compositeIntegration;
 
   @BeforeEach
   void setUp() {

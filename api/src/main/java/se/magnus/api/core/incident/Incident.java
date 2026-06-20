@@ -1,7 +1,7 @@
 package se.magnus.api.core.incident;
 
 public class Incident {
-  private int incidentId; //uradila gradlew build da vidim šta je sve puklo posle ovog rename-a
+  private int incidentId;
   private String name;
   private int weight;
   private String serviceAddress;

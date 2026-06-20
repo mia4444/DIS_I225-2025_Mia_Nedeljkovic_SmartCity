@@ -1,16 +1,16 @@
 package se.magnus.api.core.alert;
 
 public class Alert {
-  private int productId;
-  private int reviewId;
+  private int incidentId;
+  private int alertId;
   private String author;
   private String subject;
   private String content;
   private String serviceAddress;
 
   public Alert() {
-    productId = 0;
-    reviewId = 0;
+    incidentId = 0;
+    alertId = 0;
     author = null;
     subject = null;
     content = null;
@@ -18,27 +18,27 @@ public class Alert {
   }
 
   public Alert(
-    int productId,
-    int reviewId,
+    int incidentId,
+    int alertId,
     String author,
     String subject,
     String content,
     String serviceAddress) {
 
-    this.productId = productId;
-    this.reviewId = reviewId;
+    this.incidentId = incidentId;
+    this.alertId = alertId;
     this.author = author;
     this.subject = subject;
     this.content = content;
     this.serviceAddress = serviceAddress;
   }
 
-  public int getProductId() {
-    return productId;
+  public int getIncidentId() {
+    return incidentId;
   }
 
-  public int getReviewId() {
-    return reviewId;
+  public int getAlertId() {
+    return alertId;
   }
 
   public String getAuthor() {
@@ -57,12 +57,12 @@ public class Alert {
     return serviceAddress;
   }
 
-  public void setProductId(int productId) {
-    this.productId = productId;
+  public void setIncidentId(int incidentId) {
+    this.incidentId = incidentId;
   }
 
-  public void setReviewId(int reviewId) {
-    this.reviewId = reviewId;
+  public void setAlertId(int alertId) {
+    this.alertId = alertId;
   }
 
   public void setAuthor(String author) {

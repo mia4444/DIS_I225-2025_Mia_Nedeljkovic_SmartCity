@@ -53,30 +53,30 @@ public class UserServiceImpl implements IncidentService {
   }
 
   @Override
-  public Mono<Incident> getProduct(int productId) {
+  public Mono<Incident> getProduct(int incidentId) {
 
-    if (productId < 1) {
-      throw new InvalidInputException("Invalid productId: " + productId);
+    if (incidentId < 1) {
+      throw new InvalidInputException("Invalid incidentId: " + incidentId);
     }
 
-    LOG.info("Will get incident info for id={}", productId);
+    LOG.info("Will get incident info for id={}", incidentId);
 
-    return repository.findByProductId(productId)
-      .switchIfEmpty(Mono.error(new NotFoundException("No incident found for productId: " + productId)))
+    return repository.findByIncidentId(incidentId)
+      .switchIfEmpty(Mono.error(new NotFoundException("No incident found for incidentId: " + incidentId)))
       .log(LOG.getName(), FINE)
       .map(e -> mapper.entityToApi(e))
       .map(e -> setServiceAddress(e));
   }
 
   @Override
-  public Mono<Void> deleteProduct(int productId) {
+  public Mono<Void> deleteProduct(int incidentId) {
 
-    if (productId < 1) {
-      throw new InvalidInputException("Invalid productId: " + productId);
+    if (incidentId < 1) {
+      throw new InvalidInputException("Invalid incidentId: " + incidentId);
     }
 
-    LOG.debug("deleteProduct: tries to delete an entity with productId: {}", productId);
-    return repository.findByProductId(productId).log(LOG.getName(), FINE).map(e -> repository.delete(e)).flatMap(e -> e);
+    LOG.debug("deleteProduct: tries to delete an entity with incidentId: {}", incidentId);
+    return repository.findByIncidentId(incidentId).log(LOG.getName(), FINE).map(e -> repository.delete(e)).flatMap(e -> e);
   }
 
   private Incident setServiceAddress(Incident e) {

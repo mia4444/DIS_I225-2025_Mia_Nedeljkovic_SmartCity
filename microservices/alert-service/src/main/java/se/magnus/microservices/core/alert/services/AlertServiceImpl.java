@@ -43,8 +43,8 @@ public class AlertServiceImpl implements AlertService {
   @Override
   public Mono<Alert> createReview(Alert body) {
 
-    if (body.getProductId() < 1) {
-      throw new InvalidInputException("Invalid productId: " + body.getProductId());
+    if (body.getIncidentId() < 1) {
+      throw new InvalidInputException("Invalid incidentId: " + body.getIncidentId());
     }
     return Mono.fromCallable(() -> internalCreateReview(body))
       .subscribeOn(jdbcScheduler);
@@ -55,32 +55,32 @@ public class AlertServiceImpl implements AlertService {
       AlertEntity entity = mapper.apiToEntity(body);
       AlertEntity newEntity = repository.save(entity);
 
-      LOG.debug("createReview: created a alert entity: {}/{}", body.getProductId(), body.getReviewId());
+      LOG.debug("createReview: created a alert entity: {}/{}", body.getIncidentId(), body.getAlertId());
       return mapper.entityToApi(newEntity);
 
     } catch (DataIntegrityViolationException dive) {
-      throw new InvalidInputException("Duplicate key, Product Id: " + body.getProductId() + ", Review Id:" + body.getReviewId());
+      throw new InvalidInputException("Duplicate key, Incident Id: " + body.getIncidentId() + ", Alert Id:" + body.getAlertId());
     }
   }
 
   @Override
-  public Flux<Alert> getReviews(int productId) {
+  public Flux<Alert> getReviews(int incidentId) {
 
-    if (productId < 1) {
-      throw new InvalidInputException("Invalid productId: " + productId);
+    if (incidentId < 1) {
+      throw new InvalidInputException("Invalid incidentId: " + incidentId);
     }
 
-    LOG.info("Will get reviews for incident with id={}", productId);
+    LOG.info("Will get reviews for incident with id={}", incidentId);
 
-    return Mono.fromCallable(() -> internalGetReviews(productId))
+    return Mono.fromCallable(() -> internalGetReviews(incidentId))
       .flatMapMany(Flux::fromIterable)
       .log(LOG.getName(), FINE)
       .subscribeOn(jdbcScheduler);
   }
 
-  private List<Alert> internalGetReviews(int productId) {
+  private List<Alert> internalGetReviews(int incidentId) {
 
-    List<AlertEntity> entityList = repository.findByProductId(productId);
+    List<AlertEntity> entityList = repository.findByIncidentId(incidentId);
     List<Alert> list = mapper.entityListToApiList(entityList);
     list.forEach(e -> e.setServiceAddress(serviceUtil.getServiceAddress()));
 
@@ -90,19 +90,19 @@ public class AlertServiceImpl implements AlertService {
   }
 
   @Override
-  public Mono<Void> deleteReviews(int productId) {
+  public Mono<Void> deleteReviews(int incidentId) {
 
-    if (productId < 1) {
-      throw new InvalidInputException("Invalid productId: " + productId);
+    if (incidentId < 1) {
+      throw new InvalidInputException("Invalid incidentId: " + incidentId);
     }
 
-    return Mono.fromRunnable(() -> internalDeleteReviews(productId)).subscribeOn(jdbcScheduler).then();
+    return Mono.fromRunnable(() -> internalDeleteReviews(incidentId)).subscribeOn(jdbcScheduler).then();
   }
 
-  private void internalDeleteReviews(int productId) {
+  private void internalDeleteReviews(int incidentId) {
 
-    LOG.debug("deleteReviews: tries to delete reviews for the incident with productId: {}", productId);
+    LOG.debug("deleteReviews: tries to delete reviews for the incident with incidentId: {}", incidentId);
 
-    repository.deleteAll(repository.findByProductId(productId));
+    repository.deleteAll(repository.findByIncidentId(incidentId));
   }
 }

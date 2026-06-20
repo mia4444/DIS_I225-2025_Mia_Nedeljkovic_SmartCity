@@ -7,5 +7,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface AlertRepository extends CrudRepository<AlertEntity, Integer> {
 
   @Transactional(readOnly = true)
-  List<AlertEntity> findByProductId(int productId);
+  List<AlertEntity> findByIncidentId(int incidentId);
 }
