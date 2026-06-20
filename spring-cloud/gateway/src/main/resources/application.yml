@@ -26,6 +26,11 @@ spring.cloud.gateway.routes:
   predicates:
   - Path=/openapi/**
 
+- id: telemetry
+  uri: lb://telemetry
+  predicates:
+  - Path=/telemetry/**
+
 - id: eureka-api
   uri: http://${app.eureka-server}:8761
   predicates:

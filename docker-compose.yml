@@ -83,8 +83,7 @@ services:
     depends_on:
       mongodb:
         condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
+  #Uklonila sam sada ipak rabbit, jer mi za ovaj servis više ne treba mogućnost async komunikacije
 
   alert:
     build: microservices/alert-service
@@ -97,7 +96,7 @@ services:
       rabbitmq:
         condition: service_healthy
 
-  user:
+  incident-core:
     build: microservices/user-service
     mem_limit: 512m
     environment:

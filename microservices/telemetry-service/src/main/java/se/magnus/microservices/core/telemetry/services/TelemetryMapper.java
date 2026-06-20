@@ -4,25 +4,24 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
-import se.magnus.api.core.device.Device;
+import se.magnus.api.core.telemetry.Telemetry;
+import se.magnus.microservices.core.telemetry.persistence.TelemetryEntity;
 
 @Mapper(componentModel = "spring")
 public interface TelemetryMapper {
 
   @Mappings({
-    @Mapping(target = "rate", source = "entity.rating"),
     @Mapping(target = "serviceAddress", ignore = true)
   })
-  Device entityToApi(se.magnus.microservices.core.telemetry.persistence.TelemetryEntity entity);
+  Telemetry entityToApi(TelemetryEntity entity);
 
   @Mappings({
-    @Mapping(target = "rating", source = "api.rate"),
     @Mapping(target = "id", ignore = true),
     @Mapping(target = "version", ignore = true)
   })
-  se.magnus.microservices.core.telemetry.persistence.TelemetryEntity apiToEntity(Device api);
+  TelemetryEntity apiToEntity(Telemetry api);
 
-  List<Device> entityListToApiList(List<se.magnus.microservices.core.telemetry.persistence.TelemetryEntity> entity);
+  List<Telemetry> entityListToApiList(List<TelemetryEntity> entity);
 
-  List<se.magnus.microservices.core.telemetry.persistence.TelemetryEntity> apiListToEntityList(List<Device> api);
+  List<TelemetryEntity> apiListToEntityList(List<Telemetry> api);
 }
