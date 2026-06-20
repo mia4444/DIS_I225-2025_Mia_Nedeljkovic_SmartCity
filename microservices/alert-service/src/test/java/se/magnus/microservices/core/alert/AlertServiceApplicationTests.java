@@ -1,4 +1,4 @@
-package se.magnus.microservices.core.review;
+package se.magnus.microservices.core.alert;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -29,7 +29,7 @@ class AlertServiceApplicationTests extends MySqlTestBase {
   private WebTestClient client;
 
   @Autowired
-  private se.magnus.microservices.core.review.persistence.AlertRepository repository;
+  private se.magnus.microservices.core.alert.persistence.AlertRepository repository;
 
   @Autowired
   @Qualifier("messageProcessor")

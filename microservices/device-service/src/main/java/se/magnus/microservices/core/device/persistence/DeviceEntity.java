@@ -6,69 +6,54 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "products")
+@Document(collection = "devices")
 public class DeviceEntity {
 
   @Id private String id;
 
   @Version private Integer version;
 
-  @Indexed(unique = true)
+  @Indexed
   private int productId;
 
-  private String name;
-  private int weight;
+  private int recommendationId;
+  private String author;
+  private int rate;
+  private String content;
 
   public DeviceEntity() {}
 
-  public DeviceEntity(int productId, String name, int weight) {
+  public DeviceEntity(int productId, int recommendationId, String author, int rate, String content) {
     this.productId = productId;
-    this.name = name;
-    this.weight = weight;
+    this.recommendationId = recommendationId;
+    this.author = author;
+    this.rate = rate;
+    this.content = content;
   }
 
   @Override
   public String toString() {
-    return format("ProductEntity: %s", productId);
+    return format("DeviceEntity: %s", recommendationId);
   }
 
-  public String getId() {
-    return id;
-  }
+  public String getId() { return id; }
+  public void setId(String id) { this.id = id; }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+  public Integer getVersion() { return version; }
+  public void setVersion(Integer version) { this.version = version; }
 
-  public Integer getVersion() {
-    return version;
-  }
+  public int getProductId() { return productId; }
+  public void setProductId(int productId) { this.productId = productId; }
 
-  public void setVersion(Integer version) {
-    this.version = version;
-  }
+  public int getRecommendationId() { return recommendationId; }
+  public void setRecommendationId(int recommendationId) { this.recommendationId = recommendationId; }
 
-  public int getProductId() {
-    return productId;
-  }
+  public String getAuthor() { return author; }
+  public void setAuthor(String author) { this.author = author; }
 
-  public void setProductId(int productId) {
-    this.productId = productId;
-  }
+  public int getRate() { return rate; }
+  public void setRate(int rate) { this.rate = rate; }
 
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public int getWeight() {
-    return weight;
-  }
-
-  public void setWeight(int weight) {
-    this.weight = weight;
-  }
+  public String getContent() { return content; }
+  public void setContent(String content) { this.content = content; }
 }

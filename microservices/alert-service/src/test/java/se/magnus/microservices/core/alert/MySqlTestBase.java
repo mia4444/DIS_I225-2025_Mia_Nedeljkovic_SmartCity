@@ -1,4 +1,4 @@
-package se.magnus.microservices.core.review;
+package se.magnus.microservices.core.alert;
 
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;

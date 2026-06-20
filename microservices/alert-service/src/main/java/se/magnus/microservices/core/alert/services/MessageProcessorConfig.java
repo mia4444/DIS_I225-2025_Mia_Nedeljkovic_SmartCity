@@ -1,4 +1,4 @@
-package se.magnus.microservices.core.review.services;
+package se.magnus.microservices.core.alert.services;
 
 import java.util.function.Consumer;
 import org.slf4j.Logger;
