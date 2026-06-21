@@ -3,40 +3,40 @@ package se.magnus.api.composite.incident;
 import java.util.List;
 
 public class IncidentAggregate {
-  private final int productId;
+  private final int incidentId;
   private final String name;
   private final int weight;
-  private final List<DeviceSummary> recommendations;
-  private final List<AlertSummary> reviews;
+  private final List<DeviceSummary> devices;
+  private final List<AlertSummary> alerts;
   private final ServiceAddresses serviceAddresses;
 
   public IncidentAggregate() {
-    productId = 0;
+    incidentId = 0;
     name = null;
     weight = 0;
-    recommendations = null;
-    reviews = null;
+    devices = null;
+    alerts = null;
     serviceAddresses = null;
   }
 
   public IncidentAggregate(
-    int productId,
+    int incidentId,
     String name,
     int weight,
-    List<DeviceSummary> recommendations,
-    List<AlertSummary> reviews,
+    List<DeviceSummary> devices,
+    List<AlertSummary> alerts,
     ServiceAddresses serviceAddresses) {
 
-    this.productId = productId;
+    this.incidentId = incidentId;
     this.name = name;
     this.weight = weight;
-    this.recommendations = recommendations;
-    this.reviews = reviews;
+    this.devices = devices;
+    this.alerts = alerts;
     this.serviceAddresses = serviceAddresses;
   }
 
-  public int getProductId() {
-    return productId;
+  public int getIncidentId() {
+    return incidentId;
   }
 
   public String getName() {
@@ -47,12 +47,12 @@ public class IncidentAggregate {
     return weight;
   }
 
-  public List<DeviceSummary> getRecommendations() {
-    return recommendations;
+  public List<DeviceSummary> getDevices() {
+    return devices;
   }
 
-  public List<AlertSummary> getReviews() {
-    return reviews;
+  public List<AlertSummary> getAlerts() {
+    return alerts;
   }
 
   public ServiceAddresses getServiceAddresses() {

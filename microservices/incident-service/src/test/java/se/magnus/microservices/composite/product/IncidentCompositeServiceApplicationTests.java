@@ -59,9 +59,9 @@ class IncidentCompositeServiceApplicationTests {
   void getProductById() {
 
     getAndVerifyProduct(PRODUCT_ID_OK, OK)
-      .jsonPath("$.productId").isEqualTo(PRODUCT_ID_OK)
-      .jsonPath("$.recommendations.length()").isEqualTo(1)
-      .jsonPath("$.reviews.length()").isEqualTo(1);
+      .jsonPath("$.incidentId").isEqualTo(PRODUCT_ID_OK)
+      .jsonPath("$.devices.length()").isEqualTo(1)
+      .jsonPath("$.alerts.length()").isEqualTo(1);
   }
 
   @Test

@@ -31,7 +31,7 @@ public interface IncidentCompositeService {
   @PostMapping(
     value    = "/incident-composite",
     consumes = "application/json")
-  Mono<Void> createProduct(@RequestBody IncidentAggregate body);
+  Mono<Void> createIncident(@RequestBody IncidentAggregate body);
 
   /**
    * Sample usage: "curl $HOST:$PORT/incident-composite/1".
@@ -49,9 +49,9 @@ public interface IncidentCompositeService {
     @ApiResponse(responseCode = "422", description = "${api.responseCodes.unprocessableEntity.description}")
   })
   @GetMapping(
-    value = "/incident-composite/{productId}",
+    value = "/incident-composite/{incidentId}",
     produces = "application/json")
-  Mono<IncidentAggregate> getProduct(@PathVariable int productId);
+  Mono<IncidentAggregate> getIncident(@PathVariable int incidentId);
 
   /**
    * Sample usage: "curl -X DELETE $HOST:$PORT/incident-composite/1".
@@ -66,6 +66,6 @@ public interface IncidentCompositeService {
     @ApiResponse(responseCode = "422", description = "${api.responseCodes.unprocessableEntity.description}")
   })
   @ResponseStatus(HttpStatus.ACCEPTED)
-  @DeleteMapping(value = "/incident-composite/{productId}")
-  Mono<Void> deleteProduct(@PathVariable int productId);
+  @DeleteMapping(value = "/incident-composite/{incidentId}")
+  Mono<Void> deleteIncident(@PathVariable int incidentId);
 }

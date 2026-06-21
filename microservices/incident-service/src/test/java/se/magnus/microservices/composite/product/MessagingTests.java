@@ -52,8 +52,8 @@ class MessagingTests {
   @BeforeEach
   void setUp() {
     purgeMessages("incidents");
-    purgeMessages("recommendations");
-    purgeMessages("reviews");
+    purgeMessages("devices");
+    purgeMessages("alerts");
   }
 
   @Test
@@ -63,13 +63,13 @@ class MessagingTests {
     postAndVerifyProduct(composite, ACCEPTED);
 
     final List<String> incidentMessages = getMessages("incidents");
-    final List<String> recommendationMessages = getMessages("recommendations");
-    final List<String> reviewMessages = getMessages("reviews");
+    final List<String> recommendationMessages = getMessages("devices");
+    final List<String> reviewMessages = getMessages("alerts");
 
     assertEquals(1, incidentMessages.size());
 
     Event<Integer, Incident> expectedEvent =
-      new Event(CREATE, composite.getProductId(), new Incident(composite.getProductId(), composite.getName(), composite.getWeight(), null));
+      new Event(CREATE, composite.getIncidentId(), new Incident(composite.getIncidentId(), composite.getName(), composite.getWeight(), null));
     assertThat(incidentMessages.get(0), is(sameEventExceptCreatedAt(expectedEvent)));
 
     assertEquals(0, recommendationMessages.size());
@@ -85,29 +85,29 @@ class MessagingTests {
     postAndVerifyProduct(composite, ACCEPTED);
 
     final List<String> incidentMessages = getMessages("incidents");
-    final List<String> recommendationMessages = getMessages("recommendations");
-    final List<String> reviewMessages = getMessages("reviews");
+    final List<String> recommendationMessages = getMessages("devices");
+    final List<String> reviewMessages = getMessages("alerts");
 
     assertEquals(1, incidentMessages.size());
 
     Event<Integer, Incident> expectedIncidentEvent =
-      new Event(CREATE, composite.getProductId(), new Incident(composite.getProductId(), composite.getName(), composite.getWeight(), null));
+      new Event(CREATE, composite.getIncidentId(), new Incident(composite.getIncidentId(), composite.getName(), composite.getWeight(), null));
     assertThat(incidentMessages.get(0), is(sameEventExceptCreatedAt(expectedIncidentEvent)));
 
     assertEquals(1, recommendationMessages.size());
 
-    DeviceSummary deviceSummary = composite.getRecommendations().get(0);
+    DeviceSummary deviceSummary = composite.getDevices().get(0);
     Event<Integer, Device> expectedDeviceEvent =
-      new Event(CREATE, composite.getProductId(),
-        new Device(composite.getProductId(), deviceSummary.getDeviceId(), deviceSummary.getAuthor(), deviceSummary.getRate(), deviceSummary.getContent(), null));
+      new Event(CREATE, composite.getIncidentId(),
+        new Device(composite.getIncidentId(), deviceSummary.getDeviceId(), deviceSummary.getAuthor(), deviceSummary.getRate(), deviceSummary.getContent(), null));
     assertThat(recommendationMessages.get(0), is(sameEventExceptCreatedAt(expectedDeviceEvent)));
 
     assertEquals(1, reviewMessages.size());
 
-    AlertSummary alertSummary = composite.getReviews().get(0);
+    AlertSummary alertSummary = composite.getAlerts().get(0);
     Event<Integer, Alert> expectedAlertEvent =
-      new Event(CREATE, composite.getProductId(), new Alert(composite.getProductId(), alertSummary.getAlertId(), alertSummary.getAuthor(), alertSummary.getSubject(), alertSummary.getContent(), null));
-    assertThat(reviewMessages.get(0), is(sameEventExceptCreatedAt(expectedAlertEvent));
+      new Event(CREATE, composite.getIncidentId(), new Alert(composite.getIncidentId(), alertSummary.getAlertId(), alertSummary.getAuthor(), alertSummary.getSubject(), alertSummary.getContent(), null));
+    assertThat(reviewMessages.get(0), is(sameEventExceptCreatedAt(expectedAlertEvent)));
   }
 
   @Test
@@ -115,8 +115,8 @@ class MessagingTests {
     deleteAndVerifyProduct(1, ACCEPTED);
 
     final List<String> incidentMessages = getMessages("incidents");
-    final List<String> recommendationMessages = getMessages("recommendations");
-    final List<String> reviewMessages = getMessages("reviews");
+    final List<String> recommendationMessages = getMessages("devices");
+    final List<String> reviewMessages = getMessages("alerts");
 
     assertEquals(1, incidentMessages.size());
 
@@ -131,7 +131,7 @@ class MessagingTests {
     assertEquals(1, reviewMessages.size());
 
     Event<Integer, Alert> expectedAlertEvent = new Event(DELETE, 1, null);
-    assertThat(reviewMessages.get(0), is(sameEventExceptCreatedAt(expectedAlertEvent));
+    assertThat(reviewMessages.get(0), is(sameEventExceptCreatedAt(expectedAlertEvent)));
   }
 
   private void purgeMessages(String bindingName) {

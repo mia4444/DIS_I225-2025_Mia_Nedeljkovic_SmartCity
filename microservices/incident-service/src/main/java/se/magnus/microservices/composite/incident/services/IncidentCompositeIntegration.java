@@ -88,7 +88,7 @@ public class IncidentCompositeIntegration implements IncidentService, DeviceServ
   public Mono<Device> createRecommendation(Device body) {
 
     return Mono.fromCallable(() -> {
-      sendMessage("recommendations-out-0", new Event(CREATE, body.getIncidentId(), body));
+      sendMessage("devices-out-0", new Event(CREATE, body.getIncidentId(), body));
       return body;
     }).subscribeOn(publishEventScheduler);
   }
@@ -107,7 +107,7 @@ public class IncidentCompositeIntegration implements IncidentService, DeviceServ
   @Override
   public Mono<Void> deleteRecommendations(int productId) {
 
-    return Mono.fromRunnable(() -> sendMessage("recommendations-out-0", new Event(DELETE, productId, null)))
+    return Mono.fromRunnable(() -> sendMessage("devices-out-0", new Event(DELETE, productId, null)))
       .subscribeOn(publishEventScheduler).then();
   }
 
@@ -115,7 +115,7 @@ public class IncidentCompositeIntegration implements IncidentService, DeviceServ
   public Mono<Alert> createReview(Alert body) {
 
     return Mono.fromCallable(() -> {
-      sendMessage("reviews-out-0", new Event(CREATE, body.getIncidentId(), body));
+      sendMessage("alerts-out-0", new Event(CREATE, body.getIncidentId(), body));
       return body;
     }).subscribeOn(publishEventScheduler);
   }
@@ -134,7 +134,7 @@ public class IncidentCompositeIntegration implements IncidentService, DeviceServ
   @Override
   public Mono<Void> deleteReviews(int productId) {
 
-    return Mono.fromRunnable(() -> sendMessage("reviews-out-0", new Event(DELETE, productId, null)))
+    return Mono.fromRunnable(() -> sendMessage("alerts-out-0", new Event(DELETE, productId, null)))
       .subscribeOn(publishEventScheduler).then();
   }
 

@@ -30,32 +30,32 @@ public class IncidentCompositeServiceImpl implements IncidentCompositeService {
   }
 
   @Override
-  public Mono<Void> createProduct(IncidentAggregate body) {
+  public Mono<Void> createIncident(IncidentAggregate body) {
 
     try {
 
       List<Mono> monoList = new ArrayList<>();
 
-      LOG.info("Will create a new composite entity for incident.id: {}", body.getProductId());
+      LOG.info("Will create a new composite entity for incident.id: {}", body.getIncidentId());
 
-      Incident incident = new Incident(body.getProductId(), body.getName(), body.getWeight(), null);
+      Incident incident = new Incident(body.getIncidentId(), body.getName(), body.getWeight(), null);
       monoList.add(integration.createProduct(incident));
 
-      if (body.getRecommendations() != null) {
-        body.getRecommendations().forEach(r -> {
-          Device device = new Device(body.getProductId(), r.getDeviceId(), r.getAuthor(), r.getRate(), r.getContent(), null);
+      if (body.getDevices() != null) {
+        body.getDevices().forEach(r -> {
+          Device device = new Device(body.getIncidentId(), r.getDeviceId(), r.getAuthor(), r.getRate(), r.getContent(), null);
           monoList.add(integration.createRecommendation(device));
         });
       }
 
-      if (body.getReviews() != null) {
-        body.getReviews().forEach(r -> {
-          Alert alert = new Alert(body.getProductId(), r.getAlertId(), r.getAuthor(), r.getSubject(), r.getContent(), null);
+      if (body.getAlerts() != null) {
+        body.getAlerts().forEach(r -> {
+          Alert alert = new Alert(body.getIncidentId(), r.getAlertId(), r.getAuthor(), r.getSubject(), r.getContent(), null);
           monoList.add(integration.createReview(alert));
         });
       }
 
-      LOG.debug("createCompositeProduct: composite entities created for productId: {}", body.getProductId());
+      LOG.debug("createCompositeProduct: composite entities created for productId: {}", body.getIncidentId());
 
       return Mono.zip(r -> "", monoList.toArray(new Mono[0]))
         .doOnError(ex -> LOG.warn("createCompositeProduct failed: {}", ex.toString()))
@@ -68,30 +68,30 @@ public class IncidentCompositeServiceImpl implements IncidentCompositeService {
   }
 
   @Override
-  public Mono<IncidentAggregate> getProduct(int productId) {
+  public Mono<IncidentAggregate> getIncident(int incidentId) {
 
-    LOG.info("Will get composite incident info for incident.id={}", productId);
+    LOG.info("Will get composite incident info for incident.id={}", incidentId);
     return Mono.zip(
       values -> createProductAggregate((Incident) values[0], (List<Device>) values[1], (List<Alert>) values[2], serviceUtil.getServiceAddress()),
-      integration.getProduct(productId),
-      integration.getRecommendations(productId).collectList(),
-      integration.getReviews(productId).collectList())
+      integration.getProduct(incidentId),
+      integration.getRecommendations(incidentId).collectList(),
+      integration.getReviews(incidentId).collectList())
       .doOnError(ex -> LOG.warn("getCompositeProduct failed: {}", ex.toString()))
       .log(LOG.getName(), FINE);
   }
 
   @Override
-  public Mono<Void> deleteProduct(int productId) {
+  public Mono<Void> deleteIncident(int incidentId) {
 
     try {
 
-      LOG.info("Will delete a incident aggregate for incident.id: {}", productId);
+      LOG.info("Will delete a incident aggregate for incident.id: {}", incidentId);
 
       return Mono.zip(
         r -> "",
-        integration.deleteProduct(productId),
-        integration.deleteRecommendations(productId),
-        integration.deleteReviews(productId))
+        integration.deleteProduct(incidentId),
+        integration.deleteRecommendations(incidentId),
+        integration.deleteReviews(incidentId))
         .doOnError(ex -> LOG.warn("delete failed: {}", ex.toString()))
         .log(LOG.getName(), FINE).then();
 
@@ -101,7 +101,7 @@ public class IncidentCompositeServiceImpl implements IncidentCompositeService {
     }
   }
 
-  private IncidentAggregate createProductAggregate(Incident incident, List<Device> recommendations, List<Alert> reviews, String serviceAddress) {
+  private IncidentAggregate createProductAggregate(Incident incident, List<Device> devices, List<Alert> alerts, String serviceAddress) {
 
     // 1. Setup incident info
     int incidentId = incident.getIncidentId();
@@ -109,23 +109,23 @@ public class IncidentCompositeServiceImpl implements IncidentCompositeService {
     int weight = incident.getWeight();
 
     // 2. Copy summary device info, if available
-    List<DeviceSummary> recommendationSummaries = (recommendations == null) ? null :
-       recommendations.stream()
+    List<DeviceSummary> deviceSummaries = (devices == null) ? null :
+       devices.stream()
         .map(r -> new DeviceSummary(r.getDeviceId(), r.getAuthor(), r.getRate(), r.getContent()))
         .collect(Collectors.toList());
 
     // 3. Copy summary alert info, if available
-    List<AlertSummary> reviewSummaries = (reviews == null)  ? null :
-      reviews.stream()
+    List<AlertSummary> alertSummaries = (alerts == null)  ? null :
+      alerts.stream()
         .map(r -> new AlertSummary(r.getAlertId(), r.getAuthor(), r.getSubject(), r.getContent()))
         .collect(Collectors.toList());
 
     // 4. Create info regarding the involved microservices addresses
-    String productAddress = incident.getServiceAddress();
-    String reviewAddress = (reviews != null && reviews.size() > 0) ? reviews.get(0).getServiceAddress() : "";
-    String recommendationAddress = (recommendations != null && recommendations.size() > 0) ? recommendations.get(0).getServiceAddress() : "";
-    ServiceAddresses serviceAddresses = new ServiceAddresses(serviceAddress, productAddress, reviewAddress, recommendationAddress);
+    String incidentAddress = incident.getServiceAddress();
+    String alertAddress = (alerts != null && alerts.size() > 0) ? alerts.get(0).getServiceAddress() : "";
+    String deviceAddress = (devices != null && devices.size() > 0) ? devices.get(0).getServiceAddress() : "";
+    ServiceAddresses serviceAddresses = new ServiceAddresses(serviceAddress, incidentAddress, alertAddress, deviceAddress);
 
-    return new IncidentAggregate(incidentId, name, weight, recommendationSummaries, reviewSummaries, serviceAddresses);
+    return new IncidentAggregate(incidentId, name, weight, deviceSummaries, alertSummaries, serviceAddresses);
   }
 }

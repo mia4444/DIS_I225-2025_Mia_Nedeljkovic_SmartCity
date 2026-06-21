@@ -31,8 +31,8 @@ spring.cloud.stream:
   defaultBinder: rabbit
   default.contentType: application/json
   bindings.messageProcessor-in-0:
-    destination: reviews
-    group: reviewsGroup
+    destination: alerts
+    group: alertsGroup
 
 spring.cloud.stream.bindings.messageProcessor-in-0.consumer:
   maxAttempts: 3
