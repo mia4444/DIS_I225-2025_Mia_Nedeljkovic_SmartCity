@@ -39,7 +39,7 @@ public class IncidentCompositeServiceImpl implements IncidentCompositeService {
       LOG.info("Will create a new composite entity for incident.id: {}", body.getIncidentId());
 
       Incident incident = new Incident(body.getIncidentId(), body.getName(), body.getWeight(), null);
-      monoList.add(integration.createProduct(incident));
+      monoList.add(integration.createIncident(incident));
 
       if (body.getDevices() != null) {
         body.getDevices().forEach(r -> {
@@ -73,7 +73,7 @@ public class IncidentCompositeServiceImpl implements IncidentCompositeService {
     LOG.info("Will get composite incident info for incident.id={}", incidentId);
     return Mono.zip(
       values -> createProductAggregate((Incident) values[0], (List<Device>) values[1], (List<Alert>) values[2], serviceUtil.getServiceAddress()),
-      integration.getProduct(incidentId),
+      integration.getIncident(incidentId),
       integration.getRecommendations(incidentId).collectList(),
       integration.getReviews(incidentId).collectList())
       .doOnError(ex -> LOG.warn("getCompositeProduct failed: {}", ex.toString()))
@@ -89,7 +89,7 @@ public class IncidentCompositeServiceImpl implements IncidentCompositeService {
 
       return Mono.zip(
         r -> "",
-        integration.deleteProduct(incidentId),
+        integration.deleteIncident(incidentId),
         integration.deleteRecommendations(incidentId),
         integration.deleteReviews(incidentId))
         .doOnError(ex -> LOG.warn("delete failed: {}", ex.toString()))

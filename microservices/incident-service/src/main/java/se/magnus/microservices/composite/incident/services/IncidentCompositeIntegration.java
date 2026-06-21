@@ -61,7 +61,7 @@ public class IncidentCompositeIntegration implements IncidentService, DeviceServ
   }
 
   @Override
-  public Mono<Incident> createProduct(Incident body) {
+  public Mono<Incident> createIncident(Incident body) {
 
     return Mono.fromCallable(() -> {
       sendMessage("incidents-out-0", new Event(CREATE, body.getIncidentId(), body));
@@ -70,17 +70,17 @@ public class IncidentCompositeIntegration implements IncidentService, DeviceServ
   }
 
   @Override
-  public Mono<Incident> getProduct(int productId) {
-    String url = PRODUCT_SERVICE_URL + "/incident/" + productId;
-    LOG.debug("Will call the getProduct API on URL: {}", url);
+  public Mono<Incident> getIncident(int incidentId) {
+    String url = PRODUCT_SERVICE_URL + "/incident/" + incidentId;
+    LOG.debug("Will call the getIncident API on URL: {}", url);
 
     return webClient.get().uri(url).retrieve().bodyToMono(Incident.class).log(LOG.getName(), FINE).onErrorMap(WebClientResponseException.class, ex -> handleException(ex));
   }
 
   @Override
-  public Mono<Void> deleteProduct(int productId) {
+  public Mono<Void> deleteIncident(int incidentId) {
 
-    return Mono.fromRunnable(() -> sendMessage("incidents-out-0", new Event(DELETE, productId, null)))
+    return Mono.fromRunnable(() -> sendMessage("incidents-out-0", new Event(DELETE, incidentId, null)))
       .subscribeOn(publishEventScheduler).then();
   }
 

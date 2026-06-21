@@ -33,13 +33,13 @@ public class MessageProcessorConfig {
         case CREATE:
           Incident incident = event.getData();
           LOG.info("Create incident with ID: {}", incident.getIncidentId());
-          incidentService.createProduct(incident).block();
+          incidentService.createIncident(incident).block();
           break;
 
         case DELETE:
-          int productId = event.getKey();
-          LOG.info("Delete incident with ProductID: {}", productId);
-          incidentService.deleteProduct(productId).block();
+          int incidentId = event.getKey();
+          LOG.info("Delete incident with IncidentID: {}", incidentId);
+          incidentService.deleteIncident(incidentId).block();
           break;
 
         default:

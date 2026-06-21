@@ -6,18 +6,19 @@ import reactor.core.publisher.Mono;
 
 public interface IncidentService {
 
-  Mono<Incident> createProduct(Incident body);
+  Mono<Incident> createIncident(Incident body);
 
   /**
    * Sample usage: "curl $HOST:$PORT/incident/1".
    *
-   * @param productId Id of the incident
+   * @param incidentId Id of the incident
    * @return the incident, if found, else null
    */
-  @GetMapping(
-    value = "/incident/{productId}",
-    produces = "application/json")
-  Mono<Incident> getProduct(@PathVariable int productId);
 
-  Mono<Void> deleteProduct(int productId);
+  @GetMapping(
+    value = "/incident/{incidentId}",
+    produces = "application/json")
+  Mono<Incident> getIncident(@PathVariable int incidentId);
+
+  Mono<Void> deleteIncident(int incidentId);
 }

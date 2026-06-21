@@ -35,7 +35,7 @@ public class UserServiceImpl implements IncidentService {
   }
 
   @Override
-  public Mono<Incident> createProduct(Incident body) {
+  public Mono<Incident> createIncident(Incident body) {
 
     if (body.getIncidentId() < 1) {
       throw new InvalidInputException("Invalid incidentId: " + body.getIncidentId());
@@ -53,7 +53,7 @@ public class UserServiceImpl implements IncidentService {
   }
 
   @Override
-  public Mono<Incident> getProduct(int incidentId) {
+  public Mono<Incident> getIncident(int incidentId) {
 
     if (incidentId < 1) {
       throw new InvalidInputException("Invalid incidentId: " + incidentId);
@@ -69,13 +69,13 @@ public class UserServiceImpl implements IncidentService {
   }
 
   @Override
-  public Mono<Void> deleteProduct(int incidentId) {
+  public Mono<Void> deleteIncident(int incidentId) {
 
     if (incidentId < 1) {
       throw new InvalidInputException("Invalid incidentId: " + incidentId);
     }
 
-    LOG.debug("deleteProduct: tries to delete an entity with incidentId: {}", incidentId);
+    LOG.debug("deleteIncident: tries to delete an entity with incidentId: {}", incidentId);
     return repository.findByIncidentId(incidentId).log(LOG.getName(), FINE).map(e -> repository.delete(e)).flatMap(e -> e);
   }
 
