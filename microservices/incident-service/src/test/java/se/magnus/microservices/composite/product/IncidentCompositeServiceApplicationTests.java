@@ -37,7 +37,7 @@ class IncidentCompositeServiceApplicationTests {
   @BeforeEach
   void setUp() {
 
-    when(compositeIntegration.getProduct(PRODUCT_ID_OK))
+    when(compositeIntegration.getIncident(PRODUCT_ID_OK))
       .thenReturn(Mono.just(new Incident(PRODUCT_ID_OK, "name", 1, "mock-address")));
 
     when(compositeIntegration.getRecommendations(PRODUCT_ID_OK))
@@ -46,9 +46,9 @@ class IncidentCompositeServiceApplicationTests {
     when(compositeIntegration.getReviews(PRODUCT_ID_OK))
       .thenReturn(Flux.fromIterable(singletonList(new Alert(PRODUCT_ID_OK, 1, "author", "subject", "content", "mock address"))));
 
-    when(compositeIntegration.getProduct(PRODUCT_ID_NOT_FOUND)).thenThrow(new NotFoundException("NOT FOUND: " + PRODUCT_ID_NOT_FOUND));
+    when(compositeIntegration.getIncident(PRODUCT_ID_NOT_FOUND)).thenThrow(new NotFoundException("NOT FOUND: " + PRODUCT_ID_NOT_FOUND));
 
-    when(compositeIntegration.getProduct(PRODUCT_ID_INVALID)).thenThrow(new InvalidInputException("INVALID: " + PRODUCT_ID_INVALID));
+    when(compositeIntegration.getIncident(PRODUCT_ID_INVALID)).thenThrow(new InvalidInputException("INVALID: " + PRODUCT_ID_INVALID));
   }
 
   @Test
