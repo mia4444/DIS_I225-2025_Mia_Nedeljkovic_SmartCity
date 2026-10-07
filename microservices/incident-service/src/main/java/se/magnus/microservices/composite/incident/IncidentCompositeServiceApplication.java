@@ -1,4 +1,4 @@
-package se.magnus.microservices.composite.product;
+package se.magnus.microservices.composite.incident;
 
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;

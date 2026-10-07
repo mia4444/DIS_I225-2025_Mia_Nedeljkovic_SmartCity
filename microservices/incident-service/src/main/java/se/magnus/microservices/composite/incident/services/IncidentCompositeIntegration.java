@@ -7,6 +7,8 @@ import static se.magnus.api.event.Event.Type.DELETE;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.time.Duration;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +39,9 @@ public class IncidentCompositeIntegration implements IncidentService, DeviceServ
 
   private static final Logger LOG = LoggerFactory.getLogger(IncidentCompositeIntegration.class);
 
-  private static final String PRODUCT_SERVICE_URL = "http://incident-core";
-  private static final String RECOMMENDATION_SERVICE_URL = "http://device";
-  private static final String REVIEW_SERVICE_URL = "http://alert";
+  private static final String INCIDENT_SERVICE_URL = "http://incident-core";
+  private static final String DEVICE_SERVICE_URL = "http://device";
+  private static final String ALERT_SERVICE_URL = "http://alert";
 
   private final Scheduler publishEventScheduler;
   private final WebClient webClient;
@@ -70,11 +72,17 @@ public class IncidentCompositeIntegration implements IncidentService, DeviceServ
   }
 
   @Override
+  @CircuitBreaker(name = "incidentService", fallbackMethod = "getIncidentFallback")
   public Mono<Incident> getIncident(int incidentId) {
-    String url = PRODUCT_SERVICE_URL + "/incident/" + incidentId;
+    String url = INCIDENT_SERVICE_URL + "/incident/" + incidentId;
     LOG.debug("Will call the getIncident API on URL: {}", url);
 
-    return webClient.get().uri(url).retrieve().bodyToMono(Incident.class).log(LOG.getName(), FINE).onErrorMap(WebClientResponseException.class, ex -> handleException(ex));
+    return webClient.get().uri(url)
+      .retrieve()
+      .bodyToMono(Incident.class)
+      .timeout(Duration.ofSeconds(3))
+      .log(LOG.getName(), FINE)
+      .onErrorMap(WebClientResponseException.class, ex -> handleException(ex));
   }
 
   @Override
@@ -85,7 +93,7 @@ public class IncidentCompositeIntegration implements IncidentService, DeviceServ
   }
 
   @Override
-  public Mono<Device> createRecommendation(Device body) {
+  public Mono<Device> createDevice(Device body) {
 
     return Mono.fromCallable(() -> {
       sendMessage("devices-out-0", new Event(CREATE, body.getIncidentId(), body));
@@ -94,25 +102,31 @@ public class IncidentCompositeIntegration implements IncidentService, DeviceServ
   }
 
   @Override
-  public Flux<Device> getRecommendations(int productId) {
+  @CircuitBreaker(name = "incidentService", fallbackMethod = "getDevicesFallback")
+  public Flux<Device> getDevices(int incidentId) {
 
-    String url = RECOMMENDATION_SERVICE_URL + "/device?productId=" + productId;
+    String url = DEVICE_SERVICE_URL + "/device?incidentId=" + incidentId;
 
-    LOG.debug("Will call the getRecommendations API on URL: {}", url);
+    LOG.debug("Will call the getDevices API on URL: {}", url);
 
     // Return an empty result if something goes wrong to make it possible for the composite service to return partial responses
-    return webClient.get().uri(url).retrieve().bodyToFlux(Device.class).log(LOG.getName(), FINE).onErrorResume(error -> empty());
+    return webClient.get().uri(url)
+      .retrieve()
+      .bodyToFlux(Device.class)
+      .timeout(Duration.ofSeconds(3))
+      .log(LOG.getName(), FINE)
+      .onErrorResume(error -> empty());
   }
 
   @Override
-  public Mono<Void> deleteRecommendations(int productId) {
+  public Mono<Void> deleteDevices(int incidentId) {
 
-    return Mono.fromRunnable(() -> sendMessage("devices-out-0", new Event(DELETE, productId, null)))
+    return Mono.fromRunnable(() -> sendMessage("devices-out-0", new Event(DELETE, incidentId, null)))
       .subscribeOn(publishEventScheduler).then();
   }
 
   @Override
-  public Mono<Alert> createReview(Alert body) {
+  public Mono<Alert> createAlert(Alert body) {
 
     return Mono.fromCallable(() -> {
       sendMessage("alerts-out-0", new Event(CREATE, body.getIncidentId(), body));
@@ -121,20 +135,26 @@ public class IncidentCompositeIntegration implements IncidentService, DeviceServ
   }
 
   @Override
-  public Flux<Alert> getReviews(int productId) {
+  @CircuitBreaker(name = "incidentService", fallbackMethod = "getAlertsFallback")
+  public Flux<Alert> getAlerts(int incidentId) {
 
-    String url = REVIEW_SERVICE_URL + "/alert?productId=" + productId;
+    String url = ALERT_SERVICE_URL + "/alert?incidentId=" + incidentId;
 
-    LOG.debug("Will call the getReviews API on URL: {}", url);
+    LOG.debug("Will call the getAlerts API on URL: {}", url);
 
     // Return an empty result if something goes wrong to make it possible for the composite service to return partial responses
-    return webClient.get().uri(url).retrieve().bodyToFlux(Alert.class).log(LOG.getName(), FINE).onErrorResume(error -> empty());
+    return webClient.get().uri(url)
+      .retrieve()
+      .bodyToFlux(Alert.class)
+      .timeout(Duration.ofSeconds(3))
+      .log(LOG.getName(), FINE)
+      .onErrorResume(error -> empty());
   }
 
   @Override
-  public Mono<Void> deleteReviews(int productId) {
+  public Mono<Void> deleteAlerts(int incidentId) {
 
-    return Mono.fromRunnable(() -> sendMessage("alerts-out-0", new Event(DELETE, productId, null)))
+    return Mono.fromRunnable(() -> sendMessage("alerts-out-0", new Event(DELETE, incidentId, null)))
       .subscribeOn(publishEventScheduler).then();
   }
 
@@ -144,6 +164,21 @@ public class IncidentCompositeIntegration implements IncidentService, DeviceServ
       .setHeader("partitionKey", event.getKey())
       .build();
     streamBridge.send(bindingName, message);
+  }
+
+  private Mono<Incident> getIncidentFallback(int incidentId, Throwable ex) {
+    LOG.warn("Circuit breaker fallback for getIncident({}): {}", incidentId, ex.toString());
+    return Mono.just(new Incident(incidentId, "INCIDENT SERVICE UNAVAILABLE", 0, "circuit-breaker-fallback"));
+  }
+
+  private Flux<Device> getDevicesFallback(int incidentId, Throwable ex) {
+    LOG.warn("Circuit breaker fallback for getDevices({}): {}", incidentId, ex.toString());
+    return empty();
+  }
+
+  private Flux<Alert> getAlertsFallback(int incidentId, Throwable ex) {
+    LOG.warn("Circuit breaker fallback for getAlerts({}): {}", incidentId, ex.toString());
+    return empty();
   }
 
   private Throwable handleException(Throwable ex) {

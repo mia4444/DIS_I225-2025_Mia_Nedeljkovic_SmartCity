@@ -57,5 +57,9 @@ dependencyManagement {
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        if (!project.hasProperty('includeDockerTests')) {
+            excludeTags 'docker'
+        }
+    }
 }

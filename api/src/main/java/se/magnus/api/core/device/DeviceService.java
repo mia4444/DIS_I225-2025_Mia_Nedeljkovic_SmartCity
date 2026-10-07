@@ -6,19 +6,19 @@ import reactor.core.publisher.Mono;
 
 public interface DeviceService {
 
-  Mono<Device> createRecommendation(Device body);
+  Mono<Device> createDevice(Device body);
 
   /**
-   * Sample usage: "curl $HOST:$PORT/device?productId=1".
+   * Sample usage: "curl $HOST:$PORT/device?incidentId=1".
    *
-   * @param productId Id of the incident
-   * @return the recommendations of the incident
+   * @param incidentId Id of the incident
+   * @return the devices linked to the incident
    */
   @GetMapping(
     value = "/device",
     produces = "application/json")
-  Flux<Device> getRecommendations(
-    @RequestParam(value = "productId", required = true) int productId);
+  Flux<Device> getDevices(
+    @RequestParam(value = "incidentId", required = true) int incidentId);
 
-  Mono<Void> deleteRecommendations(int productId);
+  Mono<Void> deleteDevices(int incidentId);
 }

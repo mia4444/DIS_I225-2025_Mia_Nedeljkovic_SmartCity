@@ -1,43 +1,43 @@
 package se.magnus.api.composite.incident;
 
 public class ServiceAddresses {
-  private final String cmp;
-  private final String pro;
-  private final String rev;
-  private final String rec;
+  private final String compositeAddress;
+  private final String incidentAddress;
+  private final String alertAddress;
+  private final String deviceAddress;
 
   public ServiceAddresses() {
-    cmp = null;
-    pro = null;
-    rev = null;
-    rec = null;
+    compositeAddress = null;
+    incidentAddress = null;
+    alertAddress = null;
+    deviceAddress = null;
   }
 
   public ServiceAddresses(
     String compositeAddress,
-    String productAddress,
-    String reviewAddress,
-    String recommendationAddress) {
+    String incidentAddress,
+    String alertAddress,
+    String deviceAddress) {
 
-    this.cmp = compositeAddress;
-    this.pro = productAddress;
-    this.rev = reviewAddress;
-    this.rec = recommendationAddress;
+    this.compositeAddress = compositeAddress;
+    this.incidentAddress = incidentAddress;
+    this.alertAddress = alertAddress;
+    this.deviceAddress = deviceAddress;
   }
 
-  public String getCmp() {
-    return cmp;
+  public String getCompositeAddress() {
+    return compositeAddress;
   }
 
-  public String getPro() {
-    return pro;
+  public String getIncidentAddress() {
+    return incidentAddress;
   }
 
-  public String getRev() {
-    return rev;
+  public String getAlertAddress() {
+    return alertAddress;
   }
 
-  public String getRec() {
-    return rec;
+  public String getDeviceAddress() {
+    return deviceAddress;
   }
 }

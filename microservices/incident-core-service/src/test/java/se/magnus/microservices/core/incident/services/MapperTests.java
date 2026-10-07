@@ -1,13 +1,13 @@
-package se.magnus.microservices.core.user.services;
+package se.magnus.microservices.core.incident.services;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import se.magnus.api.core.incident.Incident;
-import se.magnus.microservices.core.user.persistence.UserEntity;
+import se.magnus.microservices.core.incident.persistence.IncidentCoreEntity;
 
 class MapperTests {
-    private UserMapper mapper= Mappers.getMapper(UserMapper.class);
+    private IncidentCoreMapper mapper= Mappers.getMapper(IncidentCoreMapper.class);
   @Test
   void mapperTests() {
 
@@ -15,7 +15,7 @@ class MapperTests {
 
       Incident api=new Incident(1,"Pukla vodovodna cev",1,"sa");
 
-      UserEntity entity=mapper.apiToEntity(api);
+      IncidentCoreEntity entity=mapper.apiToEntity(api);
 
       assertEquals(api.getIncidentId(), entity.getIncidentId());
       assertEquals(api.getName(), entity.getName());

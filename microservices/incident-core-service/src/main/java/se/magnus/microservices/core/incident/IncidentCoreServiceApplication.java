@@ -1,4 +1,4 @@
-package se.magnus.microservices.core.user;
+package se.magnus.microservices.core.incident;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,15 +16,15 @@ import org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexRes
 import org.springframework.data.mongodb.core.index.ReactiveIndexOperations;
 import org.springframework.data.mongodb.core.mapping.MongoPersistentEntity;
 import org.springframework.data.mongodb.core.mapping.MongoPersistentProperty;
-import se.magnus.microservices.core.user.persistence.UserEntity;
+import se.magnus.microservices.core.incident.persistence.IncidentCoreEntity;
 @SpringBootApplication
 @ComponentScan("se.magnus")
-public class UserServiceApplication {
+public class IncidentCoreServiceApplication {
 
-  private static final Logger LOG = LoggerFactory.getLogger(UserServiceApplication.class);
+  private static final Logger LOG = LoggerFactory.getLogger(IncidentCoreServiceApplication.class);
 
   public static void main(String[] args) {
-    ConfigurableApplicationContext ctx = SpringApplication.run(UserServiceApplication.class, args);
+    ConfigurableApplicationContext ctx = SpringApplication.run(IncidentCoreServiceApplication.class, args);
 
     String mongodDbHost = ctx.getEnvironment().getProperty("spring.data.mongodb.host");
     String mongodDbPort = ctx.getEnvironment().getProperty("spring.data.mongodb.port");
@@ -40,7 +40,7 @@ public class UserServiceApplication {
     MappingContext<? extends MongoPersistentEntity<?>, MongoPersistentProperty> mappingContext = mongoTemplate.getConverter().getMappingContext();
     IndexResolver resolver = new MongoPersistentEntityIndexResolver(mappingContext);
 
-    ReactiveIndexOperations indexOps = mongoTemplate.indexOps(UserEntity.class);
-    resolver.resolveIndexFor(UserEntity.class).forEach(e -> indexOps.ensureIndex(e).block());
+    ReactiveIndexOperations indexOps = mongoTemplate.indexOps(IncidentCoreEntity.class);
+    resolver.resolveIndexFor(IncidentCoreEntity.class).forEach(e -> indexOps.ensureIndex(e).block());
   }
 }

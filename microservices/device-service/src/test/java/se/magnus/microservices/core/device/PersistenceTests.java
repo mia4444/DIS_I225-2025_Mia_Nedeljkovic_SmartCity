@@ -1,6 +1,7 @@
 package se.magnus.microservices.core.device;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
@@ -10,6 +11,7 @@ import se.magnus.microservices.core.device.persistence.DeviceEntity;
 import se.magnus.microservices.core.device.persistence.DeviceRepository;
 
 @DataMongoTest
+@Tag("docker")
 class PersistenceTests extends MongoDbTestBase {
 
   @Autowired

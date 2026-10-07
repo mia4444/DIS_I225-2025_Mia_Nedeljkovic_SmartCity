@@ -1,8 +1,8 @@
-package se.magnus.microservices.core.user.persistence;
+package se.magnus.microservices.core.incident.persistence;
 
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Mono;
 
-public interface UserRepository extends ReactiveCrudRepository<UserEntity, String> {
-  Mono<UserEntity> findByIncidentId(int incidentId);
+public interface IncidentCoreRepository extends ReactiveCrudRepository<IncidentCoreEntity, String> {
+  Mono<IncidentCoreEntity> findByIncidentId(int incidentId);
 }

@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
-@Tag(name = "ProductComposite", description = "REST API for composite incident information.")
+@Tag(name = "IncidentComposite", description = "REST API for composite incident information.")
 public interface IncidentCompositeService {
 
   /**
@@ -16,7 +16,7 @@ public interface IncidentCompositeService {
    *
    * curl -X POST $HOST:$PORT/incident-composite \
    *   -H "Content-Type: application/json" --data \
-   *   '{"productId":123,"name":"incident 123","weight":123}'
+   *   '{"incidentId":123,"name":"incident 123","weight":123}'
    *
    * @param body A JSON representation of the new composite incident
    */
@@ -36,7 +36,7 @@ public interface IncidentCompositeService {
   /**
    * Sample usage: "curl $HOST:$PORT/incident-composite/1".
    *
-   * @param productId Id of the incident
+   * @param incidentId Id of the incident
    * @return the composite incident info, if found, else null
    */
   @Operation(
@@ -56,7 +56,7 @@ public interface IncidentCompositeService {
   /**
    * Sample usage: "curl -X DELETE $HOST:$PORT/incident-composite/1".
    *
-   * @param productId Id of the incident
+   * @param incidentId Id of the incident
    */
   @Operation(
     summary = "${api.incident-composite.delete-composite-incident.description}",

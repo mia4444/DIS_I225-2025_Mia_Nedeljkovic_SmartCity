@@ -9,6 +9,7 @@ import static se.magnus.api.event.Event.Type.DELETE;
 
 import java.util.function.Consumer;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,6 +24,7 @@ import se.magnus.api.exceptions.InvalidInputException;
   "spring.cloud.stream.defaultBinder=rabbit",
   "logging.level.se.magnus=DEBUG",
   "eureka.client.enabled=false"})
+@Tag("docker")
 class AlertServiceApplicationTests extends MySqlTestBase {
 
   @Autowired
@@ -41,19 +43,19 @@ class AlertServiceApplicationTests extends MySqlTestBase {
   }
 
   @Test
-  void getReviewsByIncidentId() {
+  void getAlertsByIncidentId() {
 
     int incidentId = 1;
 
     assertEquals(0, repository.findByIncidentId(incidentId).size());
 
-    sendCreateReviewEvent(incidentId, 1);
-    sendCreateReviewEvent(incidentId, 2);
-    sendCreateReviewEvent(incidentId, 3);
+    sendCreateAlertEvent(incidentId, 1);
+    sendCreateAlertEvent(incidentId, 2);
+    sendCreateAlertEvent(incidentId, 3);
 
     assertEquals(3, repository.findByIncidentId(incidentId).size());
 
-    getAndVerifyReviewsByProductId(incidentId, OK)
+    getAndVerifyAlertsByIncidentId(incidentId, OK)
       .jsonPath("$.length()").isEqualTo(3)
       .jsonPath("$[2].incidentId").isEqualTo(incidentId)
       .jsonPath("$[2].alertId").isEqualTo(3);
@@ -67,13 +69,13 @@ class AlertServiceApplicationTests extends MySqlTestBase {
 
     assertEquals(0, repository.count());
 
-    sendCreateReviewEvent(incidentId, alertId);
+    sendCreateAlertEvent(incidentId, alertId);
 
     assertEquals(1, repository.count());
 
     InvalidInputException thrown = assertThrows(
       InvalidInputException.class,
-      () -> sendCreateReviewEvent(incidentId, alertId),
+      () -> sendCreateAlertEvent(incidentId, alertId),
       "Expected a InvalidInputException here!");
     assertEquals("Duplicate key, Incident Id: 1, Alert Id:1", thrown.getMessage());
 
@@ -81,60 +83,60 @@ class AlertServiceApplicationTests extends MySqlTestBase {
   }
 
   @Test
-  void deleteReviews() {
+  void deleteAlerts() {
 
     int incidentId = 1;
     int alertId = 1;
 
-    sendCreateReviewEvent(incidentId, alertId);
+    sendCreateAlertEvent(incidentId, alertId);
     assertEquals(1, repository.findByIncidentId(incidentId).size());
 
-    sendDeleteReviewEvent(incidentId);
+    sendDeleteAlertEvent(incidentId);
     assertEquals(0, repository.findByIncidentId(incidentId).size());
 
-    sendDeleteReviewEvent(incidentId);
+    sendDeleteAlertEvent(incidentId);
   }
 
   @Test
-  void getReviewsMissingParameter() {
+  void getAlertsMissingParameter() {
 
-    getAndVerifyReviewsByProductId("", BAD_REQUEST)
+    getAndVerifyAlertsByIncidentId("", BAD_REQUEST)
       .jsonPath("$.path").isEqualTo("/alert")
-      .jsonPath("$.message").isEqualTo("Required query parameter 'productId' is not present.");
+      .jsonPath("$.message").isEqualTo("Required query parameter 'incidentId' is not present.");
   }
 
   @Test
-  void getReviewsInvalidParameter() {
+  void getAlertsInvalidParameter() {
 
-    getAndVerifyReviewsByProductId("?productId=no-integer", BAD_REQUEST)
+    getAndVerifyAlertsByIncidentId("?incidentId=no-integer", BAD_REQUEST)
       .jsonPath("$.path").isEqualTo("/alert")
       .jsonPath("$.message").isEqualTo("Type mismatch.");
   }
 
   @Test
-  void getReviewsNotFound() {
+  void getAlertsNotFound() {
 
-    getAndVerifyReviewsByProductId("?productId=213", OK)
+    getAndVerifyAlertsByIncidentId("?incidentId=213", OK)
       .jsonPath("$.length()").isEqualTo(0);
   }
 
   @Test
-  void getReviewsInvalidParameterNegativeValue() {
+  void getAlertsInvalidParameterNegativeValue() {
 
     int incidentIdInvalid = -1;
 
-    getAndVerifyReviewsByProductId("?productId=" + incidentIdInvalid, UNPROCESSABLE_ENTITY)
+    getAndVerifyAlertsByIncidentId("?incidentId=" + incidentIdInvalid, UNPROCESSABLE_ENTITY)
       .jsonPath("$.path").isEqualTo("/alert")
       .jsonPath("$.message").isEqualTo("Invalid incidentId: " + incidentIdInvalid);
   }
 
-  private WebTestClient.BodyContentSpec getAndVerifyReviewsByProductId(int productId, HttpStatus expectedStatus) {
-    return getAndVerifyReviewsByProductId("?productId=" + productId, expectedStatus);
+  private WebTestClient.BodyContentSpec getAndVerifyAlertsByIncidentId(int incidentId, HttpStatus expectedStatus) {
+    return getAndVerifyAlertsByIncidentId("?incidentId=" + incidentId, expectedStatus);
   }
 
-  private WebTestClient.BodyContentSpec getAndVerifyReviewsByProductId(String productIdQuery, HttpStatus expectedStatus) {
+  private WebTestClient.BodyContentSpec getAndVerifyAlertsByIncidentId(String incidentIdQuery, HttpStatus expectedStatus) {
     return client.get()
-      .uri("/alert" + productIdQuery)
+      .uri("/alert" + incidentIdQuery)
       .accept(APPLICATION_JSON)
       .exchange()
       .expectStatus().isEqualTo(expectedStatus)
@@ -142,13 +144,13 @@ class AlertServiceApplicationTests extends MySqlTestBase {
       .expectBody();
   }
 
-  private void sendCreateReviewEvent(int incidentId, int alertId) {
+  private void sendCreateAlertEvent(int incidentId, int alertId) {
     Alert alert = new Alert(incidentId, alertId, "Author " + alertId, "Subject " + alertId, "Content " + alertId, "SA");
     Event<Integer, Alert> event = new Event(CREATE, incidentId, alert);
     messageProcessor.accept(event);
   }
 
-  private void sendDeleteReviewEvent(int incidentId) {
+  private void sendDeleteAlertEvent(int incidentId) {
     Event<Integer, Alert> event = new Event(DELETE, incidentId, null);
     messageProcessor.accept(event);
   }

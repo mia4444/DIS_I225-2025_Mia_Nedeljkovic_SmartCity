@@ -41,21 +41,21 @@ public class AlertServiceImpl implements AlertService {
   }
 
   @Override
-  public Mono<Alert> createReview(Alert body) {
+  public Mono<Alert> createAlert(Alert body) {
 
     if (body.getIncidentId() < 1) {
       throw new InvalidInputException("Invalid incidentId: " + body.getIncidentId());
     }
-    return Mono.fromCallable(() -> internalCreateReview(body))
+    return Mono.fromCallable(() -> internalCreateAlert(body))
       .subscribeOn(jdbcScheduler);
   }
 
-  private Alert internalCreateReview(Alert body) {
+  private Alert internalCreateAlert(Alert body) {
     try {
       AlertEntity entity = mapper.apiToEntity(body);
       AlertEntity newEntity = repository.save(entity);
 
-      LOG.debug("createReview: created a alert entity: {}/{}", body.getIncidentId(), body.getAlertId());
+      LOG.debug("createAlert: created a alert entity: {}/{}", body.getIncidentId(), body.getAlertId());
       return mapper.entityToApi(newEntity);
 
     } catch (DataIntegrityViolationException dive) {
@@ -64,21 +64,21 @@ public class AlertServiceImpl implements AlertService {
   }
 
   @Override
-  public Flux<Alert> getReviews(int incidentId) {
+  public Flux<Alert> getAlerts(int incidentId) {
 
     if (incidentId < 1) {
       throw new InvalidInputException("Invalid incidentId: " + incidentId);
     }
 
-    LOG.info("Will get reviews for incident with id={}", incidentId);
+    LOG.info("Will get alerts for incident with id={}", incidentId);
 
-    return Mono.fromCallable(() -> internalGetReviews(incidentId))
+    return Mono.fromCallable(() -> internalGetAlerts(incidentId))
       .flatMapMany(Flux::fromIterable)
       .log(LOG.getName(), FINE)
       .subscribeOn(jdbcScheduler);
   }
 
-  private List<Alert> internalGetReviews(int incidentId) {
+  private List<Alert> internalGetAlerts(int incidentId) {
 
     List<AlertEntity> entityList = repository.findByIncidentId(incidentId);
     List<Alert> list = mapper.entityListToApiList(entityList);
@@ -90,18 +90,18 @@ public class AlertServiceImpl implements AlertService {
   }
 
   @Override
-  public Mono<Void> deleteReviews(int incidentId) {
+  public Mono<Void> deleteAlerts(int incidentId) {
 
     if (incidentId < 1) {
       throw new InvalidInputException("Invalid incidentId: " + incidentId);
     }
 
-    return Mono.fromRunnable(() -> internalDeleteReviews(incidentId)).subscribeOn(jdbcScheduler).then();
+    return Mono.fromRunnable(() -> internalDeleteAlerts(incidentId)).subscribeOn(jdbcScheduler).then();
   }
 
-  private void internalDeleteReviews(int incidentId) {
+  private void internalDeleteAlerts(int incidentId) {
 
-    LOG.debug("deleteReviews: tries to delete reviews for the incident with incidentId: {}", incidentId);
+    LOG.debug("deleteAlerts: tries to delete alerts for the incident with incidentId: {}", incidentId);
 
     repository.deleteAll(repository.findByIncidentId(incidentId));
   }

@@ -6,18 +6,18 @@ import reactor.core.publisher.Mono;
 
 public interface AlertService {
 
-  Mono<Alert> createReview(Alert body);
+  Mono<Alert> createAlert(Alert body);
 
   /**
-   * Sample usage: "curl $HOST:$PORT/alert?productId=1".
+   * Sample usage: "curl $HOST:$PORT/alert?incidentId=1".
    *
-   * @param productId Id of the incident
-   * @return the reviews of the incident
+   * @param incidentId Id of the incident
+   * @return the alerts of the incident
    */
   @GetMapping(
     value = "/alert",
     produces = "application/json")
-  Flux<Alert> getReviews(@RequestParam(value = "productId", required = true) int productId);
+  Flux<Alert> getAlerts(@RequestParam(value = "incidentId", required = true) int incidentId);
 
-  Mono<Void> deleteReviews(int productId);
+  Mono<Void> deleteAlerts(int incidentId);
 }

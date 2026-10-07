@@ -1,4 +1,4 @@
-package se.magnus.microservices.core.user;
+package se.magnus.microservices.core.incident;
 
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;

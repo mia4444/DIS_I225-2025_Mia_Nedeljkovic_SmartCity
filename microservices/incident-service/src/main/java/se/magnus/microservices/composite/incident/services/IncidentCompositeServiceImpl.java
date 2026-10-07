@@ -36,7 +36,7 @@ public class IncidentCompositeServiceImpl implements IncidentCompositeService {
 
       List<Mono> monoList = new ArrayList<>();
 
-      LOG.info("Will create a new composite entity for incident.id: {}", body.getIncidentId());
+      LOG.info("Will create a new composite incident for incident.id: {}", body.getIncidentId());
 
       Incident incident = new Incident(body.getIncidentId(), body.getName(), body.getWeight(), null);
       monoList.add(integration.createIncident(incident));
@@ -44,25 +44,25 @@ public class IncidentCompositeServiceImpl implements IncidentCompositeService {
       if (body.getDevices() != null) {
         body.getDevices().forEach(r -> {
           Device device = new Device(body.getIncidentId(), r.getDeviceId(), r.getAuthor(), r.getRate(), r.getContent(), null);
-          monoList.add(integration.createRecommendation(device));
+          monoList.add(integration.createDevice(device));
         });
       }
 
       if (body.getAlerts() != null) {
         body.getAlerts().forEach(r -> {
           Alert alert = new Alert(body.getIncidentId(), r.getAlertId(), r.getAuthor(), r.getSubject(), r.getContent(), null);
-          monoList.add(integration.createReview(alert));
+          monoList.add(integration.createAlert(alert));
         });
       }
 
-      LOG.debug("createCompositeProduct: composite entities created for productId: {}", body.getIncidentId());
+      LOG.debug("createIncidentAggregate: composite entities created for incidentId: {}", body.getIncidentId());
 
       return Mono.zip(r -> "", monoList.toArray(new Mono[0]))
-        .doOnError(ex -> LOG.warn("createCompositeProduct failed: {}", ex.toString()))
+        .doOnError(ex -> LOG.warn("createIncident failed: {}", ex.toString()))
         .then();
 
     } catch (RuntimeException re) {
-      LOG.warn("createCompositeProduct failed: {}", re.toString());
+      LOG.warn("createIncident failed: {}", re.toString());
       throw re;
     }
   }
@@ -71,12 +71,12 @@ public class IncidentCompositeServiceImpl implements IncidentCompositeService {
   public Mono<IncidentAggregate> getIncident(int incidentId) {
 
     LOG.info("Will get composite incident info for incident.id={}", incidentId);
-    return Mono.zip(
-      values -> createProductAggregate((Incident) values[0], (List<Device>) values[1], (List<Alert>) values[2], serviceUtil.getServiceAddress()),
+      return Mono.zip(
+      values -> createIncidentAggregate((Incident) values[0], (List<Device>) values[1], (List<Alert>) values[2], serviceUtil.getServiceAddress()),
       integration.getIncident(incidentId),
-      integration.getRecommendations(incidentId).collectList(),
-      integration.getReviews(incidentId).collectList())
-      .doOnError(ex -> LOG.warn("getCompositeProduct failed: {}", ex.toString()))
+      integration.getDevices(incidentId).collectList(),
+      integration.getAlerts(incidentId).collectList())
+      .doOnError(ex -> LOG.warn("getIncident failed: {}", ex.toString()))
       .log(LOG.getName(), FINE);
   }
 
@@ -85,23 +85,23 @@ public class IncidentCompositeServiceImpl implements IncidentCompositeService {
 
     try {
 
-      LOG.info("Will delete a incident aggregate for incident.id: {}", incidentId);
+      LOG.info("Will delete a composite incident aggregate for incident.id: {}", incidentId);
 
       return Mono.zip(
         r -> "",
         integration.deleteIncident(incidentId),
-        integration.deleteRecommendations(incidentId),
-        integration.deleteReviews(incidentId))
-        .doOnError(ex -> LOG.warn("delete failed: {}", ex.toString()))
+        integration.deleteAlerts(incidentId),
+        integration.deleteDevices(incidentId))
+        .doOnError(ex -> LOG.warn("deleteIncident failed: {}", ex.toString()))
         .log(LOG.getName(), FINE).then();
 
     } catch (RuntimeException re) {
-      LOG.warn("deleteCompositeProduct failed: {}", re.toString());
+      LOG.warn("deleteIncident failed: {}", re.toString());
       throw re;
     }
   }
 
-  private IncidentAggregate createProductAggregate(Incident incident, List<Device> devices, List<Alert> alerts, String serviceAddress) {
+  private IncidentAggregate createIncidentAggregate(Incident incident, List<Device> devices, List<Alert> alerts, String serviceAddress) {
 
     // 1. Setup incident info
     int incidentId = incident.getIncidentId();

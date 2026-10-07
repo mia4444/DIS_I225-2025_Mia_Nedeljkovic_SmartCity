@@ -36,7 +36,7 @@ public class DeviceServiceImpl implements DeviceService {
   }
 
   @Override
-  public Mono<Device> createRecommendation(Device body) {
+  public Mono<Device> createDevice(Device body) {
 
     if (body.getIncidentId() < 1) {
       throw new InvalidInputException("Invalid incidentId: " + body.getIncidentId());
@@ -54,7 +54,7 @@ public class DeviceServiceImpl implements DeviceService {
   }
 
   @Override
-  public Flux<Device> getRecommendations(int incidentId) {
+  public Flux<Device> getDevices(int incidentId) {
 
     if (incidentId < 1) {
       throw new InvalidInputException("Invalid incidentId: " + incidentId);
@@ -69,13 +69,13 @@ public class DeviceServiceImpl implements DeviceService {
   }
 
   @Override
-  public Mono<Void> deleteRecommendations(int incidentId) {
+  public Mono<Void> deleteDevices(int incidentId) {
 
     if (incidentId < 1) {
       throw new InvalidInputException("Invalid incidentId: " + incidentId);
     }
 
-    LOG.debug("deleteRecommendations: tries to delete devices for incidentId: {}", incidentId);
+    LOG.debug("deleteDevices: tries to delete devices for incidentId: {}", incidentId);
     return repository.deleteAll(repository.findByIncidentId(incidentId));
   }
 

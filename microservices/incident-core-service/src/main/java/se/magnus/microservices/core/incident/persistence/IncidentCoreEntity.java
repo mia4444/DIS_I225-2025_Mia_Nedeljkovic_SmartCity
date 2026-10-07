@@ -1,4 +1,4 @@
-package se.magnus.microservices.core.user.persistence;
+package se.magnus.microservices.core.incident.persistence;
 
 import static java.lang.String.format;
 
@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "incidents")
-public class UserEntity {
+public class IncidentCoreEntity {
 
   @Id private String id;
 
@@ -20,9 +20,9 @@ public class UserEntity {
   private String name;
   private int weight;
 
-  public UserEntity() {}
+  public IncidentCoreEntity() {}
 
-  public UserEntity(int incidentId, String name, int weight) {
+  public IncidentCoreEntity(int incidentId, String name, int weight) {
     this.incidentId = incidentId;
     this.name = name;
     this.weight = weight;
